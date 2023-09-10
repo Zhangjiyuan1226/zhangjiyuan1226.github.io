@@ -1,1169 +1,747 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
   
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
+    <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://example.com/page/3/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+<meta name="twitter:card" content="summary_large_image">
   
   
-    <link rel="shortcut icon" href="/favicon.png">
   
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  <title>Hexo</title>
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
   
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
   
 <meta name="generator" content="Hexo 6.3.0"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
         
-      </nav>
-      <nav id="sub-nav">
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
         
         
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-MapReduce" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/10/15/MapReduce/" class="article-date">
-  <time class="dt-published" datetime="2022-10-15T04:21:49.000Z" itemprop="datePublished">2022-10-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/10/15/MapReduce/">MapReduce</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><h3 id="什么是MapReduce"><a href="#什么是MapReduce" class="headerlink" title="什么是MapReduce?"></a>什么是MapReduce?</h3><p>MapReduce是一种用来处理大规模数据的分布式计算框架。编程者只负责编写Map函数和Reduce函数，框架会将大型的数据处理任务切分成多个小型task，并将task分布式的处理。整个计算过程分为Map Phase和Reduce Phase，在Map阶段会将原始文件转化为intermediate kv pair，Reduce阶段则会将有关联的中间键合并。</p>
-<p>在6.824的lab中，我们实现的MapReduce框架允许我们以加载.so文件的方式，实现相应的功能。例如wordcount、indexer、jobcount等工作。</p>
-<ul>
-<li>个人理解的MapReduce：一个divide and conquer 的大型计算模型</li>
-</ul>
-<p>（因为被Robert邮件提醒过，所以下面的代码均不是最后的正确结果，只是一个实例  :  ）</p>
-<h3 id="MapReduce-的工作流程"><a href="#MapReduce-的工作流程" class="headerlink" title="MapReduce 的工作流程"></a>MapReduce 的工作流程</h3><p><img src="/MapReduce/image-20221015140345802.png" alt="image-20221015140345802"></p>
-<ol>
-<li>MapReduce lib会将input file切片分成16MB或者64MB大小子文件split X，随后启动一系列进程。</li>
-<li>从启动的这些进程选择一个作为mater，其余作为worker【master负责整个计算过程的调度与任务的分配，worker负责具体任务的执行】<ul>
-<li>master会为worker创建一系列map_task和reduce_task（reduce task数量是用户指定的 n_Reduce）</li>
-<li>一系列worker启动并向master发送rpc请求，表明worker节点当前的状态</li>
-<li>master通过task_rpc返回给worker对应的task</li>
-</ul>
-</li>
-<li>首先worker对master分配的task执行map func，将intermediate result写入<strong>本地</strong>，并通过rpc返回写入的位置</li>
-<li>master在所有map task完成时进入Reduce阶段，分配reduce task</li>
-<li>根据之前返回的地址读取中间文件，并执行reduce func，将结果存入GFS并等待下一次运算</li>
-</ol>
-<h4 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h4><ul>
-<li>word count：Map函数会对将文件中的单词都转换为&lt;word, 1&gt;的形式，根据hash(word)的结果将单词分布到不同的中间文件中，随后通过Reduce函数对单词词频进行统计（相同的单词会因为同样的hash value存储在相同的中间文件）</li>
-<li>indexer：Map函数将文件中的单词转换为&lt;word, filename&gt;的形式，Reduce函数对结果进行整理可以获取单词在那个文件中出现</li>
-</ul>
-<h4 id="一些数据结构和函数"><a href="#一些数据结构和函数" class="headerlink" title="一些数据结构和函数"></a>一些数据结构和函数</h4><p>以下定义的数据结构是master与worker在rpc通信过程中需要用到的数据结构，其中包含了task的定义等元数据</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Add your RPC definitions here.</span></span><br><span class="line"><span class="keyword">type</span> TaskReply <span class="keyword">struct</span> &#123; <span class="comment">// Coordinator返回给worker的信息</span></span><br><span class="line">	Task             *Task</span><br><span class="line">	NReduce          <span class="type">int</span></span><br><span class="line">	Coordinatorstate Coordinatorstate</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Task <span class="keyword">struct</span> &#123;</span><br><span class="line">	Id        <span class="type">int</span>       <span class="comment">// 表示map任务号或者reduce任务号</span></span><br><span class="line">	TaskType  TaskType  <span class="comment">// 任务的类型</span></span><br><span class="line">	TaskState TaskState <span class="comment">// Task的执行状态</span></span><br><span class="line">	Filename  <span class="type">string</span>    <span class="comment">// map task需要读取的文件名称 reduce task需要的intermidiate files</span></span><br><span class="line">	StartTime time.Time <span class="comment">// task的起始时间</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Coordinatorstate <span class="type">int</span></span><br><span class="line"><span class="keyword">type</span> TaskType <span class="type">int</span></span><br><span class="line"><span class="keyword">type</span> TaskState <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	MapPhase Coordinatorstate = <span class="literal">iota</span></span><br><span class="line">	ReducePhase</span><br><span class="line">	AllDone</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Map TaskType = <span class="literal">iota</span></span><br><span class="line">	Reduce</span><br><span class="line">	Waiting			<span class="comment">// task已经分配完毕，等待当前阶段task完成</span></span><br><span class="line">	Done</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Idle TaskState = <span class="literal">iota</span>	<span class="comment">// 暂未执行</span></span><br><span class="line">	InProgress				<span class="comment">//</span></span><br><span class="line">	Completed				<span class="comment">//</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// files 表示所有文件名称</span></span><br><span class="line"><span class="comment">// nReduce 表示要执行多少次reduce</span></span><br><span class="line"><span class="comment">// MapReduce框架会为所有Map函数输出的每一个key，调用一次Reduce函数</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MakeCoordinator</span><span class="params">(files []<span class="type">string</span>, nReduce <span class="type">int</span>)</span></span> *Coordinator &#123;</span><br><span class="line"></span><br><span class="line">	c := Coordinator&#123;</span><br><span class="line">		filenames:     files,</span><br><span class="line">		nReduce:       nReduce,</span><br><span class="line">		taskId:        <span class="number">0</span>,</span><br><span class="line">		Phase:         MapPhase,</span><br><span class="line">		MapTasks:      <span class="built_in">make</span>(<span class="keyword">chan</span> *Task, <span class="built_in">len</span>(files)),</span><br><span class="line">		ReduceTasks:   <span class="built_in">make</span>(<span class="keyword">chan</span> *Task, nReduce),</span><br><span class="line">		ExcecuteState: <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">int</span>]*TaskMeta, <span class="built_in">len</span>(files)+nReduce),</span><br><span class="line">	&#125;</span><br><span class="line">	c.MakeMapTask(c.filenames, c.MapTasks)</span><br><span class="line">	c.MakeReduceTask(c.ReduceTasks)</span><br><span class="line">	<span class="comment">// go c.CrashTest()</span></span><br><span class="line">	<span class="comment">// test</span></span><br><span class="line">	c.server()</span><br><span class="line">	<span class="keyword">return</span> &amp;c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Coordinator中处理worker申请任务的函数</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在这里为worker分配相应map task 返回对应文件名称，并且等待worker在规定时间完成</span></span><br><span class="line"><span class="comment">// worker完成后将结果返回至Coordinator，Coordinator整合结果后再分配Reduce task</span></span><br><span class="line"><span class="comment">// coordinator wait for ten seconds; after that the coordinator should assume the worker has died</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Coordinator)</span></span> RequestTask(args *TaskArgs, reply *TaskReply) <span class="type">error</span> &#123;</span><br><span class="line">	mutex.Lock()</span><br><span class="line">	<span class="keyword">defer</span> mutex.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">switch</span> c.Phase &#123;</span><br><span class="line">	<span class="keyword">case</span> MapPhase:</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(c.MapTasks) &gt; <span class="number">0</span> &#123;</span><br><span class="line">			reply.Task = &lt;-c.MapTasks</span><br><span class="line">			reply.Task.TaskState = InProgress</span><br><span class="line">			reply.Task.StartTime = time.Now()</span><br><span class="line">			reply.NReduce = c.nReduce</span><br><span class="line">			reply.Coordinatorstate = MapPhase</span><br><span class="line"></span><br><span class="line">			<span class="comment">// c.ExcecuteState[reply.Task.Id].Task.TaskState = InProgress</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> c.IsAllDone() &#123;</span><br><span class="line">				fmt.Println(<span class="string">&quot;To the next Phase Reduce&quot;</span>)</span><br><span class="line">				c.NextPhase()</span><br><span class="line">			&#125;</span><br><span class="line">			reply.Task = &amp;Task&#123;&#125;</span><br><span class="line">			reply.Task.TaskType = Waiting</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">case</span> ReducePhase:</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(c.ReduceTasks) &gt; <span class="number">0</span> &#123;</span><br><span class="line">			reply.Task = &lt;-c.ReduceTasks</span><br><span class="line">			reply.Task.TaskState = InProgress</span><br><span class="line">			reply.Task.StartTime = time.Now()</span><br><span class="line">			reply.NReduce = c.nReduce</span><br><span class="line">			reply.Coordinatorstate = ReducePhase</span><br><span class="line"></span><br><span class="line">			<span class="comment">// c.ExcecuteState[reply.Task.Id].Task.TaskState = InProgress</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> c.IsAllDone() &#123;</span><br><span class="line">				fmt.Println(<span class="string">&quot;To the next Phase AllDone&quot;</span>)</span><br><span class="line">				c.NextPhase()</span><br><span class="line">			&#125;</span><br><span class="line">			reply.Task = &amp;Task&#123;&#125;</span><br><span class="line">			reply.Task.TaskType = Waiting</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">case</span> AllDone:</span><br><span class="line">		<span class="keyword">if</span> c.IsAllDone() &#123;</span><br><span class="line">			reply.Coordinatorstate = AllDone</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="容错机制"><a href="#容错机制" class="headerlink" title="容错机制"></a>容错机制</h3><p>容错机制是分布式计算中一个很重要的功能，受限于各种因素，MapReduce中worker很有可能出现执行错误的问题，我们需要确保master能够一直与worker保持网络通信，worker返回给master的结果是正确的，并且在worker与master失联后能够将任务分配给其他的worker重新执行。因为master一般为单个机器，出现错误的可能性较小，暂不讨论。</p>
-<h4 id="Worker-Failure"><a href="#Worker-Failure" class="headerlink" title="Worker Failure"></a>Worker Failure</h4><p>Master节点周期性的向worker节点发送Ping信号，若Worker节点长时间未恢复则默认节点不可用，将这个节点正在处理的任务标记为idle，并将这个task重新加入到等待队列中。下面是不同阶段出现worker failure的处理办法</p>
-<ul>
-<li>Map Task：无论Map task任务是否完成，Master都需要将重新分配给其他worker。并且worker失效意味着存储在本地的中间结果也是不可用的。若此时已经进入到Reduce阶段，那么Master还需要通知所有Reducer无法从过去的Mapper上读取中间结果，要从新的Mapper上获取数据。</li>
-</ul>
-<p>若一个map task 先被 Worker A执行，随后又被worker B执行，那么其他的reduce会被提示到此map task已被重新执行，读取中间结果将从B的地址读取。</p>
-<ul>
-<li>Reduce Task：已经完成的Reduce无需过多处理，因为Reduce的结果存储在GFS上；</li>
-</ul>
-<h4 id="hints"><a href="#hints" class="headerlink" title="hints"></a>hints</h4><p>map和reduce阶段必须是有严格的先后顺序的，可以使用<code>sync.Cond</code>解决，就是worker去要任务的时候，如果没有空闲的并且还有正在running的，就陷入沉睡，之后被<code>broadcast</code>唤醒然后返回。但这样做在no crash 下是可行的，如果有crash，就会发生这样的情况：几个worker在沉睡，正在运行的那个worker崩了，但没有worker能够调度去解决。 因此作如下改进：每次发现有worker failure，就随机唤醒单个worker，被唤醒的worker重新检查一下是否有任务；在所有任务完成时，将沉睡的worker全唤醒。</p>
-<h4 id="Backup"><a href="#Backup" class="headerlink" title="Backup"></a>Backup</h4><h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><h4 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h4><p>阿里CTO线面试：你做的MapReduce应用在实际生产中会存在什么问题？怎么解决这些问题？</p>
-<ul>
-<li>有可能存在一个worker节点，不停的向Master申请任务，并返回错误的执行结果</li>
-</ul>
-<p>解决方法：对worker节点做一些标记，一旦返回了错误的结果，悲观的认为这个节点以后也无法正确的执行，Master不再优先给这个节点分配任务</p>
-<ul>
-<li>落伍者(Stragglers)，有一个节点执行任务速度较慢，导致Master无法进入下一个阶段，所有节点阻塞等待</li>
-</ul>
-<p>解决方法：通过备用任务来处理执行较慢的任务，或者调用被sync.Cond睡眠的任务来代替</p>
-<ul>
-<li>重复执行？（节点失联后重新和master取得联系，之前的执行结果怎么办）</li>
-</ul>
-<p>解决办法：</p>
-<ul>
-<li>热点问题shuffle（例如map阶段将很多相同的单词都放入同一个中间结果，导致针对某一个reduce节点的执行速度过慢）</li>
-</ul>
-<p>解决办法：计算word的哈希值时加salt，让pair尽量分散到不同的hash bucket中，防止聚集现象</p>
-<h4 id="实际情况"><a href="#实际情况" class="headerlink" title="实际情况"></a>实际情况</h4><ul>
-<li>如何对数据进行分片？</li>
-</ul>
-<p>最好将Task读取的文件大小设定为128MB，接近HDFS中块的大小</p>
-<ul>
-<li>map阶段会存在缓冲区，不会让数据直接写入本地（防止频繁的IO）</li>
-</ul>
-<p>第一步对输入的数据进行切片，每个切片分配一个map()任务，map()对其中的数据进行计算，对每个数据用键值对的形式记录，然后输出到环形缓冲区map（）中输出的数据在环形缓冲区内进行快排，每个环形缓冲区默认大小100M，当数据达到80M时（默认），锁定这80M的数据并对其排序，分别按照partition和key排序（同一partition内key有序）</p>
-<ul>
-<li><p>如何做到负载均衡？</p>
-</li>
-<li><p>如何保证执行结果的正确性？</p>
-</li>
-<li><p>扩展性？</p>
-</li>
-</ul>
-<h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><blockquote>
-<p>MapReduce Paper <a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf</a></p>
-<p>知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/55884610">https://zhuanlan.zhihu.com/p/55884610</a></p>
-<p>shuffle 过程 知乎  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350428188">https://zhuanlan.zhihu.com/p/350428188</a></p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/10/15/MapReduce/" data-id="clmdk0mgi000z09v64wjw6sbm" data-title="MapReduce" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-GFS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/09/29/GFS/" class="article-date">
-  <time class="dt-published" datetime="2022-09-29T05:40:55.000Z" itemprop="datePublished">2022-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/09/29/GFS/">GFS</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Google-File-System"><a href="#Google-File-System" class="headerlink" title="Google File System"></a>Google File System</h2><h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Linux中的file system能够将数据持久化并以文件的形式存储在磁盘上，以供操作系统使用。File system具备一些验证机制来保证用户态传入的数据是正确合法的，有一些文件系统还拥有备份机制以确保数据不会轻易丢失。</p>
-<p>GFS是一个分布式的文件系统，与普通操作系统上的文件系统不同，它能够支持大型文件【TB级别】的一系列操作。GFS还提供了容错机制等，保证在多物理机条件下数据的正确性。GFS对外提供一系列与普通文件系统一致的接口，例如open close create delete write read，GFS底层的工作流程对使用者完全透明。</p>
-<h3 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h3><p>A GFS cluster consists of a single master and multiple chunkservers and is accessed by multiple clients.</p>
-<p>GFS将所有大型文件划分成无数个chunk，并在创建时用一个64bit的chunk handle来唯一标识，GFS通常会为每个chunk创建三个副本，以保证系统的健壮性。</p>
-<p>GFS的single master结构使得master掌握了所有文件的meta data，其中包括了filenamespace，file所拥有的所有chunk id，以及chunk的位置（primary chunk, 租约, 孤儿chunk的垃圾回收机制, <strong>chunkserver间chunk的迁移</strong>）</p>
-<p><img src="https://pic3.zhimg.com/v2-75851b9c18c4b4b4b84507a9122129fa_b.jpg" alt="img"></p>
-<p>GFS client:负责接受应用程序传来的参数，是GFS唯一暴露给用户的地方，并且在client中缓存了许多master节点中保留的文件元数据，这样可以减少对single master的访问</p>
-<p><img src="/GFS/image-20220929224411327.png" alt="image-20220929224411327"></p>
-<h3 id="Master-数据结构"><a href="#Master-数据结构" class="headerlink" title="Master 数据结构"></a>Master 数据结构</h3><p>包含的内容： </p>
-<ul>
-<li>file namespace (nv) , </li>
-<li>filename  -  array of chunk handle (nv) ,  </li>
-<li>chunk handle  -  version (nv) , list of chunk server, lease(租约)</li>
-</ul>
-<h3 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h3><h3 id="写文件"><a href="#写文件" class="headerlink" title="写文件"></a>写文件</h3><ul>
-<li>GFS append数据<ul>
-<li>数据写入只能在primary chunk中写入<ul>
-<li>若primary chunk不存在怎么办？</li>
-<li>若primary版本与master中版本不一致怎么办</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 并且在将版本号更新到Primary和Secondary服务器之后，如果Master节点故障重启，还是可以在相同的Primary和Secondary服务器上继续更新Chunk。</span><br><span class="line"></span><br><span class="line">更新内容和传递日志操作被分离开</span><br><span class="line"></span><br><span class="line">2. 版本号只会在Master指定一个新Primary时才会改变</span><br><span class="line">3. </span><br></pre></td></tr></table></figure>
-
-<h3 id="三写一读"><a href="#三写一读" class="headerlink" title="三写一读"></a>三写一读</h3><h3 id="GFS-的一致性模型"><a href="#GFS-的一致性模型" class="headerlink" title="GFS 的一致性模型"></a>GFS 的一致性模型</h3><p>GFS系统推荐append而不推荐modified</p>
-<ul>
-<li>append单次操作不能超过64MB即一个chunk的大小，若当前chunk剩余的空间不够存储append的内容，则padding当前chunk并写入一个新的chunk中<ul>
-<li>每次的append操作都是在一个chunk上，所以可以保证一致性</li>
-</ul>
-</li>
-</ul>
-<p>重复追加的问题：ABCDEF ABCBCDEF?  记录文件长度和各副本定期检验</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/09/29/GFS/" data-id="clmdk0mgf000b09v6c4r0bs8p" data-title="GFS" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Lab8-lock" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/03/17/Lab8-lock/" class="article-date">
-  <time class="dt-published" datetime="2022-03-17T06:07:58.000Z" itemprop="datePublished">2022-03-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/03/17/Lab8-lock/">Lab8-lock</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/17/Lab8-lock/" data-id="clmdk0mgh000r09v6d3wae8ov" data-title="Lab8-lock" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Boot" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/03/12/Boot/" class="article-date">
-  <time class="dt-published" datetime="2022-03-12T15:02:30.000Z" itemprop="datePublished">2022-03-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/03/12/Boot/">Boot</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Boot"><a href="#Boot" class="headerlink" title="Boot"></a>Boot</h2><p>x86为例：</p>
-<ol>
-<li>加电后，CS&#x3D;0xF000 EIP&#x3D;0xFFF0 在CS寄存器中隐含的一个基址BASE&#x3D;FFFF0000，80386中实际地址是BASE+EIP&#x3D;FFFF0000h+0000FFF0h&#x3D;0xFFFFFFF0h（在8086中最初执行的地址是PC&#x3D;16×CS+IP，其实在GDB下调试ffffffff0h地址下的命令和ffff0地址处的命令相同，可能这就是8086架构的兼容）</li>
-<li>这是<strong>BIOS的EPROM所在地（只读）</strong>，从该地址中读取第一条指令，一般为长跳转指令，跳转到真正的BIOS中去执行即跳转到可以被访问的1M的内存空间中（在实模式下只能访问1M空间）。在实模式下寻址为PC&#x3D;16×CS+IP。BIOS先做初始化工作（初始化底层硬件），然后加载存储设备（硬盘，光盘，优盘）上的第一个扇区（主引导扇区）的512字节到内存的0x7c00,cpu执行0x7c00的指令开始执行，也就是bootloader。</li>
-<li>主引导扇区位于整个硬盘的 0 磁头 0 柱面 1 扇区，包括硬盘主引导记录 MBR （ MasterBootRecord ）和分区表 DPT （ DiskPartitionTable ）。规范的主引导扇区特征如下：<br>[1] 总大小为 512 字节，由主引导程序、分区表、结束标志三部分构成；<br>[2] 引导程序，从 0x0 位置起共 446 字节（隐含 windows 磁盘签名）；<br>[3] 分区表，占用 64 字节，是 MBR 中的重要结构；<br>[4] 结束标志，扇区的最后两个字节 “55AA” 是 MBR 的结束标志。</li>
-<li></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/12/Boot/" data-id="clmdk0mge000509v6ag1r9s9b" data-title="Boot" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-希罗多德HISTORIAE读书笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/03/10/%E5%B8%8C%E7%BD%97%E5%A4%9A%E5%BE%B7HISTORIAE%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time class="dt-published" datetime="2022-03-10T15:00:31.000Z" itemprop="datePublished">2022-03-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/03/10/%E5%B8%8C%E7%BD%97%E5%A4%9A%E5%BE%B7HISTORIAE%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">希罗多德HISTORIAE读书笔记</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>巨大的繁荣是一个很不可靠的东西，它会导致衰落</strong></p>
-<p>希罗多德出生于波斯治下的希腊城市哈利卡纳苏斯，是波斯帝国的第一省区，本书的内容也是围绕波斯战争所展开的，所以希罗多德既可以被称作希腊史学家，也可以被称作波斯史学家。公元前443年，他移居雅典在意大利的殖民城邦图里伊，后来也被称作图里伊的希罗多德。</p>
-<p>从公元前六世纪，希腊人的思想方式逐渐从神话方式转向理性方式，其重要的标志就是哲学的兴起。人们逐渐意识到自己的认知能力的无限潜力以及自我感受的 重要性，以自身的任直隶和自我感受来理解和把握。《历史》及带有一点旧时代特色，又有许多创新。</p>
-<p><img src="/./%E5%B8%8C%E7%BD%97%E5%A4%9A%E5%BE%B7HISTORIAE%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E5%A4%A7%E4%BD%93%E5%9C%B0%E5%9B%BE.png" alt="image-20220310233126287"></p>
-<hr>
-<p>希罗多德出生在小亚细亚西部，这是当时整个东地中海地区经济文化最发达的地方。随着波斯帝国的崛起，其征服西亚、北非等地区导致了经济文化的大融合。爱琴海东岸，小亚细亚西部沿海地区在吸收古代优秀成果发展成希腊世界经济文化最先进的地区，大多哲学家文学家都出生于此。</p>
-<p><img src="/./%E5%B8%8C%E7%BD%97%E5%A4%9A%E5%BE%B7HISTORIAE%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E6%B3%A2%E6%96%AF%E5%B8%9D%E5%9B%BD.png" alt="image-20220310234432040"></p>
-<p>波斯帝国（公元前550年—公元前330年），伊朗伊斯兰共和国历史政权，又称阿契美尼德王朝。公元前6世纪，波斯人被米底王国统治，后在居鲁士二世的领导下反抗米底，公元前550年灭掉米底王国，建立波斯帝国。此后，居鲁士二世和儿子冈比西斯二世又先后攻灭吕底亚王国、新巴比伦王国和埃及王国，扩大了波斯帝国疆域。公元前513年，大流士一世攻占色雷斯，波斯帝国疆域横跨亚细亚洲、阿非利加洲、欧罗巴洲三大洲。大流士一世统治时期，采取一系列改革，波斯帝国达到鼎盛。<br>大流士一世、薛西斯一世和阿尔塔薛西斯一世统治时期，波斯帝国为征服希腊城邦，发动了波希战争，最终失败，消耗了波斯帝国综合国力，波斯帝国从此衰落。公元前334年，马其顿王国国王亚历山大三世东征，进攻波斯帝国。衰败的波斯帝国一溃千里，丢失大片领土。公元前330年，波斯帝国末代国王大流士三世被杀，波斯帝国灭亡。</p>
-<hr>
-<p>希罗多德试图以一种批判的态度探索人类的过去和未来，在那个时代历史是探究未知领域，未知的世界，这与哲学和科学可谓殊途同归。</p>
-<p>根据上面的简述，我们知道波斯人为了击溃希腊花费了大量的兵力，但事与愿违，希腊人赢得了这场不可思议的胜利，这也促使人们去探究：波斯人是如何兴起以及扩张？希腊人和异族人的冲突的原因究竟是什么？他们是如何战胜波斯人的？所以本书以波斯战争为主线进行探究。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/10/%E5%B8%8C%E7%BD%97%E5%A4%9A%E5%BE%B7HISTORIAE%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" data-id="clmdk0mgn002e09v6gjwm46z7" data-title="希罗多德HISTORIAE读书笔记" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Lab9-filesystem" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/03/10/Lab9-filesystem/" class="article-date">
-  <time class="dt-published" datetime="2022-03-10T09:38:21.000Z" itemprop="datePublished">2022-03-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/03/10/Lab9-filesystem/">Lab9</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="FileSystem"><a href="#FileSystem" class="headerlink" title="FileSystem"></a>FileSystem</h2><p><img src="/./Lab9-filesystem/layer.png" alt="image-20220413195444033"></p>
-<p>xv6中文件系统分为七层</p>
-<ol>
-<li>Disk ：SSD HDD 主要是硬件层次，负责将硬件资源加载入内存（Sectors）</li>
-<li>Buffer Cache : 一般是对常用的内存块进行缓存，一般是一个buf是1024</li>
-<li>Logging : 是日志层，主要负责记录日志</li>
-<li>Inode : 每个inode节点指示了一个文件，inode的编号也是文件的唯一标识</li>
-<li>Dir : 目录</li>
-<li>PathName : 路径名</li>
-<li>file descriptor：文件描述符，指向了一个inode，但不同的fd可以指向同一个inode</li>
-</ol>
-<hr>
-<h3 id="一些重要的函数"><a href="#一些重要的函数" class="headerlink" title="一些重要的函数"></a>一些重要的函数</h3><p><strong>bget()</strong> 根据扇区号返回一个buf的地址，若buffer cache中没有对应的扇区，则利用LRU算法从bcache的头部开始找到一个空闲的buf分配出去；</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Look through buffer cache for block on device dev.</span></span><br><span class="line"><span class="comment">// If not found, allocate a buffer.</span></span><br><span class="line"><span class="comment">// In either case, return locked buffer.</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">struct</span> buf*</span><br><span class="line"><span class="title function_">bget</span><span class="params">(uint dev, uint blockno)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">buf</span> *<span class="title">b</span>;</span></span><br><span class="line"></span><br><span class="line">  acquire(&amp;bcache.lock);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Is the block already cached?</span></span><br><span class="line">  <span class="keyword">for</span>(b = bcache.head.next; b != &amp;bcache.head; b = b-&gt;next)&#123;</span><br><span class="line">    <span class="keyword">if</span>(b-&gt;dev == dev &amp;&amp; b-&gt;blockno == blockno)&#123;</span><br><span class="line">      b-&gt;refcnt++;</span><br><span class="line">      release(&amp;bcache.lock);</span><br><span class="line">      acquiresleep(&amp;b-&gt;lock);</span><br><span class="line">      <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Not cached.</span></span><br><span class="line">  <span class="comment">// Recycle the least recently used (LRU) unused buffer.</span></span><br><span class="line">  <span class="keyword">for</span>(b = bcache.head.prev; b != &amp;bcache.head; b = b-&gt;prev)&#123;</span><br><span class="line">    <span class="keyword">if</span>(b-&gt;refcnt == <span class="number">0</span>) &#123;</span><br><span class="line">      b-&gt;dev = dev;</span><br><span class="line">      b-&gt;blockno = blockno;</span><br><span class="line">      b-&gt;valid = <span class="number">0</span>;</span><br><span class="line">      b-&gt;refcnt = <span class="number">1</span>;</span><br><span class="line">      release(&amp;bcache.lock);</span><br><span class="line">      acquiresleep(&amp;b-&gt;lock);</span><br><span class="line">      <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  panic(<span class="string">&quot;bget: no buffers&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>bread()</strong> 调用<code>bget</code>为给定扇区（*<strong>kernel&#x2F;bio.c*</strong>:97）获取缓冲区。如果缓冲区需要从磁盘进行读取，<code>bread</code>会在返回缓冲区之前调用<code>virtio_disk_rw</code>来执行此操作。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Return a locked buf with the contents of the indicated block.</span></span><br><span class="line"><span class="keyword">struct</span> buf*</span><br><span class="line"><span class="title function_">bread</span><span class="params">(uint dev, uint blockno)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">buf</span> *<span class="title">b</span>;</span></span><br><span class="line">  <span class="comment">// 返回了buf的地址</span></span><br><span class="line">  b = bget(dev, blockno);</span><br><span class="line">  <span class="keyword">if</span>(!b-&gt;valid) &#123;</span><br><span class="line">    <span class="comment">// 以buf为单位读写</span></span><br><span class="line">    virtio_disk_rw(b, <span class="number">0</span>);</span><br><span class="line">    b-&gt;valid = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>**bread()<strong>和</strong>bget()**的区别：</p>
-<p><strong>bget</strong>只负责在缓冲区中寻找合适的buf，如果不存在cache中，则要通过bread中的函数从磁盘读写</p>
-<hr>
-<p><strong>bmap()</strong> 负责根据逻辑块号，定位物理块号</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Inode content</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// The content (data) associated with each inode is stored</span></span><br><span class="line"><span class="comment">// in blocks on the disk. The first NDIRECT block numbers</span></span><br><span class="line"><span class="comment">// are listed in ip-&gt;addrs[].  The next NINDIRECT blocks are</span></span><br><span class="line"><span class="comment">// listed in block ip-&gt;addrs[NDIRECT].</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Return the disk block address of the nth block in inode ip.</span></span><br><span class="line"><span class="comment">// If there is no such block, bmap allocates one.</span></span><br><span class="line"><span class="type">static</span> uint</span><br><span class="line"><span class="title function_">bmap</span><span class="params">(<span class="keyword">struct</span> inode *ip, uint bn)</span></span><br><span class="line">&#123;</span><br><span class="line">  uint addr, *a;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">buf</span> *<span class="title">bp</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(bn &lt; NDIRECT)&#123;</span><br><span class="line">    <span class="keyword">if</span>((addr = ip-&gt;addrs[bn]) == <span class="number">0</span>)</span><br><span class="line">      ip-&gt;addrs[bn] = addr = balloc(ip-&gt;dev);</span><br><span class="line">    <span class="keyword">return</span> addr;</span><br><span class="line">  &#125;</span><br><span class="line">  bn -= NDIRECT;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(bn &lt; NINDIRECT)&#123;</span><br><span class="line">    <span class="comment">// Load indirect block, allocating if necessary.</span></span><br><span class="line">    <span class="keyword">if</span>((addr = ip-&gt;addrs[NDIRECT]) == <span class="number">0</span>)</span><br><span class="line">      ip-&gt;addrs[NDIRECT] = addr = balloc(ip-&gt;dev);</span><br><span class="line">    bp = bread(ip-&gt;dev, addr);</span><br><span class="line">    a = (uint*)bp-&gt;data;</span><br><span class="line">    <span class="keyword">if</span>((addr = a[bn]) == <span class="number">0</span>)&#123;</span><br><span class="line">      a[bn] = addr = balloc(ip-&gt;dev);</span><br><span class="line">      log_write(bp);</span><br><span class="line">    &#125;</span><br><span class="line">    brelse(bp);</span><br><span class="line">    <span class="keyword">return</span> addr;</span><br><span class="line">  &#125;</span><br><span class="line">  bn -= NINDIRECT;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(bn &lt; NINDIRECT_LEVEL2)&#123;</span><br><span class="line">    <span class="comment">// Load indirect_level2 block, allocating if necessary.</span></span><br><span class="line">    <span class="keyword">if</span>((addr = ip-&gt;addrs[NDIRECT+<span class="number">1</span>]) == <span class="number">0</span>)</span><br><span class="line">      ip-&gt;addrs[NDIRECT+<span class="number">1</span>] = addr = balloc(ip-&gt;dev);</span><br><span class="line">    bp = bread(ip-&gt;dev, addr);</span><br><span class="line">    a = (uint*)bp-&gt;data;</span><br><span class="line">    <span class="comment">// 一级块号</span></span><br><span class="line">    <span class="type">int</span> num = bn / NINDIRECT;</span><br><span class="line">    <span class="comment">// 二级块号</span></span><br><span class="line">    <span class="type">int</span> n = bn % NINDIRECT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>((addr = a[num]) == <span class="number">0</span>)&#123;</span><br><span class="line">      a[num] = addr = balloc(ip-&gt;dev);</span><br><span class="line">      log_write(bp);</span><br><span class="line">    &#125;</span><br><span class="line">    brelse(bp);</span><br><span class="line">    <span class="comment">//  这个锁的问题需要注意释放	原因：bread和bwrite时都申请了睡眠锁，需brelease</span></span><br><span class="line">    <span class="comment">//  ---------------------------------------------</span></span><br><span class="line">    bp = bread(ip-&gt;dev, addr);</span><br><span class="line">    a = (uint*)bp-&gt;data;</span><br><span class="line">    <span class="keyword">if</span>((addr = a[n]) == <span class="number">0</span>)&#123;</span><br><span class="line">      a[n] = addr = balloc(ip-&gt;dev);</span><br><span class="line">      log_write(bp);</span><br><span class="line">    &#125;</span><br><span class="line">    brelse(bp);</span><br><span class="line">    <span class="keyword">return</span> addr;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  panic(<span class="string">&quot;bmap: out of range&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>iget()</p>
-<p>iput()</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/charlesblc/p/6263665.html">https://www.cnblogs.com/charlesblc/p/6263665.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/10/Lab9-filesystem/" data-id="clmdk0mgi000x09v61dzcbdou" data-title="Lab9" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Lab4-trap" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/03/08/Lab4-trap/" class="article-date">
-  <time class="dt-published" datetime="2022-03-08T06:26:08.000Z" itemprop="datePublished">2022-03-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/03/08/Lab4-trap/">Lab4-trap</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Trap"><a href="#Trap" class="headerlink" title="Trap"></a>Trap</h2><h3 id="RISC-V-assembly-easy"><a href="#RISC-V-assembly-easy" class="headerlink" title="RISC-V assembly (easy)"></a>RISC-V assembly (easy)</h3><ul>
-<li>caller saved register</li>
-</ul>
-<p>​	函数调用时无需关注的寄存器就是caller saved register，<u>例如return address 则是caller saved register地址，既subfuction调用完毕后应当回到的地址。当函数调用结束时ra寄存器一定会被改写，所以要将call指令所在的地址+1作为ra并存储在某处</u></p>
-<ol>
-<li>哪些寄存器保存函数的参数？例如，在<code>main</code>对<code>printf</code>的调用中，哪个寄存器保存13？</li>
-</ol>
-<ul>
-<li>riscv中通过a0-a7八个寄存器传递参数，如果参数多余8个则通过栈帧传递。</li>
-</ul>
-<p><img src="/Lab4-trap/image-20221028145622994.png" alt="image-20221028145622994"></p>
-<p><img src="/Lab4-trap/image-20221028145016637.png" alt="image-20221028145016637"></p>
-<ol>
-<li><code>main</code>的汇编代码中对函数<code>f</code>的调用在哪里？对<code>g</code>的调用在哪里(提示：编译器可能会将函数内联）</li>
-</ol>
-<ul>
-<li>编译器在此处做了编译优化，直接传递g和f的结果给printf</li>
-</ul>
-<ol start="2">
-<li><code>printf</code>函数位于哪个地址？</li>
-</ol>
-<ul>
-<li>65a</li>
-</ul>
-<ol start="3">
-<li>在<code>main</code>中<code>printf</code>的<code>jalr</code>之后的寄存器<code>ra</code>中有什么值？</li>
-</ol>
-<ul>
-<li>ra保存的调用结束后返回的地址，即34的下一条指令的地址38</li>
-</ul>
-<ol start="4">
-<li>运行以下代码。</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">0x00646c72</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;H%x Wo%s&quot;</span>, <span class="number">57616</span>, &amp;i);</span><br></pre></td></tr></table></figure>
-
-<p>执行结果 HE110 World</p>
-<ul>
-<li>57616换算成16进制的结果是E110，%x则是直接打印16进制结果，%s则是以字符串（一个字符1一个字节8位）的形式打印，RISCV是小端存储低位字序排在低字节端，因此i的0x72（114）会被优先打印出来一次类推</li>
-</ul>
-<h3 id="Backtrace-moderate"><a href="#Backtrace-moderate" class="headerlink" title="Backtrace(moderate)"></a>Backtrace(moderate)</h3><p>函数调用栈帧如下图所示，每个stackframe都有一些固定的结构，这些stackframe固定在用户栈下，用户栈的大小固定为一个PGSIZE。<strong>因此当我们无限调用递归函数时，可能出现栈溢出的情况。</strong></p>
-<ul>
-<li>由下图我们就知道无限的递归为什么会造成OOM问题了（doge）</li>
-</ul>
-<p>fp(或叫s0寄存器)表示调用栈的最高位，sp表示调用栈的最底部，fp - sp 则是生成栈的长度,一般会通过prologue阶段生成。</p>
-<p>在fp(0)的位置存储着调用结束后的return address，调用阶段结束会将这个值重新赋给ra寄存器。fp(-8)的位置存储着上一个栈帧的fp，在所有寄存器现场恢复后会修改取出fp并修改当前fp。</p>
-<p><img src="/Lab4-trap/image-20221028151232243.png" alt="image-20221028151232243"></p>
-<p><img src="/Lab4-trap/image-20221028152230459.png" alt="image-20221028152230459"></p>
-<ul>
-<li>question fp中读取的为什么是地址？</li>
-</ul>
-<h3 id="Alarm"><a href="#Alarm" class="headerlink" title="Alarm"></a>Alarm</h3><h4 id="trap-机制"><a href="#trap-机制" class="headerlink" title="trap 机制"></a>trap 机制</h4><img src="Lab4-trap/image-20221101183358245.png" alt="image-20221101183358245" style="zoom:67%;" />
-
-<p>ecall：由于RISCV将<strong>系统调用、异常、中断</strong>都归纳为trap，所以ecall指令在RISCV中会被频繁的调用，为了减少trap机制的开销，ecall所能提供的功能非常有限。ecall的功能有如下几点</p>
-<ul>
-<li><p>将xv6由用户态切换至内核态， user mode &#x3D;&gt; supervisor mode</p>
-</li>
-<li><p>将pc保存至sepc寄存器</p>
-</li>
-<li><p>pc指针切换至stvec的内容（即trampoline的起始位置</p>
-</li>
-<li><p>保存32个用户寄存器的内容，这样当我们想要恢复用户代码执行时，我们才能恢复这些寄存器的内容。</p>
-</li>
-<li><p>ecall指令刚开始satp指向user page table，trampoline执行会切换到kernel page table</p>
-</li>
-<li><p>我们需要创建或者找到一个kernel stack，并将Stack Pointer寄存器的内容指向那个kernel stack。这样才能给C代码提供栈</p>
-</li>
-<li><p>我们还需要跳转到内核中C代码的某些合理的位置</p>
-</li>
-</ul>
-<p>uservec：</p>
-<ul>
-<li>在trampoline中保存了CPU当前的现场（32个通用寄存器以及），并恢复内核态的寄存器状态</li>
-</ul>
-<p>usertrap:</p>
-<ul>
-<li>xv6会在usertrap中判断trap是系统调用还是异常或中断，并根据trap类型执行对应函数</li>
-</ul>
-<h4 id="Alarm-1"><a href="#Alarm-1" class="headerlink" title="Alarm"></a>Alarm</h4><p>您需要修改<code>usertrap()</code>，以便当进程的报警间隔期满时，用户进程执行处理程序函数。当RISC-V上的陷阱返回到用户空间时，什么决定了用户空间代码恢复执行的指令地址？</p>
-<p><strong>本实验的一个目的在于，实现某种能够在用户态处理中断或故障的机制</strong></p>
-<p>trap的过程简述：</p>
-<ol>
-<li><code>ecall</code>指令中将PC保存到SEPC</li>
-<li>在<code>usertrap</code>中将SEPC保存到<code>p-&gt;trapframe-&gt;epc</code></li>
-<li><code>p-&gt;trapframe-&gt;epc</code>加4指向下一条指令</li>
-<li>执行系统调用</li>
-<li>在<code>usertrapret</code>中将SEPC改写为<code>p-&gt;trapframe-&gt;epc</code>中的值</li>
-<li>在<code>sret</code>中将PC设置为SEPC的值</li>
-</ol>
-<ul>
-<li>在usertrap中若要执行报警函数，并不是直接将pc的内容改为报警函数的地址，而是在修改trampframe中的epc，在trap返回时会将pc的值修改为报警函数的地址</li>
-</ul>
-<p>我们还要确保报警函数执行完毕后能恢复报警函数执行前CPU的状态，因此在这之前要保存当时的所有寄存器，在sigreturn中恢复即可。</p>
-<h5 id="修改proc"><a href="#修改proc" class="headerlink" title="修改proc"></a>修改proc</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> strcut proc&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="type">int</span> interval;          							<span class="comment">// 触发间隔</span></span><br><span class="line">	<span class="type">void</span> (*alarm_handler)();     				<span class="comment">// 用户态处理函数</span></span><br><span class="line">	<span class="type">int</span> count;             							<span class="comment">// 触发计数器</span></span><br><span class="line">  <span class="type">int</span> is_alarming;                    <span class="comment">// 是否正在调用alarm_handler</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">trapframe</span>* <span class="title">alarm_trapframe</span>;</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>为什么需要一个alarm_trapframe和is_alarming？</li>
-</ul>
-<p>首先我们要确保我们进入alarmhandler之后还能正确的还原trap之前的状态，alarm_handler有可能更改用户寄存器的内容，因此我们要在进入handler之前保存好用户寄存器的状态，在handler结束时恢复这个状态；is_alarming是为了防止重复陷入（大佬说的。。）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// give up the CPU if this is a timer interrupt.</span></span><br><span class="line"><span class="keyword">if</span>(which_dev == <span class="number">2</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span>(p-&gt;alarm_interval != <span class="number">0</span> &amp;&amp; ++p-&gt;ticks_count == p-&gt;alarm_interval &amp;&amp; p-&gt;is_alarming == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 保存寄存器内容</span></span><br><span class="line">    memmove(p-&gt;alarm_trapframe, p-&gt;trapframe, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> trapframe));</span><br><span class="line">    <span class="comment">// 更改陷阱帧中保留的程序计数器，注意一定要在保存寄存器内容后再设置epc</span></span><br><span class="line">    p-&gt;trapframe-&gt;epc = (uint64)p-&gt;alarm_handler;</span><br><span class="line">    p-&gt;ticks_count = <span class="number">0</span>;</span><br><span class="line">    p-&gt;is_alarming = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  yield();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>这个lab本身难度不大，主要是让我们熟悉一下xv6 trap机制，并利用trap设计一些有意思的函数，比如通过改变epc的值能够使用用户指定的函数来处理中断</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/08/Lab4-trap/" data-id="clmdk0mgg000m09v6a6gc7z77" data-title="Lab4-trap" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-leetcode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/26/leetcode/" class="article-date">
-  <time class="dt-published" datetime="2022-02-26T05:13:04.000Z" itemprop="datePublished">2022-02-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/26/leetcode/">leetcode</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p><strong>算法的核心就是穷举所有可能的结果，并从这些结果中找到符合要求的一项。所以在我们解决问题时需要对问题进行拆解，将问题放入我们已经熟悉的模版中，利用模版并对当前条件进行调整从而解决问题</strong></p>
-<h3 id="双指针-数组-链表"><a href="#双指针-数组-链表" class="headerlink" title="双指针 数组 链表"></a>双指针 数组 链表</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// array</span></span><br><span class="line"><span class="type">int</span> slow = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> fast = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// linklist 链表有时还会用到dummy节点</span></span><br><span class="line">ListNode *slow = head;	<span class="comment">// ListNode* dummy = new ListNode();</span></span><br><span class="line">ListNode *fast = slow;</span><br></pre></td></tr></table></figure>
-
-<p>  主要用来处理数组和链表问题，主要有快慢指针和双指针两种。快慢指针一般是通向，一块一慢；双指针一般是相向相背前进。</p>
-<h4 id="快慢指针（滑动窗口）"><a href="#快慢指针（滑动窗口）" class="headerlink" title="快慢指针（滑动窗口）"></a>快慢指针（滑动窗口）</h4><ol>
-<li>一般用nums[slow…fast]代表结果串，fast作为索引去处理或判断节点是否符合题意</li>
-<li></li>
-</ol>
-<h5 id="26-删除有序数组中的重复项"><a href="#26-删除有序数组中的重复项" class="headerlink" title="26. 删除有序数组中的重复项"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/">26. 删除有序数组中的重复项</a></h5><h5 id="27-移除元素"><a href="#27-移除元素" class="headerlink" title="27. 移除元素"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-element/description/">27. 移除元素</a></h5><h5 id="209-长度最小的子数组"><a href="#209-长度最小的子数组" class="headerlink" title="209. 长度最小的子数组"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/">209. 长度最小的子数组</a></h5><p><strong>子数组问题</strong>，为了保持数组连续，可以选择使用滑动窗口的方法，但是要控制好窗口的移动</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> slow = <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> fast = <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span>(fast &lt; nums.<span class="built_in">size</span>())&#123;</span><br><span class="line">    sum += nums[fast];</span><br><span class="line">    <span class="keyword">while</span>(sum &gt;= target)&#123;</span><br><span class="line">      <span class="keyword">if</span>(sum == target)&#123;</span><br><span class="line">				<span class="comment">// to do for result</span></span><br><span class="line">      &#125;</span><br><span class="line">      sum -= nums[slow];</span><br><span class="line">      slow++;</span><br><span class="line">    &#125;</span><br><span class="line">    fast++;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>对一段子数组或区间（可以是一维可以是二维）求和都可以使用<strong>前缀和数组</strong></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用来求i到j之间的和</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preSum</span><span class="params">(vector&lt;<span class="type">int</span>&gt; nums)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> size = nums.<span class="built_in">size</span>();</span><br><span class="line">  <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preSum</span><span class="params">(size, <span class="number">0</span>)</span></span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; sz; i++)&#123;</span><br><span class="line">    preSum[i] = preSum[i - <span class="number">1</span>] + nums[i - <span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">preSum</span>(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; nums)&#123;</span><br><span class="line">	<span class="comment">// 矩形算面积的方法构建preSum</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>前缀和 + 哈希表</strong></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用来求i到j之间的和</span></span><br><span class="line"><span class="comment">// 找到和为k的子数组  </span></span><br><span class="line"><span class="comment">// preSum[i] - preSum[j] == k ===&gt; preSum[j] == preSum[i] - k</span></span><br><span class="line"><span class="comment">// preSum[j] 就是我们要找的前缀和，只需要在哈希表中判断是否存在这样一个前缀和为preSum[i] - k的值即可</span></span><br><span class="line"><span class="comment">// 找到平局值为k的字数组</span></span><br><span class="line"><span class="comment">// preSum[i] - preSum[j] = k*(i - j)</span></span><br><span class="line"><span class="comment">// preSum[j] - k * j = preSum[i] - k * i</span></span><br><span class="line"><span class="comment">// preSum[j] - k * j 就是我们要找的前缀和，只需要在哈希表中判断是否存在这样一个前缀和为preSum[i] - k * i的值即可</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">findSubArr</span><span class="params">(vector&lt;<span class="type">int</span>&gt; nums, <span class="type">int</span> k)</span></span>&#123;</span><br><span class="line"><span class="comment">//nums     1 3 2  4  1 </span></span><br><span class="line"><span class="comment">//preSum 0 1 4 6 10 11 </span></span><br><span class="line">	<span class="type">int</span> size = nums.<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">  <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preSum</span><span class="params">(size, <span class="number">0</span>)</span></span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; sz; i++)&#123;</span><br><span class="line">    preSum[i] = preSum[i - <span class="number">1</span>] + nums[i - <span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">  map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; subArr_map;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(subArr_map.<span class="built_in">count</span>(preSum[i] - k) != <span class="number">0</span>)&#123;</span><br><span class="line">      result = subArr_map[preSum[i] - k];</span><br><span class="line">      subArr_map[preSum[i]] = subArr_map[preSum[i] - k] + <span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      subArr_map[preSum[i]] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>对一段子数组或区间，进行增减或者操作，可以使用差分数组</li>
-</ul>
-<h4 id="回文子串"><a href="#回文子串" class="headerlink" title="回文子串"></a>回文子串</h4><h5 id="5-最长回文子串"><a href="#5-最长回文子串" class="headerlink" title="5. 最长回文子串"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-palindromic-substring/">5. 最长回文子串</a></h5><ol>
-<li>奇数长度的回文串 奇数长度时left &#x3D;&#x3D; right向外扩散</li>
-<li>偶数长度的回文串 偶数长度时正常向外扩散</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">judge</span><span class="params">(string str, <span class="type">int</span> left, <span class="type">int</span> right)</span></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">0</span> &lt;= left &amp;&amp; right &lt; str.<span class="built_in">size</span>() &amp;&amp; str[left] == str[right])&#123;</span><br><span class="line">    left++;</span><br><span class="line">    right--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(left+<span class="number">1</span>&gt;right)</span><br><span class="line">    	<span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span>  s.<span class="built_in">substr</span>(left+<span class="number">1</span>, right-left<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="二叉树专题"><a href="#二叉树专题" class="headerlink" title="二叉树专题"></a>二叉树专题</h3><h4 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h4><p>二叉树的题目以二叉树的遍历为核心，通过不同的遍历顺序对树种节点操作，并返回结果。</p>
-<p>pre_order:	先序遍历会在进入节点的时候对节点进行操作</p>
-<p>in_order:	中序遍历是二叉树所特有的遍历方式，一般用在二叉搜索树中</p>
-<p>post_order:	后序遍历会在离开当前节点时对节点进行操作，<strong>离开节点时意味着已经拥有了左右子树的相关信息</strong></p>
-<ul>
-<li><strong>后序遍历有分而治之的思想，即先将问题划分成两个小问题，合并后大问题自然就解决了</strong></li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">order</span><span class="params">(TreeNode* root)</span>&#123;		<span class="comment">// 1. 首先确定传入参数与返回值</span></span><br><span class="line">    <span class="keyword">if</span>(root == null)			<span class="comment">// 2. 确定如何结束，二叉树一般是遍历到底层的叶子节点</span></span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    <span class="comment">// pre_order				// 3. 确定何时对节点进行操作以及操作细节</span></span><br><span class="line">    order(root-&gt;left);</span><br><span class="line">    <span class="comment">// in_order</span></span><br><span class="line">    order(root-&gt;right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="617-合并二叉树"><a href="#617-合并二叉树" class="headerlink" title="617. 合并二叉树"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/merge-two-binary-trees/solutions/">617. 合并二叉树</a></h5><p>思路: 如果节点的左子树和右子树都被合并了，那只需要将当前节点合并即可</p>
-<ol>
-<li>传入参数：两个树的节点</li>
-<li>返回值：合并后的二叉树根节点 root1</li>
-<li>暂停条件：若root1为nullptr，返回root2；若root2为nullptr同理</li>
-</ol>
-<h5 id="104-二叉树的最大深度"><a href="#104-二叉树的最大深度" class="headerlink" title="104. 二叉树的最大深度"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/">104. 二叉树的最大深度</a></h5><p>思路：如果我们知道左子树和右子树的高度，只需取二者的最大值并+1即可</p>
-<ol>
-<li>返回值：子树高度</li>
-</ol>
-<h5 id="111-二叉树的最小深度"><a href="#111-二叉树的最小深度" class="headerlink" title="111. 二叉树的最小深度"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-depth-of-binary-tree/">111. 二叉树的最小深度</a></h5><p>思路：如果我们知道从左子树出发到最近叶子节点的距离和右子树出发到最近叶子节点的距离，只需取二者的最小值并+1即可</p>
-<ol>
-<li>返回值：距离叶子节点最近的距离</li>
-<li>操作：<strong>判断返回的距离是否是到达叶子节点的距离</strong></li>
-</ol>
-<ul>
-<li>如果左右子树返回均为0，则证明当前节点为叶子节点；若左右子树有任一节点返回不为0，则证明当前节点并非叶子节点</li>
-</ul>
-<h5 id="110-平衡二叉树判断它是否是高度平衡的二叉树。"><a href="#110-平衡二叉树判断它是否是高度平衡的二叉树。" class="headerlink" title="110. 平衡二叉树判断它是否是高度平衡的二叉树。"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/balanced-binary-tree/">110. 平衡二叉树</a>判断它是否是高度平衡的二叉树。</h5><p>思路：高度平衡表示左右子树高度差不大于1</p>
-<ol>
-<li>返回值：是否是高度平衡的二叉树</li>
-</ol>
-<h5 id="106-从中序与后序遍历序列构造二叉树"><a href="#106-从中序与后序遍历序列构造二叉树" class="headerlink" title="106. 从中序与后序遍历序列构造二叉树"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/">106. 从中序与后序遍历序列构造二叉树</a></h5><p>思路：后续或者前序确定root，中序确定左右子树的范围</p>
-<ol>
-<li><p>返回值：返回构造的二叉树</p>
-</li>
-<li><p>参数：后序、中序遍历的数组范围  </p>
-</li>
-<li><p>终止：</p>
-</li>
-</ol>
-<h5 id="501-二叉搜索树中的众数"><a href="#501-二叉搜索树中的众数" class="headerlink" title="501. 二叉搜索树中的众数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-mode-in-binary-search-tree/description/">501. 二叉搜索树中的众数</a></h5><h5 id="450-删除二叉搜索树中的节点"><a href="#450-删除二叉搜索树中的节点" class="headerlink" title="450. 删除二叉搜索树中的节点"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/delete-node-in-a-bst/description/">450. 删除二叉搜索树中的节点</a></h5><h5 id="116-填充每个节点的下一个右侧节点指针"><a href="#116-填充每个节点的下一个右侧节点指针" class="headerlink" title="116. 填充每个节点的下一个右侧节点指针"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/">116. 填充每个节点的下一个右侧节点指针</a></h5><p>思路：二叉树的问题可以被拆解为每一个字节点的任务，我们只需根据函数定义处理一个节点上的情况即可递归的得到全部的结果。本题目如果只依赖一个节点肯定无法实现跨节点的连接，因此我们需要传入两个参数，即传入两个相邻的节点。</p>
-<h5 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h5><p><strong>你甚至可以这样理解：快速排序的过程是一个构造二叉搜索树的过程(基本就是一个前序遍历，先将一个元素的位置确定，再确定左右两侧元素的顺序)</strong></p>
-<h5 id="215-TopK-数组中最大的第k个元素"><a href="#215-TopK-数组中最大的第k个元素" class="headerlink" title="215.TopK, 数组中最大的第k个元素"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/kth-largest-element-in-an-array/submissions/400771309/">215.TopK, 数组中最大的第k个元素</a></h5><p>快速排序可以理解为某中意义上的前序排序。quicksort  每次排序会先确定一个数的位置并确保这个数之前的都是小于它的，之后的数都是大于它的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sort</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;num, <span class="type">int</span> low, <span class="type">int</span> high, <span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(low &lt; high)&#123;</span><br><span class="line">      <span class="type">int</span> pos = <span class="built_in">partation</span>(num, low, high);</span><br><span class="line">      <span class="keyword">if</span>(pos &lt; k)&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">sort</span>(num, pos + <span class="number">1</span>, high, k);</span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pos == k)&#123;</span><br><span class="line">          <span class="keyword">return</span> num[k];</span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(k &lt; pos)&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">sort</span>(num, low, pos - <span class="number">1</span>, k);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num[low];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">partation</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;num, <span class="type">int</span> low, <span class="type">int</span> high)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> pivot = num[low];</span><br><span class="line">    <span class="keyword">while</span>(low &lt; high)&#123;</span><br><span class="line">        <span class="keyword">while</span>(low &lt; high &amp;&amp; pivot &lt;= num[high])&#123;</span><br><span class="line">            high--;</span><br><span class="line">        &#125;</span><br><span class="line">        num[low] = num[high];</span><br><span class="line">        <span class="keyword">while</span>(low &lt; high &amp;&amp; num[low] &lt;= pivot)&#123;</span><br><span class="line">            low++;</span><br><span class="line">        &#125;</span><br><span class="line">        num[high] = num[low];</span><br><span class="line">    &#125;</span><br><span class="line">    num[low] = pivot;</span><br><span class="line">    <span class="keyword">return</span> low;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="递归算法"><a href="#递归算法" class="headerlink" title="递归算法"></a>递归算法</h3><p>反转链表:主要还是围绕递归，所以关于链表的题目我们要明确递归函数的定义（递归函数的输入是什么，输出是什么，中间做了什么）</p>
-<ul>
-<li>反转链表</li>
-</ul>
-<p>reverse(ListNode* head)函数表示反转从head开始的链表，并返回新的头节点，因此我们只需要接受新的头节点并作为最终头节点，并反转当前节点即可（当前节点的next指针还连接着一个节点）</p>
-<p><strong>有点像是把当前节点重新插入一个链表的尾部</strong></p>
-<ul>
-<li>反转链表中前N个数</li>
-</ul>
-<p>reverse(ListNode* head, int n)函数表示反转从head开始的N个数，并返回新的头节点，因此我们只需要接受新的头节点并作为最终头节点，并把当前节点插入已经反转的链表中（这时需要注意要存下来第N + 1个节点，并让当前节点指向N+1个节点 ）</p>
-<ul>
-<li>两两交换反转链表</li>
-</ul>
-<p>ListNode* swapPairs(ListNode* head) 函数表示反转head开始的两个节点，并返回新的头节点；我们可以先反转两个节点，并接着反转后面的节点，也可以先接收后面已经反转成功的链表。再反转head和head-&gt;next</p>
-<ul>
-<li>反转left到right之间的数</li>
-</ul>
-<p>利用反转前N个数的函数定义</p>
-<ul>
-<li>K个一组反转链表</li>
-</ul>
-<p>和两个一组交换节点的感觉差不多，先反转k个节点，再接收后面已经反转好的链表</p>
-<h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p><strong>我们一般用动态规划求解最值问题，例如fib，如何爬楼梯，零钱兑换等问题，一般不需要具体的例子，只需要一个结果即可</strong></p>
-<ul>
-<li><p>dp数组负责记录过去某一时刻的状态，动态规划则是构造dp数组并找到合适的结果，所以动态规划可以解决子数组或者子序列等问题（其中dp[i]表示第i个字符状态为截止的状态，最长递增子序列，最大子数组之和），<strong>所以动态规划的题目要明确dp数组的含义</strong></p>
-</li>
-<li><p>所有设计到递归函数的问题我们都需要确定函数的定义，根据函数的定义进出递归函数</p>
-</li>
-<li><p>动态规划的核心是<strong>穷举</strong>，从所有可行答案中找出最值。</p>
-</li>
-</ul>
-<ol>
-<li><strong>列出正确的状态转移方程</strong></li>
-<li>判断是否具有<strong>最优子结构</strong>，能否通过子问题的最值得到原问题的最值</li>
-<li>判断重叠子问题</li>
-</ol>
-<p><strong>明确 base case -&gt; 明确「状态」-&gt; 明确「选择」 -&gt; 定义 <code>dp</code> 数组&#x2F;函数的含义</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自顶向下递归的动态规划</span></span><br><span class="line">def <span class="title function_">dp</span><span class="params">(状态<span class="number">1</span>, 状态<span class="number">2</span>, ...)</span>:</span><br><span class="line">    <span class="keyword">for</span> 选择 in 所有可能的选择:</span><br><span class="line">        # 此时的状态已经因为做了选择而改变</span><br><span class="line">        result = 求最值(result, dp(状态<span class="number">1</span>, 状态<span class="number">2</span>, ...))</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment">// 自底向上迭代的动态规划  // 爬楼梯 fib</span></span><br><span class="line"><span class="comment">// 初始化 base case</span></span><br><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>][...] = base <span class="keyword">case</span></span><br><span class="line"><span class="comment">// 进行状态转移</span></span><br><span class="line"><span class="keyword">for</span> 状态<span class="number">1</span> in 状态<span class="number">1</span>的所有取值：</span><br><span class="line">    <span class="keyword">for</span> 状态<span class="number">2</span> in 状态<span class="number">2</span>的所有取值：</span><br><span class="line">        <span class="keyword">for</span> ...</span><br><span class="line">            dp[状态<span class="number">1</span>][状态<span class="number">2</span>][...] = 求最值(选择<span class="number">1</span>，选择<span class="number">2.</span>..)</span><br></pre></td></tr></table></figure>
-
-<p><strong>最优子结构</strong></p>
-<p><strong>状态</strong></p>
-<p><strong>选择</strong></p>
-<p>base case</p>
-<h3 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h3><p>回溯算法和 DFS 算法的细微差别是：<strong>回溯算法是在遍历「树枝」，DFS 算法是在遍历「节点」</strong>，</p>
-<ul>
-<li><strong>形式一、元素无重不可复选，即 <code>nums</code> 中的元素都是唯一的，每个元素最多只能被使用一次，这也是最基本的形式</strong>。</li>
-</ul>
-<p>以组合为例，如果输入 <code>nums = [2,3,6,7]</code>，和为 7 的组合应该只有 <code>[7]</code>。</p>
-<ul>
-<li><strong>形式二、元素可重不可复选，即 <code>nums</code> 中的元素可以存在重复，每个元素最多只能被使用一次</strong>。</li>
-</ul>
-<p>以组合为例，如果输入 <code>nums = [2,5,2,1,2]</code>，和为 7 的组合应该有两种 <code>[2,2,2,1]</code> 和 <code>[5,2]</code>。</p>
-<ul>
-<li><strong>形式三、元素无重可复选，即 <code>nums</code> 中的元素都是唯一的，每个元素可以被使用若干次</strong>。</li>
-</ul>
-<p>以组合为例，如果输入 <code>nums = [2,3,6,7]</code>，和为 7 的组合应该有两种 <code>[2,2,3]</code> 和 <code>[7]</code></p>
-<h3 id="多线程编程"><a href="#多线程编程" class="headerlink" title="多线程编程"></a>多线程编程</h3><ol>
-<li>素数筛</li>
-</ol>
-<ul>
-<li>思路：fork() and pipe()  </li>
-<li>每个线程从标准输入中获取n个数，第一个数作为start必定是素数，随后遍历其余数字，若能被start整除则一定不是素数，因此把不能整除的数输入到标准输出给子进程。</li>
-</ul>
-<p>fd[0] 读出端；fd[1]写入端</p>
-<ol start="2">
-<li>交替打印a b 100 次</li>
-</ol>
-<ul>
-<li>思路：conditional_variable and unique_lock</li>
-</ul>
-<ol start="3">
-<li>交替打印a b c 100 次</li>
-</ol>
-<ul>
-<li>思路：conditional_variable and unique_lock</li>
-</ul>
-<h3 id="只出现一次的元素"><a href="#只出现一次的元素" class="headerlink" title="只出现一次的元素"></a>只出现一次的元素</h3><p>给定一个<strong>非空</strong>整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">全部元素进行异或操作，得到结果就是只出现一次的数</span><br><span class="line"></span><br><span class="line">解释：</span><br><span class="line">	相同的两个数进行异或结果为0，0与另一个数异或结果为另一个数</span><br><span class="line">	1111 ^ 1100 = 0011 ; 0000 ^ 1100 = 1100</span><br></pre></td></tr></table></figure>
-
-<h3 id="搜索二维矩阵"><a href="#搜索二维矩阵" class="headerlink" title="搜索二维矩阵"></a>搜索二维矩阵</h3><p>编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：</p>
-<ul>
-<li>每行的元素从左到右升序排列。</li>
-<li>每列的元素从上到下升序排列。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">解释：</span><br><span class="line">	从数组的左下角或者右上角开始遍历，因为左下角的元素比其上方的任意一个元素都大，比起右边的任意一个元素都小</span><br><span class="line">	如果此图形为方阵，可以从主对角线开始遍历；</span><br></pre></td></tr></table></figure>
-
-<h3 id="合并两个有序数组"><a href="#合并两个有序数组" class="headerlink" title="合并两个有序数组"></a>合并两个有序数组</h3><p>给你两个按 非递减顺序 排列的整数数组 nums1 和 nums2，另有两个整数 m 和 n ，分别表示 nums1 和 nums2 中的元素数目。</p>
-<p>请你 合并 nums2 到 nums1 中，使合并后的数组同样按 非递减顺序 排列。</p>
-<p>注意：最终，合并后数组不应由函数返回，而是存储在数组 nums1 中。为了应对这种情况，nums1 的初始长度为 m + n，其中前 m 个元素表示应合并的元素，后 n 个元素为 0 ，应忽略。nums2 的长度为 n 。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3</span><br><span class="line">输出：[1,2,2,3,5,6]</span><br><span class="line">解释：需要合并 [1,2,3] 和 [2,5,6] 。</span><br><span class="line">合并结果是 [1,2,2,3,5,6] ，其中斜体加粗标注的为 nums1 中的元素。</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/02/26/leetcode/" data-id="clmdk0mgk001i09v612vhggwq" data-title="leetcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Lab3-pagetable" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/26/Lab3-pagetable/" class="article-date">
-  <time class="dt-published" datetime="2022-02-26T04:40:25.000Z" itemprop="datePublished">2022-02-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/26/Lab3-pagetable/">Lab3-pagetable</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Virtual-Memory"><a href="#Virtual-Memory" class="headerlink" title="Virtual Memory"></a>Virtual Memory</h2><p>虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。</p>
-<ul>
-<li>为什么需要虚拟内存？</li>
-</ul>
-<ol>
-<li>每个进程可以使用更大的地址空间</li>
-<li>进程与进程之间相互隔离，不会干扰</li>
-<li>共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容</li>
-<li>保护，对pte的标志位做一下操作就可以对进程的访问做限制</li>
-</ol>
-<h3 id="Kernel-Page"><a href="#Kernel-Page" class="headerlink" title="Kernel Page"></a>Kernel Page</h3><p>地址0x1000是boot ROM的物理地址，当你对主板上电，主板做的第一件事情就是运行存储在boot ROM中的代码，当boot完成之后，会跳转到地址0x80000000，操作系统需要确保那个地址有一些数据能够接着启动操作系统。</p>
-<ul>
-<li>PLIC是中断控制器（Platform-Level Interrupt Controller）我们下周的课会讲。</li>
-<li>CLINT（Core Local Interruptor）也是中断的一部分。所以多个设备都能产生中断，需要中断控制器来将这些中断路由到合适的处理函数。</li>
-<li>UART0（Universal Asynchronous Receiver&#x2F;Transmitter）负责与Console和显示器交互。</li>
-<li>VIRTIO disk，与磁盘进行交互</li>
-</ul>
-<h3 id="core-struct"><a href="#core-struct" class="headerlink" title="core struct"></a>core struct</h3><ul>
-<li>pte：page table entry 中存储的内容可以转化为实际物理地址  PTE2PA(pte)</li>
-<li>pa：physical address 实际物理地址，由freelist分配</li>
-</ul>
-<h3 id="walk"><a href="#walk" class="headerlink" title="walk"></a>walk</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Return the address of the PTE in page table pagetable that corresponds to virtual address va.  </span><br><span class="line">If alloc!=0,create any required page-table pages.</span><br><span class="line"> The risc-v Sv39 scheme has three levels of page-table</span><br><span class="line"> pages. A page-table page contains 512 64-bit PTEs.</span><br><span class="line"> A 64-bit virtual address is split into five fields:</span><br><span class="line">   39..63 -- must be zero.</span><br><span class="line">   30..38 -- 9 bits of level-2 index.</span><br><span class="line">   21..29 -- 9 bits of level-1 index.</span><br><span class="line">   12..20 -- 9 bits of level-0 index.</span><br><span class="line">	0..11 -- 12 bits of byte offset within the page.</span><br></pre></td></tr></table></figure>
-
-<p>walk函数会递归的将sv39的三级页表页表项取出，其中PX(level, va)会根据页表的级数取出对应的pte。如果当前页表项为空且允许为其分配新的页面地址，则调用kalloc分配一个页面，并将地址存入此pte中；如果不为空，则递归进入下一级页表。</p>
-<p>最终结果返回三级页表的某个地址，可用来查看内容也可以用来插入内容；</p>
-<p><img src="/./Lab3-pagetable/image-20220310100802814.png" alt="image-20220310100802814"></p>
-<h3 id="mappages"><a href="#mappages" class="headerlink" title="mappages"></a>mappages</h3><p>函数的作用是将va映射到pa上去，并将pte存入pagetable</p>
-<ul>
-<li>a ：va向4k对齐的基地址</li>
-<li>last ：映射区域向4k对齐的最后一个页面的基地址</li>
-<li><strong>walk函数则从pagetable中找到合适的 pte ，如果不存在会，会根据alloc参数决定是否分配页面</strong></li>
-</ul>
-<p><img src="/./Lab3-pagetable/image-20220228121327909.png" alt="image-20220228121327909"></p>
-<h3 id="uvmcopy"><a href="#uvmcopy" class="headerlink" title="uvmcopy()"></a>uvmcopy()</h3><p>函数会将父进程的页表内容复制到子进程的页表中，第一步先从0地址开始按页查找对应pte，并根据pte找到对应的pa，随后将pa为起始地址的PGSIZE内容复制到kalloc新分配的页中，随后将老的虚拟地址和新分配的物理地址相互映射。</p>
-<p>所以调用uvmcopy在用户态复制页表，只会复制页表的内容，而具体指向的物理地址并不一样。【fork系统调用会创建一个新的页表】</p>
-<p><u>uvmcopy会复制oldpagetable中va对应pa所属页的内容到kalloc()新分配的pa上，并将新的pa映射到new pagetable</u></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Given a parent process&#x27;s page table, copy</span></span><br><span class="line"><span class="comment">// its memory into a child&#x27;s page table.</span></span><br><span class="line"><span class="comment">// Copies both the page table and the</span></span><br><span class="line"><span class="comment">// physical memory.</span></span><br><span class="line"><span class="comment">// returns 0 on success, -1 on failure.</span></span><br><span class="line"><span class="comment">// frees any allocated pages on failure.</span></span><br></pre></td></tr></table></figure>
-
-<img src="./Lab3-pagetable/image-20230313085847793.png" alt="image-20230313085847793" style="zoom:50%;" />
-
-
-
-<h3 id="创建一个地址空间"><a href="#创建一个地址空间" class="headerlink" title="创建一个地址空间"></a>创建一个地址空间</h3><ol>
-<li>freearange(end, PYHSTOP) 会将物理内存空间挂载到 <strong>freemem</strong> 这样一个list上，因为xv6中采用头插法，因此freemem指向的是高空闲地址空间</li>
-<li>kinit() <code>physical page allocator</code>; kinit会初始化内存操作的自旋锁，并且根据kernel.ld提供的地址信息初始化物理内存空间</li>
-<li>kvminit() <code>Initialize the one kernel_pagetable</code>; 创建内核页表，将内核数据（I&#x2F;O PLIC等映射到0-0x80000000）内核页表将会被分配到物理内存最顶端的page中</li>
-<li>exec</li>
-<li>xv6支持内核线程的概念，每个用户进程都由一个内核线程执行。并且xv6通过共享内存的方式进行多线程的通信。</li>
-</ol>
-<p><img src="/./Lab3-pagetable/image-20220228215322380.png" alt="image-20220228215322380"></p>
-<hr>
-<h3 id="打印第一个进程的页表"><a href="#打印第一个进程的页表" class="headerlink" title="打印第一个进程的页表"></a>打印第一个进程的页表</h3><p>如何打印进程的页表呢？首先我们要明确页表什么时候被建立，并被存储到什么地方</p>
-<p>要回答第一个问题，最好的方式就是使用gdb跟踪initproc，追踪第一个用户进程的分配过程一定能够告诉我们页表建立的过程。</p>
-<p><img src="/./Lab3-pagetable/image-20220307134228420.png" alt="image-20220307134228420"></p>
-<p>上图展示的是xv6中的三级页表，在sv39中我们只用到了低39位，其中低12位为page offset，其余27位负责对三级页表进行索引，其中Page Directory 的首地址被存储在satp寄存器中，satp只有在陷入内核时或继承切换时能够被os修改，它对用户透明；</p>
-<p>打印页表结果</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">page table 0x0000000087f6e000</span><br><span class="line">..0: pte 0x0000000021fda801 pa 0x0000000087f6a000</span><br><span class="line">.. ..0: pte 0x0000000021fda401 pa 0x0000000087f69000</span><br><span class="line">.. .. ..0: pte 0x0000000021fdac1f pa 0x0000000087f6b000</span><br><span class="line">.. .. ..1: pte 0x0000000021fda00f pa 0x0000000087f68000</span><br><span class="line">.. .. ..2: pte 0x0000000021fd9c1f pa 0x0000000087f67000</span><br><span class="line">..255: pte 0x0000000021fdb401 pa 0x0000000087f6d000</span><br><span class="line">.. ..511: pte 0x0000000021fdb001 pa 0x0000000087f6c000</span><br><span class="line">.. .. ..510: pte 0x0000000021fdd807 pa 0x0000000087f76000</span><br><span class="line">.. .. ..511: pte 0x0000000020001c0b pa 0x0000000080007000</span><br></pre></td></tr></table></figure>
-
-<p>递归的遍历页表；</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Recursively free page-table pages.</span></span><br><span class="line"><span class="comment">// just like function freewalk</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">vmprint</span><span class="params">(<span class="type">pagetable_t</span> pagetable, <span class="type">int</span> level)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(level == <span class="number">2</span>)</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;page table %p\n&quot;</span>, pagetable);</span><br><span class="line">  <span class="comment">// there are 2^9 = 512 PTEs in a page table.</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">512</span>; i++)&#123;</span><br><span class="line">    <span class="type">pte_t</span> pte = pagetable[i];</span><br><span class="line">    <span class="keyword">if</span>((pte &amp; PTE_V) &amp;&amp; level &gt; <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="comment">// this PTE points to a lower-level page table.</span></span><br><span class="line">      <span class="keyword">if</span>(level == <span class="number">2</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));</span><br><span class="line">      <span class="keyword">if</span>(level == <span class="number">1</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;.. ..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));  </span><br><span class="line">      uint64 child = PTE2PA(pte);</span><br><span class="line">      vmprint((<span class="type">pagetable_t</span>)child, level<span class="number">-1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>((pte &amp; PTE_V) &amp;&amp; level == <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;.. .. ..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pte &amp; PTE_V)&#123;</span><br><span class="line">      panic(<span class="string">&quot;vmprint: leaf&quot;</span>);</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">0</span>); <span class="comment">//会发生panic init exiting 因为退出时p = initproc</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="A-kernel-page-table-for-per-process"><a href="#A-kernel-page-table-for-per-process" class="headerlink" title="A kernel page table for per process"></a>A kernel page table for per process</h3><p>本次实验的目的是为每一个进程创建一个专属的kernel pagetable。xv6的基础代码里只在内核中维护了一个内核页表，且内核页表被全部进程所共享，首先单一的内核栈很难允许多核并发的执行，<strong>其次专属的内核页表更有利于操作系统解引用？</strong></p>
-<ol>
-<li>当我们需要为进程增加一个属性时，首先需要做的就是在其结构体中增加一个属性，在这里我们添加一个pagetable_t kpagetable，表明每个进程都要维护了一个内核页表。</li>
-<li>其次我们需要在创建用户进程时初始化内核页表，其次每个内核空间都要维护一个内核栈kernel stack，我们还要想办法初始化内核栈；</li>
-<li>最后我们需要在进程切换时切换内核页表，在陷入时切换到进程所属的内核页表……</li>
-</ol>
-<h4 id="初始化进程的内核页表"><a href="#初始化进程的内核页表" class="headerlink" title="初始化进程的内核页表"></a>初始化进程的内核页表</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span>            <span class="title function_">proc_free_kpagetable</span><span class="params">(<span class="type">pagetable_t</span>, uint64)</span>;</span><br><span class="line"><span class="type">pagetable_t</span>     <span class="title function_">kpagetableinit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">void</span>            <span class="title function_">kpagetable_map</span><span class="params">(<span class="type">pagetable_t</span> pagetable ,uint64 va, uint64 pa, uint64 sz, <span class="type">int</span> perm)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">pagetable_t</span></span><br><span class="line"><span class="title function_">kpagetableinit</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="type">pagetable_t</span> k_pagetable;</span><br><span class="line">  k_pagetable = (<span class="type">pagetable_t</span>) kalloc();</span><br><span class="line">  <span class="built_in">memset</span>(k_pagetable, <span class="number">0</span>, PGSIZE);</span><br><span class="line">  <span class="comment">// uart registers</span></span><br><span class="line">  kpagetable_map(k_pagetable, UART0, UART0, PGSIZE, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// virtio mmio disk interface</span></span><br><span class="line">  kpagetable_map(k_pagetable, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// CLINT</span></span><br><span class="line">  kpagetable_map(k_pagetable, CLINT, CLINT, <span class="number">0x10000</span>, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// PLIC</span></span><br><span class="line">  kpagetable_map(k_pagetable, PLIC, PLIC, <span class="number">0x400000</span>, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// map kernel text executable and read-only.</span></span><br><span class="line">  kpagetable_map(k_pagetable, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);</span><br><span class="line">  <span class="comment">// map kernel data and the physical RAM we&#x27;ll make use of.</span></span><br><span class="line">  kpagetable_map(k_pagetable, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// map the trampoline for trap entry/exit to</span></span><br><span class="line">  <span class="comment">// the highest virtual address in the kernel.</span></span><br><span class="line">  kpagetable_map(k_pagetable, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);</span><br><span class="line">  <span class="keyword">return</span> k_pagetable;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> </span><br><span class="line"><span class="title function_">kpagetable_map</span><span class="params">(<span class="type">pagetable_t</span> pagetable ,uint64 va, uint64 pa, uint64 sz, <span class="type">int</span> perm)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(mappages(pagetable, va, sz, pa, perm) != <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;kpagetable_map&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="映射内核栈"><a href="#映射内核栈" class="headerlink" title="映射内核栈"></a>映射内核栈</h4><p>在这个实验中，我们要把进程的内核栈映射到自己专属的内核页表中。如何做到这一点呢？其实就是将proc中的kstack映射到内核页表中，那么何时映射就是这个问题的关键。lab中提示我们将这个操作推迟到allocproc中，可以思考一下为什么</p>
-<ul>
-<li>很显然因为我们在allocproc中才有内核页表 （doge）</li>
-<li>实际上我们应该思考为什么不能在procinit中为每个进程初始化内核页表并映射内核栈？我的理解是这样os启动的速度会很慢，而且页没有必要，毕竟不是所有进程都会被分配出去，只有当真的需要使用它们时我们再去为proc映射内核栈也完全来得及</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在allocproc中调用相关函数</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">allocproc</span><span class="params">()</span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// Init the kernal page table</span></span><br><span class="line">  <span class="comment">// An empty kernal page table</span></span><br><span class="line">  p-&gt;k_pagetable = kpagetableinit();</span><br><span class="line">  <span class="keyword">if</span>(p-&gt;k_pagetable == <span class="number">0</span>)&#123;</span><br><span class="line">    freeproc(p-&gt;k_pagetable);</span><br><span class="line">    release(&amp;p-&gt;lock);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">char</span> *pa = kalloc();</span><br><span class="line">  <span class="keyword">if</span>(pa == <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;kalloc&quot;</span>);</span><br><span class="line">  uint64 va = KSTACK((<span class="type">int</span>) (p - proc));</span><br><span class="line">  kvmmap(va, (uint64)pa, PGSIZE, PTE_R | PTE_W);</span><br><span class="line">  p-&gt;kstack = va;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="free"><a href="#free" class="headerlink" title="free"></a>free</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">freeproc</span><span class="params">()</span>&#123;</span><br><span class="line">  uvmunmap(p-&gt;k_pagetable, p-&gt;kstack, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">  p-&gt;kstack = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span>(p-&gt;k_pagetable)</span><br><span class="line">    proc_free_kpagetable(p-&gt;k_pagetable, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> </span><br><span class="line"><span class="title function_">proc_free_kpagetable</span><span class="params">(<span class="type">pagetable_t</span> pagetable, uint64 depth)</span>&#123;</span><br><span class="line">  <span class="comment">// there are 2^9 = 512 PTEs in a page table.</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">512</span>; i++)&#123;</span><br><span class="line">    <span class="type">pte_t</span> pte = pagetable[i];</span><br><span class="line">    <span class="keyword">if</span>((pte &amp; PTE_V))&#123;</span><br><span class="line">      uint64 child = PTE2PA(pte);</span><br><span class="line">      <span class="keyword">if</span>(depth &lt; <span class="number">2</span> &amp;&amp; (pte &amp; (PTE_R|PTE_W|PTE_X)) == <span class="number">0</span>)&#123;</span><br><span class="line">        proc_free_kpagetable((<span class="type">pagetable_t</span>)child, depth+<span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      pagetable[i] = <span class="number">0</span>;</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">  kfree((<span class="type">void</span>*)pagetable);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>调度上的切换</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">w_satp(MAKE_SATP(p-&gt;k_pagetable));</span><br><span class="line">sfence_vma();</span><br><span class="line">swtch(&amp;c-&gt;context, &amp;p-&gt;context);</span><br><span class="line">kvminithart();</span><br></pre></td></tr></table></figure>
-
-<h4 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h4><p>我们还需要修改scheduler中的一些细节，比如在进程切换时我们要切换进程所属的内核页表，在释放进程空间时，我们需要释放kpagetable和内核栈</p>
-<h3 id="copyin-copyinstr"><a href="#copyin-copyinstr" class="headerlink" title="copyin copyinstr"></a>copyin copyinstr</h3><p>本实验的目的是为了让内核页表拥有用户空间的映射关系，这样我们就可以在内核空间对用户地址进行操作了</p>
-<p>内核的<code>copyin</code>函数读取用户指针指向的内存。它通过将用户指针转换为内核可以直接解引用的物理地址来实现这一点。这个转换是通过在软件中遍历进程页表来执行的。在本部分的实验中，您的工作是将用户空间的映射添加到每个进程的内核页表（上一节中创建），以允许<code>copyin</code>（和相关的字符串函数<code>copyinstr</code>）直接解引用用户指针。</p>
-<h4 id="复制用户页表到内核页表"><a href="#复制用户页表到内核页表" class="headerlink" title="复制用户页表到内核页表"></a>复制用户页表到内核页表</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">u2kvmcopy</span><span class="params">(<span class="type">pagetable_t</span> pagetable, <span class="type">pagetable_t</span> kpagetable, uint64 oldsz, uint64 newsz)</span>&#123;</span><br><span class="line">  <span class="type">pte_t</span> *pte_from, *pte_to;</span><br><span class="line">  oldsz = PGROUNDUP(oldsz);</span><br><span class="line">  <span class="keyword">for</span> (uint64 i = oldsz; i &lt; newsz; i += PGSIZE)&#123;</span><br><span class="line">    <span class="keyword">if</span>((pte_from = walk(pagetable, i, <span class="number">0</span>)) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;u2kvmcopy: src pte does not exist&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>((pte_to = walk(kpagetable, i, <span class="number">1</span>)) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;u2kvmcopy: pte walk failed&quot;</span>);</span><br><span class="line">    uint64 pa = PTE2PA(*pte_from);</span><br><span class="line">    uint flags = (PTE_FLAGS(*pte_from)) &amp; (~PTE_U);</span><br><span class="line">    *pte_to = PA2PTE(pa) | flags;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>除此之外，每次用户页表可能发生改变的时候我们都要对内核页表上的这部分进行修改，那么有哪些函数可能对用户页表进行操作呢？</li>
-</ul>
-<p>exec 时也会需要对内核页表进行操作</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">exec</span><span class="params">(<span class="type">char</span> *path, <span class="type">char</span> **argv)</span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  sp = sz;</span><br><span class="line">  stackbase = sp - PGSIZE;</span><br><span class="line">  <span class="comment">// 添加复制逻辑</span></span><br><span class="line">  u2kvmcopy(pagetable, p-&gt;kpagetable, <span class="number">0</span>, sz);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>fork 需要把parent的内核页表复制到child的内核页表中</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">fork</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// Copy user memory from parent to child.</span></span><br><span class="line">  <span class="keyword">if</span>(uvmcopy(p-&gt;pagetable, np-&gt;pagetable, p-&gt;sz) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">    freeproc(np);</span><br><span class="line">    release(&amp;np-&gt;lock);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  np-&gt;sz = p-&gt;sz;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 复制到新进程的内核页表</span></span><br><span class="line">  u2kvmcopy(np-&gt;pagetable, np-&gt;kernelpt, <span class="number">0</span>, np-&gt;sz);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>sbrk &#x3D;&gt; growproc</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">growproc</span><span class="params">(<span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  uint sz;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p</span> =</span> myproc();</span><br><span class="line"></span><br><span class="line">  sz = p-&gt;sz;</span><br><span class="line">  <span class="keyword">if</span>(n &gt; <span class="number">0</span>)&#123;</span><br><span class="line">    <span class="comment">// 加上PLIC限制</span></span><br><span class="line">    <span class="keyword">if</span> (PGROUNDUP(sz + n) &gt;= PLIC)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>((sz = uvmalloc(p-&gt;pagetable, sz, sz + n)) == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 复制一份到内核页表</span></span><br><span class="line">    u2kvmcopy(p-&gt;pagetable, p-&gt;kpagetable, sz - n, sz);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(n &lt; <span class="number">0</span>)&#123;</span><br><span class="line">    sz = uvmdealloc(p-&gt;pagetable, sz, sz + n);</span><br><span class="line">  &#125;</span><br><span class="line">  p-&gt;sz = sz;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/02/26/Lab3-pagetable/" data-id="clmdk0mgh000v09v6bnr20bou" data-title="Lab3-pagetable" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Lab2-syscall" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/26/Lab2-syscall/" class="article-date">
-  <time class="dt-published" datetime="2022-02-26T01:46:43.000Z" itemprop="datePublished">2022-02-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/26/Lab2-syscall/">Lab2-syscall</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="sys-call"><a href="#sys-call" class="headerlink" title="sys_call"></a>sys_call</h2><p>产生系统调用时，用户会将需要的参数放在a0,a1中，将系统调用编号放在a7中。系统调用号与syscalls数组进行匹配。执行ecall会trap进</p>
-<p>内核，执行<code>uservec</code>、<code>usertrap</code>和<code>syscall</code>，和我们之前看到的一样。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">任何的系统调用都是将参数传递给ecall，然后通过ecall陷入内核执行对应的系统调用，内核会对用户态传入的参数进行检查，</span><br><span class="line">xv6中例如fetchstr fetchadd这种？并且决定是否要执行系统调用。ecall将我们的控制权从用户程序转移到内核。</span><br></pre></td></tr></table></figure>
-
-<p><code>syscall</code>（<em><strong>kernel&#x2F;syscall.c*</strong>:133）从陷阱帧（trapframe）中保存的<code>a7</code>中检索系统调用号（<code>p-&gt;trapframe-&gt;a7</code>），并用它索引到<code>syscalls</code>中，对于第一次系统调用，<code>a7</code>中的内容是<code>SYS_exec</code>（</em><strong>kernel&#x2F;syscall. h*</strong>:8），导致了对系统调用接口函数<code>sys_exec</code>的调用。</p>
-<p>当系统调用接口函数返回时，<code>syscall</code>将其返回值记录在<code>p-&gt;trapframe-&gt;a0</code>中。这将导致原始用户空间对<code>exec()</code>的调用返回该值，因为RISC-V上的C调用约定将返回值放在<code>a0</code>中。系统调用通常返回负数表示错误，返回零或正数表示成功。如果系统调用号无效，<code>syscall</code>打印错误并返回-1。</p>
-<hr>
-<p>为内核添加系统调用流程：</p>
-<ol>
-<li>创建对应user目录下的接口，并在Makefile中注册 $U&#x2F;_sysinfotest</li>
-<li>在user&#x2F;user.h中声明sysinfo()的原型；user.h是对用户的接口</li>
-<li>在user&#x2F;user.pl中声明sysinfo的存根 entry</li>
-<li>在syscall.h中声明trap num</li>
-<li>在syscall.c中写出内核原型</li>
-<li>在sysproc.c中写出内核实现</li>
-</ol>
-<hr>
-<p>Lab2 主要让我们熟悉了如何向内核中添加系统调用，而不仅仅是写出用户态的接口，大体只需按照上述顺序一步一步实现即可，下面是对实验过程中一些函数的解读，以便复习</p>
-<hr>
-<h3 id="trace"><a href="#trace" class="headerlink" title="trace"></a>trace</h3><p>xv6将所有系统调用所对应的编号（Syscall Number）声明在syscall.h中，在syscall.c中给出了函数原型以及<em>表驱动函数？</em> 总之只需按照xv6源码中给出的代码照葫芦画瓢即可完成系统调用的一些初试工作。</p>
-<p>在syscall.c中实现了一些获取系统调用参数的函数，例如argint(int nth, int *ip)其功能是将第n+1个参数以int类型赋予ip所在地址的值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xv6中将与进程相关的系统调用实现在sysproc.c中，文件相关的系统调用实现在sysfile.c中.....</span><br></pre></td></tr></table></figure>
-
-<p>基础工作完成后，本次实验只需将系统调用参数传递给当前进程即可，当前进程会在执行系统调用时判断是否需要打印信息</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">syscall</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> num;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p</span> =</span> myproc();</span><br><span class="line">  <span class="type">int</span> trace_mask = p-&gt;trace_mask;</span><br><span class="line">  <span class="comment">// a7 保存系统调用参数</span></span><br><span class="line">  num = p-&gt;trapframe-&gt;a7;</span><br><span class="line">  <span class="keyword">if</span>(num &gt; <span class="number">0</span> &amp;&amp; num &lt; NELEM(syscalls) &amp;&amp; syscalls[num]) &#123;</span><br><span class="line">    p-&gt;trapframe-&gt;a0 = syscalls[num]();</span><br><span class="line">    <span class="comment">// a0 -- ra 寄存器  负责保存返回值</span></span><br><span class="line">    <span class="keyword">if</span>((trace_mask &gt;&gt; num) &amp; <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d syscall %s-&gt; %d\n&quot;</span>, p-&gt;pid, syscall_names[num<span class="number">-1</span>], p-&gt;trapframe-&gt;a0);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d %s: unknown sys call %d\n&quot;</span>,</span><br><span class="line">            p-&gt;pid, p-&gt;name, num);</span><br><span class="line">    p-&gt;trapframe-&gt;a0 = <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="sysinfo"><a href="#sysinfo" class="headerlink" title="sysinfo"></a>sysinfo</h3><p>sysinfo是一个记录当前进程信息的结构体，它保存在用户态下，我们可以在声明系统调用的用户接口user.h中看到，而进程和内存的信息却都是内核态下的数据，我们需要利用copyout将数据从内核态中取出并在用户态下展示；</p>
-<p>其余按照trace一样，向内核中引入sys_sysinfo系统调用, 后面只需简单实现</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">uint64</span><br><span class="line"><span class="title function_">sys_sysinfo</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">sysinfo</span> <span class="title">sysinfo</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p</span>;</span></span><br><span class="line">  p = myproc();</span><br><span class="line">  uint64 addr;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 这里是用addr指向了传递过来的sysinfo参数</span></span><br><span class="line">  <span class="comment">// 函数用一个sysinfo变量接收了kernel的sysinfo</span></span><br><span class="line"></span><br><span class="line">  sysinfo.freemem = freemem();	<span class="comment">// 获取空余内存byte</span></span><br><span class="line">  sysinfo.nproc = getnproc();	<span class="comment">// 获取正在运行的进程</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取第0个参数，并放到addr</span></span><br><span class="line">  <span class="keyword">if</span>(argaddr(<span class="number">0</span>, &amp;addr) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="comment">// 通过copyout将sysinfo参数中的值传递出去</span></span><br><span class="line">  <span class="keyword">if</span>(copyout(p-&gt;pagetable, addr, (<span class="type">char</span>*) &amp;sysinfo, <span class="keyword">sizeof</span>(sysinfo)) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取空闲内存的字节数,</span></span><br><span class="line"><span class="comment">// 首先遍历空闲链表，每个空闲块都是一个PGSIZE</span></span><br><span class="line"><span class="comment">// 经过一个块，sum加一个pagsize</span></span><br><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">freemem</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line">  uint64 sum = <span class="number">0</span>;</span><br><span class="line">  acquire(&amp;kmem.lock);</span><br><span class="line">  r = kmem.freelist;</span><br><span class="line">  <span class="keyword">while</span>(r)&#123;</span><br><span class="line">    r = r-&gt;next;</span><br><span class="line">    sum += PGSIZE;</span><br><span class="line">  &#125;</span><br><span class="line">  release(&amp;kmem.lock);</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// state字段不为UNUSED的进程数</span></span><br><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">getnproc</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p</span>;</span></span><br><span class="line">  <span class="type">int</span> nums = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(p = proc; p &lt; &amp;proc[NPROC]; p++) &#123;</span><br><span class="line">    acquire(&amp;p-&gt;lock);</span><br><span class="line">    <span class="keyword">if</span>(p-&gt;state != UNUSED)</span><br><span class="line">      nums++;</span><br><span class="line">    release(&amp;p-&gt;lock);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> nums;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/02/26/Lab2-syscall/" data-id="clmdk0mgg000k09v6h3ha9cde" data-title="Lab2-syscall" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2023/09/04/hello-world/">Hello World</a>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
           </li>
+          
         
-          <li>
-            <a href="/2023/08/25/Optimizer/">Optimizer</a>
-          </li>
         
-          <li>
-            <a href="/2023/08/25/LRU/">LRU</a>
-          </li>
-        
-          <li>
-            <a href="/2023/08/20/mysql/">mysql</a>
-          </li>
-        
-          <li>
-            <a href="/2023/08/19/c/">c++</a>
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
           </li>
         
       </ul>
     </div>
   </div>
+</nav>
 
   
-</aside>
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="An elegant Material-Design theme for Hexo"></span>
+          
+        </div>
+
         
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
+
       
-      &copy; 2023 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
     </div>
   </div>
-</footer>
+</div>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/10/15/MapReduce/" target="_self">
+          MapReduce
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/10/15/MapReduce/" target="_self">
+        <div>
+          MapReduce什么是MapReduce?MapReduce是一种用来处理大规模数据的分布式计算框架。编程者只负责编写Map函数和Reduce函数，框架会将大型的数据处理任务切分成多个小型task，并将task分布式的处理。整个计算过程分为Map Phase和Reduce Phase，在Map阶段会将原始文件转化为intermediate kv pair，Reduce阶段则会将有关联的中间键合并
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-10-15 12:21" pubdate>
+              2022-10-15
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Distributed-System/">#Distributed System</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/09/29/GFS/" target="_self">
+          GFS
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/09/29/GFS/" target="_self">
+        <div>
+          Google File SystemIntroductionLinux中的file system能够将数据持久化并以文件的形式存储在磁盘上，以供操作系统使用。File system具备一些验证机制来保证用户态传入的数据是正确合法的，有一些文件系统还拥有备份机制以确保数据不会轻易丢失。 GFS是一个分布式的文件系统，与普通操作系统上的文件系统不同，它能够支持大型文件【TB级别】的一系列操作。GFS还
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-29 13:40" pubdate>
+              2022-09-29
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Distributed-System/">#Distributed System</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/03/17/Lab8-lock/" target="_self">
+          Lab8-lock
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/03/17/Lab8-lock/" target="_self">
+        <div>
+          
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-17 14:07" pubdate>
+              2022-03-17
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/xv6-riscv-Lab/">#xv6_riscv Lab</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/03/12/Boot/" target="_self">
+          Boot
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/03/12/Boot/" target="_self">
+        <div>
+          Bootx86为例：  加电后，CS&#x3D;0xF000 EIP&#x3D;0xFFF0 在CS寄存器中隐含的一个基址BASE&#x3D;FFFF0000，80386中实际地址是BASE+EIP&#x3D;FFFF0000h+0000FFF0h&#x3D;0xFFFFFFF0h（在8086中最初执行的地址是PC&#x3D;16×CS+IP，其实在GDB下调试ffffffff0h地址下的命令和f
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-12 23:02" pubdate>
+              2022-03-12
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Operating-System/">#Operating System</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/03/10/%E5%B8%8C%E7%BD%97%E5%A4%9A%E5%BE%B7HISTORIAE%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" target="_self">
+          希罗多德HISTORIAE读书笔记
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/03/10/%E5%B8%8C%E7%BD%97%E5%A4%9A%E5%BE%B7HISTORIAE%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" target="_self">
+        <div>
+          前言巨大的繁荣是一个很不可靠的东西，它会导致衰落 希罗多德出生于波斯治下的希腊城市哈利卡纳苏斯，是波斯帝国的第一省区，本书的内容也是围绕波斯战争所展开的，所以希罗多德既可以被称作希腊史学家，也可以被称作波斯史学家。公元前443年，他移居雅典在意大利的殖民城邦图里伊，后来也被称作图里伊的希罗多德。 从公元前六世纪，希腊人的思想方式逐渐从神话方式转向理性方式，其重要的标志就是哲学的兴起。人们逐渐意识到
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-10 23:00" pubdate>
+              2022-03-10
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/HISTORIAE/">#HISTORIAE</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/03/10/Lab9-filesystem/" target="_self">
+          Lab9
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/03/10/Lab9-filesystem/" target="_self">
+        <div>
+          FileSystem xv6中文件系统分为七层  Disk ：SSD HDD 主要是硬件层次，负责将硬件资源加载入内存（Sectors） Buffer Cache : 一般是对常用的内存块进行缓存，一般是一个buf是1024 Logging : 是日志层，主要负责记录日志 Inode : 每个inode节点指示了一个文件，inode的编号也是文件的唯一标识 Dir : 目录 PathName :
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-10 17:38" pubdate>
+              2022-03-10
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/xv6-riscv-Lab/">#xv6_riscv Lab</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/03/08/Lab4-trap/" target="_self">
+          Lab4-trap
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/03/08/Lab4-trap/" target="_self">
+        <div>
+          TrapRISC-V assembly (easy) caller saved register  ​	函数调用时无需关注的寄存器就是caller saved register，例如return address 则是caller saved register地址，既subfuction调用完毕后应当回到的地址。当函数调用结束时ra寄存器一定会被改写，所以要将call指令所在的地址+1作为ra并存储
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-08 14:26" pubdate>
+              2022-03-08
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/xv6-riscv-Lab/">#xv6_riscv Lab</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/02/26/leetcode/" target="_self">
+          leetcode
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/02/26/leetcode/" target="_self">
+        <div>
+          算法算法的核心就是穷举所有可能的结果，并从这些结果中找到符合要求的一项。所以在我们解决问题时需要对问题进行拆解，将问题放入我们已经熟悉的模版中，利用模版并对当前条件进行调整从而解决问题 双指针 数组 链表1234567// arrayint slow = 0;int fast = 0;// linklist 链表有时还会用到dummy节点ListNode *slow = head;	// List
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-26 13:13" pubdate>
+              2022-02-26
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/leetcode/">#leetcode</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/02/26/Lab3-pagetable/" target="_self">
+          Lab3-pagetable
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/02/26/Lab3-pagetable/" target="_self">
+        <div>
+          Virtual Memory虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。  为什么需要虚拟内存？   每个进程可以使用更大的地址空间 进程与进程之间相互隔离，不会干扰 共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容 保护，对pte的标志位做一下操作就可以对进
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-26 12:40" pubdate>
+              2022-02-26
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/xv6-riscv-Lab/">#xv6_riscv Lab</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/02/26/Lab2-syscall/" target="_self">
+          Lab2-syscall
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/02/26/Lab2-syscall/" target="_self">
+        <div>
+          sys_call产生系统调用时，用户会将需要的参数放在a0,a1中，将系统调用编号放在a7中。系统调用号与syscalls数组进行匹配。执行ecall会trap进 内核，执行uservec、usertrap和syscall，和我们之前看到的一样。 12任何的系统调用都是将参数传递给ecall，然后通过ecall陷入内核执行对应的系统调用，内核会对用户态传入的参数进行检查，xv6中例如fetchst
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-26 09:46" pubdate>
+              2022-02-26
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/xv6-riscv-Lab/">#xv6_riscv Lab</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     
 
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
 
-<script src="/js/jquery-3.6.4.min.js"></script>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+    <script  src="/js/img-lazyload.js" ></script>
+  
 
 
 
 
-<script src="/js/script.js"></script>
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-  </div>
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
 </body>
 </html>

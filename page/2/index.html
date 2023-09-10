@@ -1,1346 +1,747 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
   
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
+    <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+<meta name="twitter:card" content="summary_large_image">
   
   
-    <link rel="shortcut icon" href="/favicon.png">
   
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  <title>Hexo</title>
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
   
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
   
 <meta name="generator" content="Hexo 6.3.0"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
         
-      </nav>
-      <nav id="sub-nav">
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
         
         
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-TiDB" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/06/12/TiDB/" class="article-date">
-  <time class="dt-published" datetime="2023-06-12T09:20:56.000Z" itemprop="datePublished">2023-06-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/06/12/TiDB/">TiDB</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="TiDB"><a href="#TiDB" class="headerlink" title="TiDB"></a>TiDB</h1><h2 id="统计信息的维护："><a href="#统计信息的维护：" class="headerlink" title="统计信息的维护："></a>统计信息的维护：</h2><ol>
-<li>取消了count-min sketch（q-error太大，对于低频的数据估算误差太大）<ul>
-<li>代码中是FMSketch（使用末尾0来识别数据，并用2的最高频率次幂作为频率估计）</li>
-</ul>
-</li>
-<li>增加了top-n，以提高点查询的准确率（取前1000的top N，且直方图中不包含这些top N）</li>
-</ol>
-<h2 id="统计信息的收集"><a href="#统计信息的收集" class="headerlink" title="统计信息的收集"></a>统计信息的收集</h2><p> TiDB 中，会对每个表具体的列构建一个等深直方图，区间查询的估算便是借助该直方图来进行。</p>
-<ol>
-<li>抽样方法的调整，从蓄水池转化为伯努利抽样</li>
-<li>全表更新，mysql是部分页面的抽样（也可以开启快速分析，使得抽样范围缩小到1w条记录）</li>
-<li>索引列的统计数据可以做增量更新</li>
-</ol>
-<h3 id="更新周期以及条件"><a href="#更新周期以及条件" class="headerlink" title="更新周期以及条件"></a>更新周期以及条件</h3><ol>
-<li><p>在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，更新的周期为 20 * stats-lease 。stats-lease 配置项的默认值是 3s，</p>
-</li>
-<li><p>当某个表 tbl 的修改行数与总行数的比值大于 tidb_auto_analyze_ratio，并且当前时间在 tidb_auto_analyze_start_time 和 tidb_auto_analyze_end_time 之间时，TiDB 会在后台执行 ANALYZE TABLE tbl 语句自动更新这个表的统计信息。</p>
-</li>
-</ol>
-<p>idea：先建立单表估计模型以学习单表的分布，当处理连接查询时，FactorJoin首先依据已学习到的分布将查询建模为因子图（Factor Graph），而后使用变量消除（Variable Elimination，VE）算法进行推理。因只需单表的统计信息即可估计出多表连接的基数</p>
-<blockquote>
-<p>关系型数据库内容与KV存储引擎的转换 <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008343682">https://segmentfault.com/a/1190000008343682</a></p>
-<p>TiDB对于KV的映射 <a target="_blank" rel="noopener" href="https://docs.pingcap.com/zh/tidb/stable/tidb-computing">https://docs.pingcap.com/zh/tidb/stable/tidb-computing</a></p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/06/12/TiDB/" data-id="clmdk0mgj001609v67bcz3f9i" data-title="TiDB" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Database/" rel="tag">Database</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-6-12" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/06/12/6-12/" class="article-date">
-  <time class="dt-published" datetime="2023-06-12T08:23:27.000Z" itemprop="datePublished">2023-06-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/06/12/6-12/">6.12</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="6-12-学习笔记"><a href="#6-12-学习笔记" class="headerlink" title="6.12 学习笔记"></a>6.12 学习笔记</h1><h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><ol>
-<li><p>二分查找，完整学习了左右侧边界的照法以及数组中含有重复数字时的处理方法；</p>
-<p>左边界，返回left即可（最后判断left是否超出nums的size）</p>
-<p>右边界，返回right即可（最后判断right是否小于0）</p>
-</li>
-<li><p>螺旋矩阵：四个边界，注意如何调整边界即可</p>
-</li>
-</ol>
-<p>数组中的题目主要是使用双指针（快慢指针， 双向指针）</p>
-<ul>
-<li>注意指针的结束条件，边界条件</li>
-</ul>
-<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><h3 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h3><p>二阶段锁更新数据时阻塞其他事务，MVCC通过留下数据的历史版本，让事务读取数据的历史版本</p>
-<p>使用时间戳来记录版本号， 时间旅行</p>
-<ul>
-<li>通过version chain遍历各个版本的数据</li>
-</ul>
-<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><ol>
-<li><p>undo：撤销的时候做undo&#x2F; delta storage</p>
-<p>removing the effects of an incomplete or aborted txn</p>
-<p>mysql使用undo log实现mvcc，回退日志时也是使用undo log</p>
-</li>
-<li><p>redo：重做（恢复的时候做redo）</p>
-<p>re-instating the effects of a committed txn for durability</p>
-</li>
-</ol>
-<p><strong>用以上两个操作实现事物的安全性以及原子性</strong></p>
-<p><img src="/./6-12/image-20230612162417149.png" alt="image-20230612162417149"></p>
-<p>steal policy：刷脏页时不管是否committed，直接刷入disk（steal no-steal）【因为page太大，数据太小，一个page上可能有多个txn的数据】</p>
-<p>force policy：</p>
-<p>steal&#x2F;no-steal:<br>      是否允许一个uncommitted的事务中的数据被更新到磁盘；如果是steal策略，那么此时磁盘上就可能包含uncommitted的数据，<strong>因此系统需要记录undo log，以防事务abort时进行回滚（roll-back）</strong>。如果是no steal策略，就表示磁盘上不会存在uncommitted数据，因此无需回滚操作，也就无需记录undo log。</p>
-<p>force&#x2F;no-force:<br>      force策略表示事务在committed之后必须将所有更新立刻持久化到磁盘，这样会导致磁盘发生很多小的写操作（更可能是随机写）。no-force表示事务在committed之后可以不立即持久化到磁盘， 这样可以缓存很多的更新批量持久化到磁盘，这样可以降低磁盘操作次数（提升顺序写），但是如果committed之后发生crash，那么此时已经committed的事务数据将会丢失（因为还没有持久化到磁盘），因此系统需要记录redo log，在系统重启时候进行前滚（roll-forward）操作。   </p>
-<p> steal&#x2F;no-steal主要决定了磁盘上是否会包含uncommitted的数据。force&#x2F;no-force主要决定了磁盘上是否会不包含已经committed的数据。</p>
-<p>现在DBMS常用的是steal&#x2F;no-force策略，因此一般都需要记录redo log和undo log。这样可以获得较快的运行时性能，代价就是在数据库恢复（recovery）的时候需要做很多的事情，增大了系统重启的时间。</p>
-<ul>
-<li><p>no-steal + force（shadow paging）</p>
-<p>相当于一个事务只负责一个事务的数据，写入disk时会创建一个自己修改的副本并写入</p>
-<p>无需undo也无需redo（每次都把数据写入磁盘所以不需要redo）</p>
-<p>因为没有undo，所以写入数据量必须小于内存</p>
-</li>
-<li><p>steal + no force（Write-AHEAD log 预写日志）</p>
-<p>将数据写入disk之前，先把wal写入disk</p>
-<p>单独创建一个文件保留事务对数据的修改，log file</p>
-</li>
-</ul>
-<h4 id="WAL-Protocol"><a href="#WAL-Protocol" class="headerlink" title="WAL Protocol"></a>WAL Protocol</h4><ol>
-<li>Information</li>
-</ol>
-<ul>
-<li>txn_id</li>
-<li>Obj_id</li>
-<li>Before value(for undo)</li>
-<li>after value(for redo)</li>
-</ul>
-<ol start="2">
-<li>Implement</li>
-</ol>
-<p> Group committed </p>
-<h4 id="CheckPoint"><a href="#CheckPoint" class="headerlink" title="CheckPoint"></a>CheckPoint</h4><p>到了checkpoint，把所有未写入disk的日志和数据都写入disk，并记录checkpoint </p>
-<p>通过checkpoint点判断事务是否需要执行undo or redo</p>
-<ul>
-<li><p>如果没有checkpoint，那么需要把所有committed的事务执行redo，未committed的事务执行undo</p>
-<p>checkpoint前已经提交的事务，无需对其进行执行redo</p>
-<p>WAL中显示已经提交的事务表明用户已经接收到写入成功，因此我们需要redo</p>
-<p>WAL中未提交的事务只需要undo即可，因为本身用户也没有收到提交的响应</p>
-</li>
-</ul>
-<p><img src="/./6-12/image-20230612173452531.png" alt="image-20230612173452531"></p>
-<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p><img src="/./6-12/image-20230612174111674.png" alt="image-20230612174111674"></p>
-<h2 id="区块链"><a href="#区块链" class="headerlink" title="区块链"></a>区块链</h2><ul>
-<li><p>去中心化</p>
-<p>通过prehash实现，保证前一个节点的内容不会被轻易篡改（比特币大概三十分钟可以确认一个交易）</p>
-<ul>
-<li>如何篡改区块链？在本地生成一个更长的区块链去替代主链即可</li>
-<li>只有数据的区块链是没有意义的，中心节点还是可以随意修改hash</li>
-</ul>
-<p>所有节点都是等价的</p>
-</li>
-<li><p>奖励机制</p>
-<p>随着交易的累积，账本数据达到好几百G，没有必要让所有参与者都记录如此庞大的数据，但也要尽量鼓励能记账的人前来记账，否则会退化为中心画</p>
-<p>通过奖励机制激励所有节点参与记账</p>
-<ul>
-<li><p>打包</p>
-<p>区块链高度，十分钟内的交易。。。</p>
-</li>
-<li><p>所有人都可以打包吗？</p>
-<p>通过调整Nonce修改hash值，使得hash值满足一定的条件（挖矿）</p>
-</li>
-</ul>
-<p>每生产一个区块，奖励一些比特币；第一笔交易是矿工转给矿工的12.5BTC</p>
-</li>
-<li><p>共识机制</p>
-<p>有可能出现分叉，当节点意识到自己落后之后，会切换到最长的链（比特币成功支付是指三个区块产生）</p>
-</li>
-</ul>
-<h3 id="Markle-Tree"><a href="#Markle-Tree" class="headerlink" title="Markle Tree"></a>Markle Tree</h3><p>在比特币系统中，不同区块通过哈希值指针连接，在同一个区块中的多个交易（数据块），则通过Markle Tree的形式组织在一起。区块本身分为两部分（块头和块身），在块头中存在有根哈希值（没有交易的具体信息），块身中存在交易列表。</p>
-<h3 id="UTXO"><a href="#UTXO" class="headerlink" title="UTXO"></a>UTXO</h3><ul>
-<li>全节点在内存中维护UTXO防止双花问题</li>
-</ul>
-<h2 id="Financial-Statement"><a href="#Financial-Statement" class="headerlink" title="Financial Statement"></a>Financial Statement</h2><p>课程目的：怎么生成以下四张表？怎么读懂财报怎么看四张表</p>
-<ul>
-<li>Income Statement 收入表<ul>
-<li>Revenue （营收）</li>
-<li>expense （支出）</li>
-</ul>
-</li>
-<li>Statement of Changes in Equality </li>
-<li>Balance Sheet Asset &#x3D; L + SE(股东权益)</li>
-<li>Cash Flow（现金流）</li>
-</ul>
-<hr>
-<ol>
-<li>Financial Accounting(外部人员看)</li>
-<li>Management Accounting（内部人员看）</li>
-</ol>
-<hr>
-<p>LLC有限责任公司&#x2F;LLP有限责任伙伴</p>
-<ol>
-<li>single owner</li>
-<li>Partnership： 2+ 对公司权益划分，每一个partner有一部分权益</li>
-</ol>
-<p>Limited Liability Company 公司和个人是分开的。个人财产与公司无关</p>
-<p>公司破产清算，无需关注自己银行账户</p>
-<ul>
-<li>Income Statement<ul>
-<li>Revenue</li>
-<li>Expense</li>
-</ul>
-</li>
-</ul>
-<p>Fiscal Year 人为规定</p>
-<ul>
-<li>statement of changes Equity<ul>
-<li>Returned Earing</li>
-<li>Dividend</li>
-<li>Common Share</li>
-</ul>
-</li>
-<li>Balance Sheet</li>
-</ul>
-<h2 id="杂七杂八"><a href="#杂七杂八" class="headerlink" title="杂七杂八"></a>杂七杂八</h2><h3 id="MySQL的MVCC是怎么实现的"><a href="#MySQL的MVCC是怎么实现的" class="headerlink" title="MySQL的MVCC是怎么实现的"></a>MySQL的MVCC是怎么实现的</h3><h3 id="主备复制"><a href="#主备复制" class="headerlink" title="主备复制"></a>主备复制</h3><h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/06/12/6-12/" data-id="clmdk0mgd000309v6dscv41a8" data-title="6.12" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Tools" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/05/22/Tools/" class="article-date">
-  <time class="dt-published" datetime="2023-05-22T08:53:34.000Z" itemprop="datePublished">2023-05-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/05/22/Tools/">Tools</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Tmux"><a href="#Tmux" class="headerlink" title="Tmux"></a>Tmux</h1><p>使用tmux在服务器后台运行程序</p>
-<ol>
-<li>创建一个会话，并进入该会话</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session -s mysession</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>运行对应程序</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python my_program.py</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li><p>退出当前会话，先按下***<u>ctrl + b</u>***再按d，即可退出当前会话</p>
-</li>
-<li><p>重新连接该会话</p>
-</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t mysession</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h1><ol>
-<li><p>设置项目名称</p>
-<p>PROJECT (DEMO)</p>
-<p>设置项目名称为DEMO</p>
-</li>
-<li><p>设置头文件或者项目文件目录</p>
-<p>include_directories(${CMAKE_CURRENT_LIST_DIR}&#x2F;include)</p>
-<p>${CMAKE_CURRENT_LIST_DIR} 表示CMakelist.txt所在位置</p>
-</li>
-<li><p>将项目源文件添加至变量中</p>
-<p>aux_source_directory(.&#x2F;src SRC) </p>
-<p>将.&#x2F;src 下的所有源文件递归的加入SRC变量中</p>
-</li>
-<li><p>构造可执行文件</p>
-<p>ADD_EXECUTABLE(${PROJECT_NAME} ${SRC})</p>
-<p>将变量SRC内的源文件构建成可执行文件，并命名为开头设置的project_name</p>
-</li>
-</ol>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">PROJECT</span> (DEMO)</span><br><span class="line"></span><br><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_CXX_STANDARD <span class="number">14</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;CMAKE_CURRENT_LIST_DIR&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># link_directories($&#123;CMAKE_CURRENT_LIST_DIR&#125;/lib)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">aux_source_directory</span>(./src SRC)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把所有.cpp的main函数都构建起来</span></span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">file</span> <span class="variable">$&#123;files&#125;</span>)</span><br><span class="line"><span class="keyword">string</span>(REGEX REPLACE <span class="string">&quot;.+/(.+)\\..*&quot;</span> <span class="string">&quot;\\1&quot;</span> exe <span class="variable">$&#123;file&#125;</span>)</span><br><span class="line"><span class="keyword">add_executable</span> (<span class="variable">$&#123;exe&#125;</span> <span class="variable">$&#123;file&#125;</span>)</span><br><span class="line"><span class="keyword">message</span> (\ \ \ \ --\ src/<span class="variable">$&#123;exe&#125;</span>.cpp\ will\ be\ compiled\ to\ bin/<span class="variable">$&#123;exe&#125;</span>)</span><br><span class="line"><span class="keyword">endforeach</span> ()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ADD_EXECUTABLE($&#123;PROJECT_NAME&#125; $&#123;SRC&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># target_link_libraries($&#123;PROJECT_NAME&#125; util)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_COMPILER      &quot;clang++&quot; )         # 显示指定使用的C++编译器</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS   &quot;-std=c++11&quot;)             # c++11</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS   &quot;-g&quot;)                     # 调试信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS   &quot;-Wall&quot;)                  # 开启所有警告</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS_DEBUG   &quot;-O0&quot; )             # 调试包不优化</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS_RELEASE &quot;-O2 -DNDEBUG &quot; )   # release包优化</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>[CMake 构建测试用例 ]<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39766005/article/details/122686185">https://blog.csdn.net/weixin_39766005/article/details/122686185</a></p>
-</blockquote>
-<h1 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a><a target="_blank" rel="noopener" href="https://linux265.com/course/vim-intro.html">Vim</a></h1><h2 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h2><ul>
-<li><p>行内的向后移动： <strong>w</strong></p>
-</li>
-<li><p>行内的向前移动：<strong>b</strong> (e 可以移动到词尾)</p>
-</li>
-<li><p>移动到当前行尾：**$**</p>
-</li>
-<li><p>移动到当前行首：<strong>0</strong></p>
-</li>
-<li><p>移动到屏幕顶部：<strong>H</strong></p>
-</li>
-<li><p>移动到屏幕末尾：<strong>L</strong></p>
-</li>
-<li><p>移动到屏幕中间：<strong>M</strong></p>
-</li>
-<li><p>删除至行尾：<strong>D</strong></p>
-</li>
-<li><p>跳转到某一行：<strong>n</strong></p>
-</li>
-<li><p>移动到文件尾部：<strong>gg</strong></p>
-</li>
-<li><p>移动到文件首部：<strong>G</strong></p>
-</li>
-</ul>
-<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git 中的对象可以是 blob、tree或commit</p>
-<p>Git 在储存数据时，所有的对象都会基于它们的 <strong>SHA-1哈希</strong> 进行寻址。所有的快照都可以通过它们的 SHA-1 哈希值来标记。针对这一问题，Git 的解决方法是给这些哈希值赋予人类可读的名字，也就是引用**(references)**。引用是指向提交的指针。与对象不同的是，它是可变的(引用可以被更新，指向新的提交)。例如，master 引用通常会指向主分支的最新一次提交。</p>
-<p>HEAD branch都是指向这个commit的<strong>引用</strong>，而commit本质就是一个hash</p>
-<h2 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h2><p>HEAD 指向当前的commit，每当执行git commit操作时，会生成一个新的commit对象，并移动HEAD指针，若HEAD指向一个branch，则带动branch一起向前移动</p>
-<h2 id="git-rebase"><a href="#git-rebase" class="headerlink" title="git rebase"></a>git rebase</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 代表把HEAD移动到another上</span></span></span><br><span class="line">git rebase anthoer -i</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 代表把main移动到another上</span></span></span><br><span class="line">git rebase another main -i</span><br><span class="line">git rebase target_commit ready_to_move_commit -i</span><br></pre></td></tr></table></figure>
-
-<p>当你知道你所需要的提交记录（<strong>并且</strong>还知道这些提交记录的哈希值）时, 用 cherry-pick 再好不过了 —— 没有比这更简单的方式了。</p>
-<p>但是如果你不清楚你想要的提交记录的哈希值呢? 幸好 Git 帮你想到了这一点, 我们可以利用交互式的 rebase —— 如果你想从一系列的提交记录中找到想要的记录, 这就是最好的方法了</p>
-<p>当 rebase UI界面打开时, 你能做3件事:</p>
-<ul>
-<li>调整提交记录的顺序（通过鼠标拖放来完成）</li>
-<li>删除你不想要的提交（通过切换 <code>pick</code> 的状态来完成，关闭就意味着你不想要这个提交记录）</li>
-<li>合并提交</li>
-</ul>
-<p><strong>变基操作：</strong></p>
-<ol>
-<li><p>可以把当前HEAD所指向的commit变为rebase指定的commit <strong>&#x2F;&#x2F; 代表将HEAD移动到target git rebase target_commit</strong> </p>
-</li>
-<li><p>也可以用来把父commit指向继承的commit</p>
-</li>
-</ol>
-<p><strong>交互式rebase</strong></p>
-<p>-i : 可以指定以交互形式在当前节点提交，放弃某些提交</p>
-<h2 id="git-cherry-pick"><a href="#git-cherry-pick" class="headerlink" title="git cherry-pick"></a>git cherry-pick</h2><p>要在心里牢记 cherry-pick 可以将提交树上任何地方的提交记录取过来追加到 HEAD 上</p>
-<p>如果你想将一些提交复制到当前所在的位置（<code>HEAD</code>）下面的话， Cherry-pick 是最直接的方式了。我个人非常喜欢 <code>cherry-pick</code>，因为它特别简单。</p>
-<h2 id="git-reset-git-revert"><a href="#git-reset-git-revert" class="headerlink" title="git reset &amp;&amp; git revert"></a>git reset &amp;&amp; git revert</h2><h2 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h2><p>由于先抓取更新再合并到本地分支这个流程很常用，因此 Git 提供了一个专门的命令来完成这两个操作。它就是我们要讲的 <code>git pull</code>。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/05/22/Tools/" data-id="clmdk0mgj001809v6hosg9sw6" data-title="Tools" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-15445-lab2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/05/14/15445-lab2/" class="article-date">
-  <time class="dt-published" datetime="2023-05-14T15:29:20.000Z" itemprop="datePublished">2023-05-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/05/14/15445-lab2/">15445-lab2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="BPlusTree-Index"><a href="#BPlusTree-Index" class="headerlink" title="BPlusTree Index"></a>BPlusTree Index</h1><p>15445中使用MappingType类型的数组 <code>array_ </code>描述b+的node，MappingType则表示了一个kv对，internal node中的value是page_id而leaf_node的value是record_id。</p>
-<p>这些kv对是按照key的顺序有序存储在array_中</p>
-<h2 id="Page-Structure"><a href="#Page-Structure" class="headerlink" title="Page Structure"></a>Page Structure</h2><ul>
-<li>Bplus Page</li>
-</ul>
-<p>作为internal page和leaf page的父类，提供了一些二者共同需要使用的函数，参数传递时也可以借助bplus tree page这种类型</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">IsLeafPage</span><span class="params">()</span> <span class="type">const</span> -&gt; <span class="type">bool</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">IsRootPage</span><span class="params">()</span> <span class="type">const</span> -&gt; <span class="type">bool</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetPageType</span><span class="params">(IndexPageType page_type)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">GetSize</span><span class="params">()</span> <span class="type">const</span> -&gt; <span class="type">int</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetSize</span><span class="params">(<span class="type">int</span> size)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">IncreaseSize</span><span class="params">(<span class="type">int</span> amount)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">GetMaxSize</span><span class="params">()</span> <span class="type">const</span> -&gt; <span class="type">int</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetMaxSize</span><span class="params">(<span class="type">int</span> max_size)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">GetMinSize</span><span class="params">()</span> <span class="type">const</span> -&gt; <span class="type">int</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">GetParentPageId</span><span class="params">()</span> <span class="type">const</span> -&gt; <span class="type">page_id_t</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetParentPageId</span><span class="params">(<span class="type">page_id_t</span> parent_page_id)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">GetPageId</span><span class="params">()</span> <span class="type">const</span> -&gt; <span class="type">page_id_t</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetPageId</span><span class="params">(<span class="type">page_id_t</span> page_id)</span></span>;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Internal Page</li>
-</ul>
-<p>内部节点，存储其他节点page的page_id；15445中规定内部节点用来存储kv对的array数组中第一个元素的key是invalid的，这就导致了内部节点的max_size为m，则key的数量为m - 1, value的数量为m</p>
-<ul>
-<li>Leaf Page</li>
-</ul>
-<p>叶子结点，用来存储对应key在某个表中的rid</p>
-<h2 id="Point-Search"><a href="#Point-Search" class="headerlink" title="Point Search"></a>Point Search</h2><h3 id="RoadMap"><a href="#RoadMap" class="headerlink" title="RoadMap"></a>RoadMap</h3><ul>
-<li>如何对b+树进行点查询？</li>
-</ul>
-<p>首先我们来思考如何在有序二叉树上进行查找对应节点，我们第一反应就是使用递归的中序遍历，target大于当前节点的value则向right child移动，若target小于当前节点的value则向left child移动，若等于则返回当前节点。</p>
-<p>在b+树中，我们真实的结果都存储于leaf node中，因此我们第一步就需要找到符合包含需求key的leaf node page</p>
-<ul>
-<li>如何找到leaf node page？</li>
-</ul>
-<p>internal page中的key是有序排列的，因此我们只需要在当前internal page的array中找到第一个大于等于target的key即可，此后只需要根据这个key对应的page_id中进入下一个page，随后重复上述过程。一旦我们进入leaf page，则表示我们找到了target可能存在的page。</p>
-<ul>
-<li>在所有的B Plus Tree Node Page上，我们可以使用顺序查找，也可以使用二分查找，我们只需找到第一个大于等于target key的index即可</li>
-</ul>
-<h3 id="Detail"><a href="#Detail" class="headerlink" title="Detail"></a>Detail</h3><h2 id="Insertion"><a href="#Insertion" class="headerlink" title="Insertion"></a>Insertion</h2><h2 id="Deletion"><a href="#Deletion" class="headerlink" title="Deletion"></a>Deletion</h2><blockquote>
-<p>Ref :</p>
-<p>参考博客： <a target="_blank" rel="noopener" href="https://blog.eleven.wiki/posts/cmu15-445-project2-b+tree-index/#task1-btree-pages">https://blog.eleven.wiki/posts/cmu15-445-project2-b+tree-index/#task1-btree-pages</a></p>
-<p>可视化B+树：<a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2022/bpt-printer/">https://15445.courses.cs.cmu.edu/fall2022/bpt-printer/</a></p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/05/14/15445-lab2/" data-id="clmdk0mg9000009v64b1a6le8" data-title="15445-lab2" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-TVM" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/04/07/TVM/" class="article-date">
-  <time class="dt-published" datetime="2023-04-07T14:43:27.000Z" itemprop="datePublished">2023-04-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/04/07/TVM/">TVM</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/04/07/TVM/" data-id="clmdk0mgj001109v64b2o2ala" data-title="TVM" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-15445" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/04/04/15445/" class="article-date">
-  <time class="dt-published" datetime="2023-04-03T16:49:36.000Z" itemprop="datePublished">2023-04-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/04/04/15445/">CMU-15445</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h1><h1 id="Hash-Table"><a href="#Hash-Table" class="headerlink" title="Hash Table"></a>Hash Table</h1><p>应用场景：</p>
-<ul>
-<li>internal-meta data</li>
-<li>core data storage redis</li>
-<li>temporary data structures</li>
-<li>Table indexs</li>
-</ul>
-<p>Design decisions</p>
-<ul>
-<li>Data Organization</li>
-<li>Concurrency</li>
-</ul>
-<h2 id="hash-function"><a href="#hash-function" class="headerlink" title="hash function"></a>hash function</h2><ul>
-<li><p>开放地址</p>
-</li>
-<li><p>cuckoo hashing</p>
-</li>
-<li><p>robin hood  hasing</p>
-</li>
-<li><p>chained hasing 拉链</p>
-</li>
-</ul>
-<img src="./15445/image-20230318204918510.png" alt="image-20230318204918510.png" style="zoom:35%;" >
-
-<h1 id="B-树索引并发"><a href="#B-树索引并发" class="headerlink" title="B+树索引并发"></a>B+树索引并发</h1><p>本章重点介绍Latch而不是Lock</p>
-<h3 id="Latch的实现方法"><a href="#Latch的实现方法" class="headerlink" title="Latch的实现方法"></a>Latch的实现方法</h3><ul>
-<li>Blocking OS Mutex<br>翻译成中文就是，“阻塞式的操作系统互斥锁”，它比较容易使用，因为这是操作系统原生支持的，但不能应对大规模并发竞争的场面，比如说C++的<code>std::mutex</code>就属于这种锁，具体的实现原理和xv6的<code>sleeplock</code>差不多：用最基本的自旋锁保护一个条件变量，获取该锁时检查这个条件变量，如果满足条件则修改条件变量从而获得该互斥锁，否则进入睡眠状态，直到该互斥锁被释放时条件变量被修改回来，释放互斥锁的线程唤醒已经睡眠的线程（详情参考xv6源码）</li>
-</ul>
-<p>互斥锁和自旋锁相比，争用锁的时候，得不到锁的线程不会一直自旋，浪费CPU资源，而是会进入睡眠，但是相应的睡眠与后续的唤醒操作由于会修改线程的状态，因此也有一定的开销</p>
-<ul>
-<li>Test-and-Set Spin Latch<br>这个简单来说，就是自旋锁，好处是可以通过一个指令就能获取&#x2F;释放锁，实现简单，但也不能应对大规模的并发竞争，而且对缓存和操作系统不友好;  实现方式和xv6的<code>spinlock</code>差不多</li>
-<li>Reader-Writer Latches<br>其实就是前面一开始提到的读写锁，读写锁底层是基于自旋锁来实现的，并且设有等待队列，为了避免想要获取写锁的线程等待太久（即避免starvation），会限制在同一时刻能够获取写锁的线程的数量：自从有线程开始排队等待获取写锁之后，后面想要获取读锁的线程都要开始等待，直到想获取写锁的线程成功获取写锁并完成相关操作，释放写锁为止。</li>
-</ul>
-<h1 id="排序和聚集"><a href="#排序和聚集" class="headerlink" title="排序和聚集"></a>排序和聚集</h1><ol>
-<li>排序方法：外部归并排序</li>
-<li>聚集：外部哈希聚集（也可以用排序）</li>
-</ol>
-<h2 id="TopK-Sort"><a href="#TopK-Sort" class="headerlink" title="TopK Sort"></a>TopK Sort</h2><p>查询数据表中最大的k个值时，我们通过维持一个大小为k的小根堆？</p>
-<img src="./15445/image-20230327182110475.png" alt="image-20230327182110475" style="zoom:50%;" />
-
-<h2 id="External-Merge-Sort"><a href="#External-Merge-Sort" class="headerlink" title="External Merge Sort"></a>External Merge Sort</h2><p>时间复杂度：logN</p>
-<p>外部排序的流程：</p>
-<ol>
-<li>先将数据表切分为N个page，并将每一个page内部排好顺序</li>
-<li>在缓冲区开辟至少三个page的空间（两个加载未排序的page，一个用来存储中间结果，中间结果写满后落盘）</li>
-<li>重复第二步</li>
-</ol>
-<img src="./15445/image-20230327182221374.png" alt="image-20230327182221374" style="zoom:50%;" />
-
-<h2 id="聚集"><a href="#聚集" class="headerlink" title="聚集"></a>聚集</h2><ul>
-<li>排序聚集（order by）</li>
-<li>哈希聚集（不需要对数据进行排序时， GROUPE BY， distinct）</li>
-</ul>
-<h3 id="外部哈希聚集"><a href="#外部哈希聚集" class="headerlink" title="外部哈希聚集"></a>外部哈希聚集</h3><p>当数据过大无法一次加载进内存时，我们通常采用外部哈希的方法对数据进行聚集。</p>
-<img src="./15445/image-20230327183352927.png" alt="image-20230327183352927" style="zoom:50%;" />
-
-<img src="./15445/image-20230327183529986.png" alt="image-20230327183529986" style="zoom:40%;" />
-
-<img src="./15445/image-20230327183738335.png" alt="image-20230327183738335" style="zoom:55%;" />
-
-<img src="./15445/image-20230327183801276.png" alt="image-20230327183801276" style="zoom:40%;" />
-
-<h3 id="连表操作"><a href="#连表操作" class="headerlink" title="连表操作"></a>连表操作</h3><img src="./15445/image-20230326103631213.png" alt="image-20230326103631213" style="zoom:50%;" />
-
-<p>我个人以为的执行流程：</p>
-<ol>
-<li>两数据表做笛卡尔积，生成中间表</li>
-<li>执行on，删除不符合条件的结果</li>
-<li>添加外部行，left join或者right join</li>
-<li>执行where进行进行筛选</li>
-<li>select出相应的结果</li>
-</ol>
-<ul>
-<li><p>join的方法：hash join、radix join</p>
-</li>
-<li><p>hash join</p>
-<ul>
-<li>不分区的hash，首先对小表遍历，并对每一个key进行hash计算，将结果存入hash表中。随后在对大表进行遍历，对每一个值进行计算并和hash表中的结果进行匹配</li>
-<li>分区hash 先将大表拆分成多个小表，每个表进行hash计算，将结果写入一个hash的bucket中，写入时要加锁。最后用大表中并行计算其中元素的hash，去bucket中匹配</li>
-</ul>
-</li>
-</ul>
-<h3 id="连表操作-1"><a href="#连表操作-1" class="headerlink" title="连表操作"></a>连表操作</h3><h4 id="1-stupid"><a href="#1-stupid" class="headerlink" title="1. stupid"></a>1. stupid</h4><img src="./15445/image-20230326104455875.png" alt="image-20230326104455875" style="zoom:50%;" />
-
-<p>缓存有可能失效，不断的替换缓存</p>
-<h5 id="优化策略："><a href="#优化策略：" class="headerlink" title="优化策略："></a>优化策略：</h5><ol>
-<li>固定驱动表，不断io inner table</li>
-</ol>
-<p>留一个page做output，一个给inner table，B-2给outer table</p>
-<p>尽量缓存外表，内表什么情况都要面临缓存重刷的问题</p>
-<img src="./15445/image-20230326105513361.png" alt="image-20230326105513361" style="zoom:50%;" />
-
-<ol start="2">
-<li>内表设置索引</li>
-</ol>
-<h4 id="2-merge-join"><a href="#2-merge-join" class="headerlink" title="2. merge join"></a>2. merge join</h4><p>什么时候最差？比较的都一样，都为100，可能回退</p>
-<p>最好是两表已经排好序</p>
-<p><img src="/./15445/image-20230326110539085.png" alt="image-20230326110539085"></p>
-<h4 id="3-hash-join"><a href="#3-hash-join" class="headerlink" title="3. hash join"></a>3. hash join</h4><ul>
-<li><p>build hash table</p>
-</li>
-<li><p>probe</p>
-</li>
-</ul>
-<p><strong>布隆过滤器</strong></p>
-<p>grace hash join</p>
-<img src="./15445/image-20230326112616444.png" alt="image-20230326112616444" style="zoom:45%;" />
-
-<p><strong>大表怎么做join？</strong></p>
-<p>对数据进行分区；对全局的hash table做分区；</p>
-<img src="./15445/image-20230326112856686.png" alt="image-20230326112856686" style="zoom:40%;" />
-
-
-
-
-
-<img src="./15445/image-20230326113606448.png" alt="image-20230326113606448" style="zoom:50%;" />
-
-
-
-<p>并发算子的实现有两大思路：第一个思路是多个线程去操纵集中的全部数据（比如说多个线程同时读一个表），第二个思路是把集中的数据切开，把每部分分给相应的线程，使得线程可以在本地处理</p>
-<blockquote>
-<p>Main-Memory Hash Joins on Multi-Core CPUs&#x2F; Tuning to the Underlying Hardware 论文解读<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/616540684">https://zhuanlan.zhihu.com/p/616540684</a></p>
-</blockquote>
-<h1 id="并发控制理论"><a href="#并发控制理论" class="headerlink" title="并发控制理论"></a>并发控制理论</h1><ul>
-<li>motivation</li>
-</ul>
-<p>how to avoid race condition? ( change the same record in a table at the same time ) <strong>lost update</strong></p>
-<p>what is the correct database state? <strong>concurrency control and recovery</strong></p>
-<ul>
-<li>transcation</li>
-</ul>
-<p>is the exection of a swquence of one or more operations on adatabse to perform some higher-level function</p>
-<p>basic unit of data base</p>
-<h3 id="数据库中存在的四种问题"><a href="#数据库中存在的四种问题" class="headerlink" title="数据库中存在的四种问题"></a>数据库中存在的四种问题</h3><ol>
-<li><p>脏读：读到了其他事务未commit的数据	（写后读）</p>
-</li>
-<li><p>不可重复读：同一个事务中，两次读出的数据不一致	（读后写）</p>
-</li>
-<li><p>幻读：同一个事务中，第二次读出的数据量和第一次的不一致	（读后写）</p>
-</li>
-<li><p>更新丢失：insert or update lost</p>
-</li>
-</ol>
-<h3 id="数据的四种隔离状态"><a href="#数据的四种隔离状态" class="headerlink" title="数据的四种隔离状态"></a>数据的四种隔离状态</h3><ol>
-<li>Read Uncommitted:	</li>
-<li>Read Commited:</li>
-<li>Read Repeatale:</li>
-<li>Serialize :</li>
-</ol>
-<h3 id="锁的种类"><a href="#锁的种类" class="headerlink" title="锁的种类"></a>锁的种类</h3><p>本章节着重讨论lock</p>
-<img src="./15445/image-20230403211905717.png" alt="image-20230403211905717" style="zoom:50%;" />
-
-
-
-
-
-<h2 id="2Phase-Locking"><a href="#2Phase-Locking" class="headerlink" title="2Phase Locking"></a>2Phase Locking</h2><p>Two-phase locking (2PL) is a concurrency control protocol that determines whether a txn can access an object in the database at runtime.</p>
-<p> The protocol does not need to know all the queries that a txn will execute ahead of time.</p>
-<ul>
-<li>二阶段锁：数据库的事务分为两个阶段，第一个阶段是growing获取锁的阶段，只有当获取到本次事务所需要的全部锁资源时才会结束该阶段。第二个阶段是shrinking阶段，即释放锁资源的阶段，这个阶段只允许释放锁资源</li>
-</ul>
-<ol>
-<li>普通的2PL会在对修改数据时加X锁并在事务结束时释放；在读取数据时加S锁，并在读取结束后释放</li>
-<li>stronger strict 2PL会在事务结束时释放所有锁资源</li>
-</ol>
-<h3 id="2PL"><a href="#2PL" class="headerlink" title="2PL"></a>2PL</h3><p>2PL on its own is sufficient to guarantee conflict serializability because it generates schedules whose precedence graph is acyclic. </p>
-<p>2PL本身就足以保证冲突的可序列化，因为它产生的时间表的优先级图是无环的。</p>
-<img src="./15445/image-20230403212310101.png" alt="image-20230403212310101" style="zoom:50%;" />
-
-<h4 id="Dirty-read"><a href="#Dirty-read" class="headerlink" title="Dirty read"></a>Dirty read</h4><p>But it is subject to cascading aborts.</p>
-<p>然而二阶段锁受限于集联回滚（dirty read）</p>
-<img src="./15445/image-20230403213848544.png" alt="image-20230403213848544" style="zoom:50%;" />
-
-<p>脏读的问题本质上因为T2这个事务在T1事务没有提交前就获得了读写权限，进而在未提交的临时版本上做了操作。</p>
-<p>Solution 采取strong strict 2PL</p>
-<p>严格二阶段锁协议的特点是事务所修改的数据在事务结束之前，其他事务都不能读写，这个协议的好处就是不会产生级联回滚。而且事务可能对数据进行了很多次更新，但在严格二阶段锁协议下，需要回滚时，直接回滚到事务开始时即可，不用管它进行过多少次更新，因为这个事务在进行数据更新时，绝对不会有其他的事务也在更新共享的数据</p>
-<h4 id="Deadlock"><a href="#Deadlock" class="headerlink" title="Deadlock"></a>Deadlock</h4><p>下图为导致死锁发生的情况，T1和T2互相占用相互需要的资源且不会释放</p>
-<img src="./15445/image-20230403214939513.png" alt="image-20230403214939513" style="zoom:50%;" />
-
-<p>本质：相互等待</p>
-<p>Solution</p>
-<ol>
-<li>死锁检测：</li>
-</ol>
-<p>DMBS去维护一个锁等待图，只要确保图中不出现环，则安全（周期性检查，有环就想办法解开）</p>
-<p>选择一个victim事务，让其回滚（选择影响小的事务回滚）</p>
-<ol start="2">
-<li>死锁避免：</li>
-</ol>
-<p>给予事务优先级，高优先级的事务拥有锁资源时低优先级的锁无法获取该锁，只能等待</p>
-<p>优先级可能导致饥饿现象</p>
-<h2 id="Hierarchical-Locking"><a href="#Hierarchical-Locking" class="headerlink" title="Hierarchical Locking"></a>Hierarchical Locking</h2><h2 id="TimeStamp-Ordering"><a href="#TimeStamp-Ordering" class="headerlink" title="TimeStamp Ordering"></a>TimeStamp Ordering</h2><p>时间戳顺序并发控制</p>
-<p>锁是一种悲观的并发控制手段，对数据加锁总是建立在未来有可能对数据进行操作的基础上，这会带来系统效率的下降。因此我们希望能利用一些乐观锁的方式来提高系统的性能。</p>
-<p>如果事务Ti的时间戳在Tj之前，那么DBMS要保证这两个事务都被提交之后的效果相当于Ti先执行，Ti执行完了之后Tj再执行</p>
-<h3 id="Basic-Timestamp-Ordering"><a href="#Basic-Timestamp-Ordering" class="headerlink" title="Basic Timestamp Ordering"></a>Basic Timestamp Ordering</h3><p>每一行数据都要有两个时间戳，一个是read timestamp另一个是read timestamp</p>
-<p>check timestamp for every op： if txn tries to access an obj written a higher timestamp, it aborts and restarts</p>
-<p><strong>本质上就是不能对还未到达的数据进行修改，即不能对未来的数据做操作</strong></p>
-<p>如果发现当前事务的时间戳比要读的对象的写时间戳（上次修改它的事务的时间戳）早，这就属于“操作来自未来的数据”了，无法满足“执行调度的结果等效于先到达的事务完整地在后到达的事务之前发生”，那么当前的Ti事务就不能再操作这个共享的对象，于是abort，之后系统给这个abort的事务一个新的时间戳，事务重启。</p>
-<p>否则就是合法的，当前事务可以读共享的对象，读完了之后更新这个对象的读时间戳（如果这个对象的读时间戳比当前事务的时间戳早，那就把读时间戳修改成当前事务的时间戳），然后把对象从数据库拷贝一份到事务本地（因为对象可能会在接下来被其他事务修改）</p>
-<img src="./15445/image-20230403222103713.png" alt="image-20230403222103713" style="zoom:50%;" />
-
-<p>如何优化以上这种情况呢？W(A)操作只需要写入本地事务即可，随后R(A)操作也只需要读本地的事务，且执行结果和串形结果一致</p>
-<h4 id="Tomas-rule"><a href="#Tomas-rule" class="headerlink" title="Tomas rule"></a>Tomas rule</h4><p>当前事务写一个对象时，如果当前事务的时间戳早于对象的读时间戳，表示未来存在一个读取该对象的事务，因此我们必须要abort当前事务。如果当前事务的时间戳早于对象的写时间戳，代表未来还会有一个事务来改变这个对象，因此我们可以正常执行无需abort</p>
-<img src="./15445/image-20230403222349585.png" alt="image-20230403222349585" style="zoom:50%;" />
-
-<p><u>基础的T&#x2F;O协议还有一些性能问题，事务在读任何数据的时候都要往本地拷贝一份，这会带来不小的开销（比如说全表扫描的时候就要把整个表复制一份）；</u></p>
-<p><u>以及还有长事务容易饥饿的问题</u></p>
-<h3 id="Optimistic-Concurrency-Control"><a href="#Optimistic-Concurrency-Control" class="headerlink" title="Optimistic Concurrency Control"></a>Optimistic Concurrency Control</h3><h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>以上三种方式都难以解决幻读的问题，因此幻读是指第二次读出第一次未读出的数据。是insert并发的问题。而且以上三种并发控制都是对已有数据进行限制，所以很难解决幻读的问题。（MVCC也不能解决幻读）</p>
-<h2 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h2><p>Muti Version Concurrency Control</p>
-<p>2PL或者TO等并发控制协议都存在一些问题，即无法对历史的数据进行操作。MVCC则是通过某些设计留下过去的数据版本，根据事务的序号决定读取的版本。并且2PL仍然存在读写冲突，MVCC能够允许数据事务同时对对象进行读写操作。</p>
-<h4 id="Undo-log"><a href="#Undo-log" class="headerlink" title="Undo log"></a>Undo log</h4><p>MVCC 的目的就是多版本并发控制，在数据库中的实现，就是为了解决<code>读写冲突</code>，它的实现原理主要是依赖记录中的 <strong><code>3个隐式字段</code><strong>，</strong><code>undo日志</code></strong> ，**<code> Read View</code>** 来实现的。所以我们先来看看这个三个 point 的概念</p>
-<ul>
-<li>DB_TRX_ID<br>6 byte，最近修改(修改&#x2F;插入)事务 ID：记录创建这条记录&#x2F;最后一次修改该记录的事务 ID</li>
-<li>DB_ROLL_PTR<br>7 byte，回滚指针，指向这条记录的上一个版本（存储于 rollback segment 里）</li>
-<li>DB_ROW_ID<br>6 byte，隐含的自增 ID（隐藏主键），如果数据表没有主键，InnoDB 会自动以DB_ROW_ID产生一个聚簇索引</li>
-</ul>
-<p>undo log 主要分为两种：</p>
-<ul>
-<li>insert undo log<br>代表事务在 insert 新记录时产生的 undo log, 只在事务回滚时需要，并且在事务提交后可以被立即丢弃</li>
-<li>update undo log<br>事务在进行 update 或 delete 时产生的 undo log ; 不仅在事务回滚时需要，在快照读时也需要；所以不能随便删除，只有在快速读或事务回滚不涉及该日志时，对应的日志才会被 purge 线程统一清除</li>
-</ul>
-<h4 id="Read-View"><a href="#Read-View" class="headerlink" title="Read View"></a>Read View</h4><p>利用readview做可见性判断</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">readview</span>&#123;</span></span><br><span class="line">  <span class="type">int</span> 	row_trx_id;</span><br><span class="line">  <span class="type">int</span>* 	trx_ids;</span><br><span class="line">  <span class="type">int</span> 	min_trx_id;</span><br><span class="line">  <span class="type">int</span> 	max_trx_id;</span><br><span class="line">&#125;readview;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Row_trx_id : 上一次对对象操作的id</li>
-<li>trx_ids : readview创建时活动的事务id集合</li>
-<li>min&#x2F;max：ids中最小或者最大的事务id</li>
-</ul>
-<p><em><strong>RC隔离条件下，要求在每次select时对事务创建一个readview；RR条件下，每次事务begin时创建一个readview</strong></em></p>
-<h4 id="可见性算法"><a href="#可见性算法" class="headerlink" title="可见性算法"></a>可见性算法</h4><p>Read View遵循一个可见性算法，主要是将要被修改的数据的最新记录中的 DB_TRX_ID（即当前事务 ID ）取出来，与系统当前其他活跃事务的 ID 去对比（由 Read View 维护），如果 DB_TRX_ID 跟 Read View 的属性做了某些比较，不符合可见性，那就通过 DB_ROLL_PTR 回滚指针去取出 Undo Log 中的 DB_TRX_ID 再比较，即遍历链表的 DB_TRX_ID（从链首到链尾，即从最近的一次修改查起），直到找到满足特定条件的 DB_TRX_ID , 那么这个 DB_TRX_ID 所在的旧记录就是当前事务能看见的最新老版</p>
-<ol>
-<li>首先比较 DB_TRX_ID &lt; up_limit_id , 如果小于，则当前事务能看到 DB_TRX_ID 所在的记录，如果大于等于进入下一个判断</li>
-<li>接下来判断 DB_TRX_ID &gt;&#x3D; low_limit_id , 如果大于等于则代表 DB_TRX_ID 所在的记录在 Read View 生成后才出现的，那对当前事务肯定不可见，如果小于则进入下一个判断</li>
-<li>判断 DB_TRX_ID 是否在活跃事务之中，trx_list.contains (DB_TRX_ID)，如果在，则代表我 Read View 生成时刻，你这个事务还在活跃，还没有 Commit，你修改的数据，我当前事务也是看不见的；如果不在，则说明，你这个事务在 Read View 生成之前就已经 Commit 了，你修改的结果，我当前事务是能看见的</li>
-</ol>
-<img src="./15445/image-20230403225052564.png" alt="image-20230403225052564" style="zoom:50%;" />
-
-<blockquote>
-<p>【MySQL笔记】正确的理解MySQL的MVCC及实现原理<a target="_blank" rel="noopener" href="https://blog.csdn.net/SnailMann/article/details/94724197">https://blog.csdn.net/SnailMann/article/details/94724197</a></p>
-</blockquote>
-<h1 id="Buffer-Pool-Manager"><a href="#Buffer-Pool-Manager" class="headerlink" title="Buffer Pool Manager"></a>Buffer Pool Manager</h1><h1 id="Lock-Manager"><a href="#Lock-Manager" class="headerlink" title="Lock Manager"></a>Lock Manager</h1><h2 id="Task-1"><a href="#Task-1" class="headerlink" title="Task 1"></a>Task 1</h2><ul>
-<li>使用二阶段锁机制，实现<strong>READ_UNCOMMITED, READ_COMMITTED, and REPEATABLE_READ</strong>三个事务隔离级别，确保LM能够正确的grant lock or release lock</li>
-</ul>
-<ol>
-<li><p>事务开始时进入growing，当事务要访问数据时，首先向LM申请对应数据的锁</p>
-<p>LM中的操作：</p>
-<ol>
-<li>会检查该数据是否有被锁住，若没有被锁住，则直接grant lock；若锁住，则判断申请锁与当前锁是否兼容，不兼容 throw exception</li>
-<li>若是同一个等级的锁，则无需操作；若是可以升级的锁，则升级后重新加入等待队列</li>
-</ol>
-</li>
-</ol>
-<p><img src="/./15445/image-20230615205243038.png" alt="image-20230615205243038"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/04/04/15445/" data-id="clmdk0mgb000109v60u8j4ifp" data-title="CMU-15445" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Database/" rel="tag">Database</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-TCP-IP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/01/14/TCP-IP/" class="article-date">
-  <time class="dt-published" datetime="2023-01-13T16:25:44.000Z" itemprop="datePublished">2023-01-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/01/14/TCP-IP/">TCP/IP</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="TCP-IP"><a href="#TCP-IP" class="headerlink" title="TCP&#x2F;IP"></a>TCP&#x2F;IP</h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/01/14/TCP-IP/" data-id="clmdk0mgk001f09v601yr7yk9" data-title="TCP/IP" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-raft" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/11/29/raft/" class="article-date">
-  <time class="dt-published" datetime="2022-11-29T13:45:56.000Z" itemprop="datePublished">2022-11-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/11/29/raft/">Raft</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Raft"><a href="#Raft" class="headerlink" title="Raft"></a>Raft</h1><h2 id="0-Raft的内部结构"><a href="#0-Raft的内部结构" class="headerlink" title="0. Raft的内部结构"></a>0. Raft的内部结构</h2><h3 id="什么是raft"><a href="#什么是raft" class="headerlink" title="什么是raft"></a>什么是raft</h3><ul>
-<li>raft是分布式系统中的一致性算法，其目的是保障分布式集群中不同节点上数据的一致性，同时为分布式系统提供高可用性，能够持续对外提供服务。</li>
-</ul>
-<p> Leader 负责与Client和集群中的Follower沟通，主要控制数据的流向</p>
-<ol>
-<li>Client 接受用户的指令，并将数据传递给Leader</li>
-<li>Follower 可以理解为正在运行的机器，接受Leader传递的日志，并将日志执行到状态机中</li>
-</ol>
-<h3 id="Raft-中存在的struct"><a href="#Raft-中存在的struct" class="headerlink" title="Raft 中存在的struct"></a>Raft 中存在的struct</h3><p>在RPC响应之前，需要更新稳定存储介质</p>
-<table>
-<thead>
-<tr>
-<th align="center">需要持久化的状态</th>
-<th align="center"></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">currentTerm</td>
-<td align="center">server存储的最新任期（初始化为0且单调递增）</td>
-</tr>
-<tr>
-<td align="center">votedFor</td>
-<td align="center">当前任期接受到的candidateID（初始化为0）</td>
-</tr>
-<tr>
-<td align="center">log[ ]</td>
-<td align="center">日志记录包含状态机的命令和从leader接收到的日志任期</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th align="center">所有机器可变状态</th>
-<th align="center"></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">commitIndex</td>
-<td align="center">即将被提交的日志记录的索引</td>
-</tr>
-<tr>
-<td align="center">lastApplied</td>
-<td align="center">已经被提交到状态机的最后一个日志的索引（初值为0且单调递增）</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th align="center">leader可变状态</th>
-<th align="center">每次选举后重新初始化</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">nextIndex[ ]</td>
-<td align="center">每台机器在数组占据一个元素，元素的值为下条发送到该机器的日志索引 (初始值为 leader 最新一条日志的索引 +1)</td>
-</tr>
-<tr>
-<td align="center">matchIndex[ ]</td>
-<td align="center">每台机器在数组中占据一个元素，元素的记录将要复制给该机器日志的索引</td>
-</tr>
-</tbody></table>
-<ul>
-<li>AppendEntriesArgs</li>
-</ul>
-<p>appendentries 是leader用来维持心跳机制和日志添加功能的结构，具体包含的参数如下</p>
-<p>其中PreLogIndex和PreLogTerm是用来为确定follower所需的日志号</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> AppendEntriesArgs <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">// Your data here (2A, 2B).</span></span><br><span class="line">	Term         <span class="type">int</span>			<span class="comment">// 表明这是Term这个任期的Leader</span></span><br><span class="line">	LeaderId     <span class="type">int</span>			<span class="comment">// </span></span><br><span class="line">	PreLogIndex  <span class="type">int</span>			<span class="comment">// 前一条日志的槽位，不一定是已提交的日志</span></span><br><span class="line">	PreLogTerm   <span class="type">int</span>			<span class="comment">// 前一条日志的任期号</span></span><br><span class="line">	LeaderCommit <span class="type">int</span>			<span class="comment">// leader已经提交的日志号</span></span><br><span class="line">  Log					 []Entry	<span class="comment">// 日志内容</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>RequestVoteArgs</li>
-</ul>
-<p>LastLogIndex和LastLogTerm用来做Election Restriction，确保能够选出当前任期内具有最新日志的节点作为leader</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> RequestVoteArgs <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">// Your data here (2A, 2B).</span></span><br><span class="line">	Term         <span class="type">int</span></span><br><span class="line">	CandidateId  <span class="type">int</span></span><br><span class="line">	LastLogTerm  <span class="type">int</span>	<span class="comment">// leader最后一条日志所属的任期号</span></span><br><span class="line">	LastLogIndex <span class="type">int</span>	<span class="comment">// leader最后一条日志的槽位</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="一、-Leader-election"><a href="#一、-Leader-election" class="headerlink" title="一、 Leader election"></a>一、 Leader election</h2><p>Raft 使用心跳机制来触发选主</p>
-<p>每次随机时间结束，server都会将term+1，较少的随机时间会导致先结束的server变成Candidate</p>
-<p>下图为raft中节点的状态转换图，其中Leader状态只能由Candidate转变而来</p>
-<p><img src="/./raft/image-20230201175417736.png" alt="image-20230201175417736"></p>
-<h3 id="1-选主流程"><a href="#1-选主流程" class="headerlink" title="1. 选主流程"></a>1. 选主流程</h3><p>在随机事件到达后，follower先将自己的term+1，立刻将自身状态更新为candidate并投自己一票，随后向其他节点发送request vote，等待大多数节点的返回；</p>
-<ol>
-<li>若candidate收到大多数的投票，自己直接转变为leader，并向其他节点发送心跳抑制其他节点进行选举</li>
-<li>若candidate先接受到leader的心跳，若心跳任期大余candidate任期，则当前节点转变为follower；若小于或等于其任期，无需操作；</li>
-<li>若candidate在规定时间既没收到大多数选票，则等待一个随机事件后重新进行选主过程</li>
-</ol>
-<h3 id="2-细节"><a href="#2-细节" class="headerlink" title="2. 细节"></a>2. 细节</h3><ul>
-<li>节点如何判断是否向candidate投票？</li>
-</ul>
-<p>若candidate的任期号大于当前节点的任期号，进入Election Restriction判断（其余情况均无法投票）</p>
-<p>若candidate 的 LastLogTerm &gt; 当前节点的最后一条日志的任期号，则可以投票</p>
-<p>若candidate 的 LastLogTerm &#x3D; 当前节点的最后一条日志的任期号，则比较二者日志的index，若candidate的index号 &gt; 当前的index号，则可以投票</p>
-<ul>
-<li>在安全性章节中我们规定了选主时的限制，以保证当前leader包含了最新的日志信息</li>
-</ul>
-<p>此时只有s2可以向s4投票，因为s1，s3，s5都有新的日志[ 5 ]</p>
-<p><strong>日志文件是指写入的日志，并不一定要是提交的日志（实验证明）</strong></p>
-<img src="./raft/image-20230316215346215.png" alt="image-20230316215346215" style="zoom:50%;" />
-
-
-
-<h2 id="二、-Log-Replicated"><a href="#二、-Log-Replicated" class="headerlink" title="二、 Log Replicated"></a>二、 Log Replicated</h2><h3 id="1-日志复制流程"><a href="#1-日志复制流程" class="headerlink" title="1. 日志复制流程"></a>1. 日志复制流程</h3><p>candidate变为leader后，会开始处理客户端的请求，那么client怎么确定那台机器是leader呢？</p>
-<ul>
-<li>client会直接向集群中任意一台机器发送询问请求，若机器恰好为leader则直接确定；若为普通follower，则可以等待Leader的心跳结果并返回；若当前为宕机的机器，经过一段时间后重新发送请求即可</li>
-</ul>
-<p>client发送指令给leader，leader首先会将其写入自己的日志，并发送appendEntry开启日志复制阶段，当集群复制完毕，leader会将日志应用到当前状态机，并开启应用阶段，当集群应用完毕，leader会提交当前日志（只要复制成功，此日志就一定存在于大多数节点中，无需关注提交是否成功）</p>
-<h3 id="2-一致性检测（日志恢复）"><a href="#2-一致性检测（日志恢复）" class="headerlink" title="2. 一致性检测（日志恢复）"></a>2. 一致性检测（日志恢复）</h3><p>判断leader发来的AppendEntry RPC是否能成功的应用在当前节点上</p>
-<ul>
-<li>为什么需要做这样的判断呢？</li>
-</ul>
-<p>因为Raft中只要求大多数节点保持一致，整个集群就可用，因此集群中可能存在落后很多日志的慢速节点。为了保障慢速节点的一致性，我们不能将最新的日志插入这样的节点，一旦为慢速节点插入新的日志就会造成不一致的现象发生。所以在插入日志前我们需要对节点做一致性检测</p>
-<ul>
-<li>如何做一致性检测？</li>
-</ul>
-<p>AppendEntry中包含这样两个参数，并且Leader还维护了两个数组分别是nextIndex和matchIndex	</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PreLogIndex  <span class="type">int</span>	<span class="comment">// 待插入日志的前一条日志的槽位，不一定是已提交的日志</span></span><br><span class="line">PreLogTerm   <span class="type">int</span>	<span class="comment">// 待插入日志的前一条日志的任期号</span></span><br></pre></td></tr></table></figure>
-
-<p>节点收到AppendEntry时，会将自己的最后一条日志的index与PreLogIndex相比较，若相等，则比较最后一条日志的任期号和PreLogTerm，若也相等则可以顺利插入日志，返回插入成功更新nextIndex和matchIndex</p>
-<p>若index比较不等（只有可能是最后一条日志的index小），则返回插入失败，Leader更新nextIndex &#x3D; nextIndex - 1；随后Leader重新发送AppendEntry，并对此前插入日志失败的节点调整PreLogIndex和PreLogIndex，PreLogIndex &#x3D; nextIndex[ rf.me ] - 1，并重复做上面两步骤，直到成功插入</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rf *Raft)</span></span> AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply) &#123;</span><br><span class="line">	rf.mu.Lock()</span><br><span class="line">	<span class="keyword">defer</span> rf.mu.Unlock()</span><br><span class="line">	reply.Success = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Reply false if term &lt; currentTerm (§5.1)</span></span><br><span class="line">	<span class="keyword">if</span> args.Term &lt; rf.currentTerm &#123;</span><br><span class="line">		reply.Term = rf.currentTerm</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// For Candidates. If AppendEntries RPC received from new leader: convert to follower</span></span><br><span class="line">	<span class="keyword">if</span> rf.state == CandidateState &amp;&amp; rf.currentTerm == args.Term &#123;</span><br><span class="line">		rf.state = FollowerState</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	rf.checkTerm(args.Term)</span><br><span class="line">	reply.Term = rf.currentTerm</span><br><span class="line">	rf.setElectionTimeout(randHeartbeatTimeout())</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Reply false if log doesn’t contain an entry at prevLogIndex whose term matches prevLogTerm (§5.3)</span></span><br><span class="line">	<span class="keyword">if</span> args.PrevLogTerm == <span class="number">-1</span> || args.PrevLogTerm != rf.log.getEntry(args.PrevLogIndex).Term &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// If an existing entry conflicts with a new one (same index but different terms),</span></span><br><span class="line">	<span class="comment">// delete the existing entry and all that follow it (§5.3)</span></span><br><span class="line">	<span class="keyword">for</span> i, entry := <span class="keyword">range</span> args.Entries &#123;</span><br><span class="line">		<span class="keyword">if</span> rf.log.getEntry(i+<span class="number">1</span>+args.PrevLogIndex).Term != entry.Term &#123;</span><br><span class="line">			rf.log = <span class="built_in">append</span>(rf.log.getSlice(<span class="number">1</span>, i+<span class="number">1</span>+args.PrevLogIndex), args.Entries[i:]...)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	reply.Success = <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>hints</li>
-</ul>
-<p>在此阶段，我们有可能会擦除一些节点的日志，为什么这样擦出是安全的呢，因为这些日志一定是没有应用到大多数节点的日志</p>
-<ul>
-<li>什么时候重置ElectionTimeOut？</li>
-</ul>
-<p>每次发起</p>
-<ul>
-<li>什么时候重置HeartBeatTimeOut？</li>
-</ul>
-<h2 id="三、-持久化和日志压缩"><a href="#三、-持久化和日志压缩" class="headerlink" title="三、 持久化和日志压缩"></a>三、 持久化和日志压缩</h2><h3 id="1-日志压缩流程"><a href="#1-日志压缩流程" class="headerlink" title="1. 日志压缩流程"></a>1. 日志压缩流程</h3><ul>
-<li>为什么要日志压缩？</li>
-</ul>
-<p>集群中每一个机器的容量是有限的，如果日志无限的增长一定会对我们的机器带来隐患，因此在某些时间点对过去的一些已经被应用的日志做压缩是十分有必要的。</p>
-<ul>
-<li>怎么做日志压缩？</li>
-</ul>
-<p>TODO：</p>
-<p>好复杂。。不知道怎么写了。。找时间再补上</p>
-<h2 id="四、面试题"><a href="#四、面试题" class="headerlink" title="四、面试题"></a>四、面试题</h2><ol>
-<li>如果worker节点重启后直接变为candidate会怎么样？</li>
-</ol>
-<h2 id="五、性能优化"><a href="#五、性能优化" class="headerlink" title="五、性能优化"></a>五、性能优化</h2><h2 id="五、引用"><a href="#五、引用" class="headerlink" title="五、引用"></a>五、引用</h2><blockquote>
-<p>Raft Scope 演示视频地址 <a target="_blank" rel="noopener" href="https://raft.github.io/raftscope/index.html">https://raft.github.io/raftscope/index.html</a></p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/11/29/raft/" data-id="clmdk0mgl001m09v61mchd3b0" data-title="Raft" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Lab6-COW" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/11/18/Lab6-COW/" class="article-date">
-  <time class="dt-published" datetime="2022-11-18T12:32:48.000Z" itemprop="datePublished">2022-11-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/11/18/Lab6-COW/">Lab6-COW</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Copy-on-Write"><a href="#Copy-on-Write" class="headerlink" title="Copy on Write"></a>Copy on Write</h2><h3 id="什么是写时复制机制？"><a href="#什么是写时复制机制？" class="headerlink" title="什么是写时复制机制？"></a>什么是写时复制机制？</h3><p>写时复制机制是操作系统中非常常见的一种优化机制，主要为了解决fork-exec这一系列的问题。</p>
-<p>例如，当我们使用shell处理指令时，shell通常会通过fork创建一个子进程，并利用exec加载指令程序到子进程中。通常fork会将shell父进程中的所有内容都做一份拷贝，例如pagetable，用户栈，甚至包括打开文件表。然而exec会加载一个新的程序占据子进程，所以以上这些资源会被立刻丢弃，在用户的视角这样的操作显然有点浪费</p>
-<p>那么我们就可以利用一种乐观的心态来解决这个问题，例如在fork的时候并不去真正的复制内存空间（因为uvmcopy会为我们分配新的物理空间），而是仅仅复制页表中的内容呢？</p>
-<p><img src="/./Lab6-COW/image-20230407152403851.png" alt="image-20230407152403851"></p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>上图给我们一种复制地址空间的思路，只复制映射而不去分配物理地址空间，当真正被访问时再去分配。那么如何实现这样的操作呢？我们可以结合lazy- allocation中的实验过程来完成这个lab</p>
-<h4 id="修改uvmcopy"><a href="#修改uvmcopy" class="headerlink" title="修改uvmcopy"></a>修改uvmcopy</h4><p>对虚拟地址的操作免不了利用uvmcopy这个函数，我们使用这个函数进行地址空间的复制。在Lab3中我们介绍了这个函数，其中uvmcopy会在复制地址空间时eager的为子进程分配物理页面，尽然我们要lazy的处理这个问题，那么一定要对这个函数进行修改</p>
-<img src="./Lab3-pagetable/image-20230313085847793.png" alt="image-20230313085847793" style="zoom:50%;" />
-
-<p>COW要求我们在此时将父子进程的页表项都标记为只读的，并为这些pte做好标记，当进程需要对页表内容进行修改时，我们能够识别出COW带来的问题。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// COW fault</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_COW (1L &lt;&lt; 8)</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">uvmcopy</span><span class="params">(<span class="type">pagetable_t</span> old, <span class="type">pagetable_t</span> new, uint64 sz)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">pte_t</span> *pte;</span><br><span class="line">  uint64 pa, i;</span><br><span class="line">  uint flags;</span><br><span class="line">  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; sz; i += PGSIZE)&#123;</span><br><span class="line">    <span class="keyword">if</span>((pte = walk(old, i, <span class="number">0</span>)) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;uvmcopy: pte should exist&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;uvmcopy: page not present&quot;</span>);</span><br><span class="line">    pa = PTE2PA(*pte);</span><br><span class="line">    flags = PTE_FLAGS(*pte);</span><br><span class="line">    <span class="comment">// 仅对可写页面设置COW标记</span></span><br><span class="line">    <span class="keyword">if</span>(flags &amp; PTE_W) &#123;</span><br><span class="line">      <span class="comment">// 禁用写并设置COW Fork标记</span></span><br><span class="line">      flags = (flags | PTE_COW) &amp; ~PTE_W;</span><br><span class="line">      *pte = PA2PTE(pa) | flags;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(mappages(new, i, PGSIZE, pa, flags) != <span class="number">0</span>) &#123;</span><br><span class="line">      uvmunmap(new, <span class="number">0</span>, i / PGSIZE, <span class="number">1</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="应对COW-fault"><a href="#应对COW-fault" class="headerlink" title="应对COW fault"></a>应对COW fault</h4><p>既然父子进程都被我们修改为只读的，那么我们对子进程的任何修改都会触发page fault，于此同时我们还可以根据我们uvmcopy时的标记来判断这个page fault是否是cow fault，如果是一个cow fault我们便可以为其分配一块实际的物理页面</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">uint64 cause = r_scause();</span><br><span class="line"><span class="keyword">if</span>(cause == <span class="number">13</span> || cause == <span class="number">15</span>) &#123;</span><br><span class="line">  uint64 fault_va = r_stval();  <span class="comment">// 获取出错的虚拟地址</span></span><br><span class="line">  <span class="keyword">if</span>(fault_va &gt;= sz)</span><br><span class="line">    p-&gt;killed = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span>(fault_va &gt;= MAXVA)</span><br><span class="line">    panic(<span class="string">&quot;MAXVA!&quot;</span>);</span><br><span class="line">  <span class="type">pte_t</span>* pte = walk(pagetable, fault_va, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span>(pte == <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;pte is null!&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span>((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;pte is not allow!&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span>(*pte &amp; PTE_F)&#123;</span><br><span class="line">    <span class="comment">// is cow pagefault</span></span><br><span class="line">    <span class="comment">// TODO alloc an phscial page just like kalloc</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  panic(<span class="string">&quot;not cow!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="释放地址空间"><a href="#释放地址空间" class="headerlink" title="释放地址空间"></a>释放地址空间</h4><p>通过以上的设计我们看似完成了COW机制，然而当进程释放地址空间时问题就发生了。父子进程中其中任何一个进程释放内存空间时，都会导致另一个进程的内存空间失效，因此我们不能随意的释放内存空间。</p>
-<p>那么如何保证安全的释放呢？我们应该在复制页表时对页表中的每一个pte有一个计数器，通过计数器确定这个pte是否还被引用，若被引用那么只需要对计数器进行操作，若只剩一个引用，那么我们可以正常的释放pte的内容。（ std::shared_ptr ）</p>
-<p><strong>初始化计数器</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">run</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> <span class="title">lock</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">freelist</span>;</span></span><br><span class="line">&#125; kmem;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 只需要在freerange()时对数组进行初始化即可</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ref_stru</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> <span class="title">lock</span>;</span></span><br><span class="line">  <span class="type">int</span> cnt[PHYSTOP / PGSIZE];  <span class="comment">// 引用计数</span></span><br><span class="line">&#125; ref;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free the page of physical memory pointed at by v,</span></span><br><span class="line"><span class="comment">// which normally should have been returned by a</span></span><br><span class="line"><span class="comment">// call to kalloc().  (The exception is when</span></span><br><span class="line"><span class="comment">// initializing the allocator; see kinit above.)</span></span><br><span class="line"><span class="type">void</span> *</span><br><span class="line"><span class="title function_">kalloc</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line"></span><br><span class="line">  acquire(&amp;kmem.lock);</span><br><span class="line">  r = kmem.freelist;</span><br><span class="line">  <span class="keyword">if</span>(r) &#123;</span><br><span class="line">    kmem.freelist = r-&gt;next;</span><br><span class="line">    acquire(&amp;ref.lock);</span><br><span class="line">    ref.cnt[(uint64)r / PGSIZE] = <span class="number">1</span>;  <span class="comment">// 将引用计数初始化为1</span></span><br><span class="line">    release(&amp;ref.lock);</span><br><span class="line">  &#125;</span><br><span class="line">  release(&amp;kmem.lock);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(r)</span><br><span class="line">    <span class="built_in">memset</span>((<span class="type">char</span>*)r, <span class="number">5</span>, PGSIZE); <span class="comment">// fill with junk</span></span><br><span class="line">  <span class="keyword">return</span> (<span class="type">void</span>*)r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>释放页表</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">kfree</span><span class="params">(<span class="type">void</span> *pa)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(((uint64)pa % PGSIZE) != <span class="number">0</span> || (<span class="type">char</span>*)pa &lt; end || (uint64)pa &gt;= PHYSTOP)</span><br><span class="line">    panic(<span class="string">&quot;kfree&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 只有当引用计数为0了才回收空间</span></span><br><span class="line">  <span class="comment">// 否则只是将引用计数减1</span></span><br><span class="line">  acquire(&amp;ref.lock);</span><br><span class="line">  <span class="keyword">if</span>(--ref.cnt[(uint64)pa / PGSIZE] == <span class="number">0</span>) &#123;</span><br><span class="line">    release(&amp;ref.lock);</span><br><span class="line"></span><br><span class="line">    r = (<span class="keyword">struct</span> run*)pa;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Fill with junk to catch dangling refs.</span></span><br><span class="line">    <span class="built_in">memset</span>(pa, <span class="number">1</span>, PGSIZE);</span><br><span class="line"></span><br><span class="line">    acquire(&amp;kmem.lock);</span><br><span class="line">    r-&gt;next = kmem.freelist;</span><br><span class="line">    kmem.freelist = r;</span><br><span class="line">    release(&amp;kmem.lock);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    release(&amp;ref.lock);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>实验整体思路不是很难，但有很多细节需要处理。做完这个实验可以深入理解进程创建和执行的一个流程， 并且能够让我们充分理解计算机系统中一些lazy的思想</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/11/18/Lab6-COW/" data-id="clmdk0mgh000q09v61zd4b2dy" data-title="Lab6-COW" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Lab5-Lazy-Allocation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/11/01/Lab5-Lazy-Allocation/" class="article-date">
-  <time class="dt-published" datetime="2022-11-01T11:07:53.000Z" itemprop="datePublished">2022-11-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/11/01/Lab5-Lazy-Allocation/">Lab5-Lazy Allocation</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Lazy-Allocation"><a href="#Lazy-Allocation" class="headerlink" title="Lazy-Allocation"></a>Lazy-Allocation</h2><h3 id="什么是懒分配策略？"><a href="#什么是懒分配策略？" class="headerlink" title="什么是懒分配策略？"></a>什么是懒分配策略？</h3><p>操作系统可以使用页表硬件的技巧之一是延迟分配用户空间堆内存（lazy allocation of user-space heap memory）。Xv6应用程序使用<code>sbrk()</code>系统调用向内核请求堆内存。在我们给出的内核中，<code>sbrk()</code>分配物理内存并将其映射到进程的虚拟地址空间。内核为一个大请求分配和映射内存可能需要很长时间。例如，考虑由262144个4096字节的页组成的千兆字节；即使单独一个页面的分配开销很低，但合起来如此大的分配数量将不可忽视。此外，有些程序申请分配的内存比实际使用的要多（例如，实现稀疏数组），或者为了以后的不时之需而分配内存。为了让<code>sbrk()</code>在这些情况下更快地完成，复杂的内核会延迟分配用户内存。也就是说，<code>sbrk()</code>不分配物理内存，只是记住分配了哪些用户地址，并在用户页表中将这些地址标记为无效。当进程第一次尝试使用延迟分配中给定的页面时，CPU生成一个页面错误（page fault），内核通过分配物理内存、置零并添加映射来处理该错误。</p>
-<p><strong>在我的理解中，懒分配或者懒机制是一种乐观的思想。如同乐观锁一般，我们会对系统做一个十分乐观的假设，设定当前状态不会被频繁的改动，我们只需要在真的需要改动时采取一些策略即可。</strong></p>
-<p><img src="/./Lab5-Lazy-Allocation/image-20230407132602866.png" alt="image-20230407132602866"></p>
-<ul>
-<li>系统调用流程：<ul>
-<li>陷入内核**&#x3D;&#x3D;&gt;<strong><code>usertrap</code>中<code>r_scause()==8</code>的分支</strong>&#x3D;&#x3D;&gt;<strong><code>syscall()</code></strong>&#x3D;&#x3D;&gt;**回到用户空间</li>
-</ul>
-</li>
-<li>页面错误流程：<ul>
-<li>陷入内核**&#x3D;&#x3D;&gt;<strong><code>usertrap</code>中<code>r_scause()==13||r_scause()==15</code>的分支</strong>&#x3D;&#x3D;&gt;<strong>分配内存</strong>&#x3D;&#x3D;&gt;**回到用户空间</li>
-</ul>
-</li>
-</ul>
-<p><u>由系统调用和pagefault的处理，我们都可以看出在xv6中针对于中断、异常、错误的处理方式是统一的，都是位于usertrap函数中</u></p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><h4 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h4><p>按照提示注释掉实际分配物理地址空间的代码即可</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">uint64</span><br><span class="line"><span class="title function_">sys_sbrk</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"> 	...</span><br><span class="line">  <span class="comment">// lazy allocation</span></span><br><span class="line">  myproc()-&gt;sz += n;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>usertrap</p>
-<p>保证发生pagefault的地址在新分配的地址空间内，若是超出了p-&gt;sz则是正常的OOM</p>
-<p>首先要保证在sp之上，其次还要在sz之下同时还要有足够的内存空间</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  uint64 cause = r_scause();</span><br><span class="line">  <span class="keyword">if</span>(cause == <span class="number">8</span>) &#123;	<span class="comment">// syscall handler</span></span><br><span class="line">    ...</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>((which_dev = devintr()) != <span class="number">0</span>) &#123;	<span class="comment">// timer</span></span><br><span class="line">    <span class="comment">// ok</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(cause == <span class="number">13</span> || cause == <span class="number">15</span>) &#123;</span><br><span class="line">    <span class="comment">// 处理页面错误</span></span><br><span class="line">    uint64 fault_va = r_stval();  <span class="comment">// 产生页面错误的虚拟地址</span></span><br><span class="line">    <span class="type">char</span>* pa;                     <span class="comment">// 分配的物理地址</span></span><br><span class="line">    <span class="keyword">if</span>(PGROUNDUP(p-&gt;trapframe-&gt;sp) - <span class="number">1</span> &lt; fault_va &amp;&amp; fault_va &lt; p-&gt;sz &amp;&amp;(pa = kalloc()) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(pa, <span class="number">0</span>, PGSIZE);</span><br><span class="line">		    mappage(...);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      p-&gt;killed = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="释放内存"><a href="#释放内存" class="headerlink" title="释放内存"></a>释放内存</h4><p>我们在进程中一旦启用了懒分配策略，我们在为进程释放内存时就要格外注意，毕竟我们不能释放还未分配物理地址空间的内存</p>
-<blockquote>
-<p>Frans : 因为对应的物理内存还没有分配，所以这部分新增加的内存的确没有映射关系。我们现在是lazy allocation，我们只会为需要的内存分配物理内存page。如果我们不需要这部分内存，那么就不会存在map关系，这非常的合理。相应的，我们对于这部分内存也不能释放，因为没有实际的物理内存可以释放，所以这里最好的处理方式就是continue，跳过并处理下一个page。</p>
-</blockquote>
-<p>uvmunmap</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(a = va; a &lt; va + npages*PGSIZE; a += PGSIZE)&#123;</span><br><span class="line">  <span class="keyword">if</span>((pte = walk(pagetable, a, <span class="number">0</span>)) == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line">  <span class="keyword">if</span>((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="处理系统调用时的lazy-allocation"><a href="#处理系统调用时的lazy-allocation" class="headerlink" title="处理系统调用时的lazy allocation"></a>处理系统调用时的lazy allocation</h4><p>如果在调用系统调用时发生了pagefault该怎么处理呢？</p>
-<p>我们在执行syscall时都会从用户态捕获将要访问的地址，因此我们只需要在捕获地址时对地址进行判断即可</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">argaddr</span><span class="params">(<span class="type">int</span> n, uint64 *ip)</span></span><br><span class="line">&#123;</span><br><span class="line">  *ip = argraw(n);</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span>* <span class="title">p</span> =</span> myproc();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理向系统调用传入lazy allocation地址的情况</span></span><br><span class="line">  <span class="keyword">if</span>(walkaddr(p-&gt;pagetable, *ip) == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span>(PGROUNDUP(p-&gt;trapframe-&gt;sp) - <span class="number">1</span> &lt; *ip &amp;&amp; *ip &lt; p-&gt;sz) &#123;</span><br><span class="line">      <span class="type">char</span>* pa = kalloc();</span><br><span class="line">      <span class="keyword">if</span>(pa == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">      <span class="built_in">memset</span>(pa, <span class="number">0</span>, PGSIZE);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(mappages(p-&gt;pagetable, PGROUNDDOWN(*ip), PGSIZE, (uint64)pa, PTE_R | PTE_W | PTE_X | PTE_U) != <span class="number">0</span>) &#123;</span><br><span class="line">        kfree(pa);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><blockquote>
-<p>MIT 6.S081 课程记录 <a target="_blank" rel="noopener" href="https://mit-public-courses-cn-translatio.gitbook.io/mit6-s081/lec08-page-faults-frans/8.2-lazy-page-allocation">https://mit-public-courses-cn-translatio.gitbook.io/mit6-s081/lec08-page-faults-frans/8.2-lazy-page-allocation</a></p>
-<p>MIT6.S081 实验笔记 <a target="_blank" rel="noopener" href="http://xv6.dgs.zone/labs/requirements/lab5.html">http://xv6.dgs.zone/labs/requirements/lab5.html</a></p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/11/01/Lab5-Lazy-Allocation/" data-id="clmdk0mgg000n09v68llectaa" data-title="Lab5-Lazy Allocation" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2023/09/04/hello-world/">Hello World</a>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
           </li>
+          
         
-          <li>
-            <a href="/2023/08/25/Optimizer/">Optimizer</a>
-          </li>
         
-          <li>
-            <a href="/2023/08/25/LRU/">LRU</a>
-          </li>
-        
-          <li>
-            <a href="/2023/08/20/mysql/">mysql</a>
-          </li>
-        
-          <li>
-            <a href="/2023/08/19/c/">c++</a>
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
           </li>
         
       </ul>
     </div>
   </div>
+</nav>
 
   
-</aside>
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="An elegant Material-Design theme for Hexo"></span>
+          
+        </div>
+
         
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
+
       
-      &copy; 2023 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
     </div>
   </div>
-</footer>
+</div>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/06/12/TiDB/" target="_self">
+          TiDB
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/06/12/TiDB/" target="_self">
+        <div>
+          TiDB统计信息的维护： 取消了count-min sketch（q-error太大，对于低频的数据估算误差太大） 代码中是FMSketch（使用末尾0来识别数据，并用2的最高频率次幂作为频率估计）   增加了top-n，以提高点查询的准确率（取前1000的top N，且直方图中不包含这些top N）  统计信息的收集 TiDB 中，会对每个表具体的列构建一个等深直方图，区间查询的估算便是借助该直
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-06-12 17:20" pubdate>
+              2023-06-12
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Database/">#Database</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/06/12/6-12/" target="_self">
+          6.12
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/06/12/6-12/" target="_self">
+        <div>
+          6.12 学习笔记算法 二分查找，完整学习了左右侧边界的照法以及数组中含有重复数字时的处理方法； 左边界，返回left即可（最后判断left是否超出nums的size） 右边界，返回right即可（最后判断right是否小于0）  螺旋矩阵：四个边界，注意如何调整边界即可   数组中的题目主要是使用双指针（快慢指针， 双向指针）  注意指针的结束条件，边界条件  数据库多版本并发控制二阶段锁更新数
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-06-12 16:23" pubdate>
+              2023-06-12
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/daliy/">#daliy</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/05/22/Tools/" target="_self">
+          Tools
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/22/Tools/" target="_self">
+        <div>
+          Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession    CMake 设置项目名称 PROJECT
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-22 16:53" pubdate>
+              2023-05-22
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Tools/">#Tools</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/05/14/15445-lab2/" target="_self">
+          15445-lab2
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/14/15445-lab2/" target="_self">
+        <div>
+          BPlusTree Index15445中使用MappingType类型的数组 array_ 描述b+的node，MappingType则表示了一个kv对，internal node中的value是page_id而leaf_node的value是record_id。 这些kv对是按照key的顺序有序存储在array_中 Page Structure Bplus Page  作为internal p
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-14 23:29" pubdate>
+              2023-05-14
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/CMU15445/">#CMU15445</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/04/07/TVM/" target="_self">
+          TVM
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/07/TVM/" target="_self">
+        <div>
+          
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-07 22:43" pubdate>
+              2023-04-07
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MLC/">#MLC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/04/04/15445/" target="_self">
+          CMU-15445
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/04/15445/" target="_self">
+        <div>
+          存储引擎Hash Table应用场景：  internal-meta data core data storage redis temporary data structures Table indexs  Design decisions  Data Organization Concurrency  hash function 开放地址  cuckoo hashing  robin hood
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-04 00:49" pubdate>
+              2023-04-04
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Database/">#Database</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/01/14/TCP-IP/" target="_self">
+          TCP/IP
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/14/TCP-IP/" target="_self">
+        <div>
+          TCP&#x2F;IP
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-14 00:25" pubdate>
+              2023-01-14
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/cs144/">#cs144</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/11/29/raft/" target="_self">
+          Raft
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/11/29/raft/" target="_self">
+        <div>
+          Raft0. Raft的内部结构什么是raft raft是分布式系统中的一致性算法，其目的是保障分布式集群中不同节点上数据的一致性，同时为分布式系统提供高可用性，能够持续对外提供服务。   Leader 负责与Client和集群中的Follower沟通，主要控制数据的流向  Client 接受用户的指令，并将数据传递给Leader Follower 可以理解为正在运行的机器，接受Leader传递的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-29 21:45" pubdate>
+              2022-11-29
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Distributed-System/">#Distributed System</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/11/18/Lab6-COW/" target="_self">
+          Lab6-COW
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/11/18/Lab6-COW/" target="_self">
+        <div>
+          Copy on Write什么是写时复制机制？写时复制机制是操作系统中非常常见的一种优化机制，主要为了解决fork-exec这一系列的问题。 例如，当我们使用shell处理指令时，shell通常会通过fork创建一个子进程，并利用exec加载指令程序到子进程中。通常fork会将shell父进程中的所有内容都做一份拷贝，例如pagetable，用户栈，甚至包括打开文件表。然而exec会加载一个新的程
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-18 20:32" pubdate>
+              2022-11-18
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/xv6-riscv-Lab/">#xv6_riscv Lab</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/11/01/Lab5-Lazy-Allocation/" target="_self">
+          Lab5-Lazy Allocation
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/11/01/Lab5-Lazy-Allocation/" target="_self">
+        <div>
+          Lazy-Allocation什么是懒分配策略？操作系统可以使用页表硬件的技巧之一是延迟分配用户空间堆内存（lazy allocation of user-space heap memory）。Xv6应用程序使用sbrk()系统调用向内核请求堆内存。在我们给出的内核中，sbrk()分配物理内存并将其映射到进程的虚拟地址空间。内核为一个大请求分配和映射内存可能需要很长时间。例如，考虑由262144个
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-01 19:07" pubdate>
+              2022-11-01
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/xv6-riscv-Lab/">#xv6_riscv Lab</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     
 
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
 
-<script src="/js/jquery-3.6.4.min.js"></script>
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+    <script  src="/js/img-lazyload.js" ></script>
+  
 
 
 
 
-<script src="/js/script.js"></script>
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
-  </div>
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
 </body>
 </html>
