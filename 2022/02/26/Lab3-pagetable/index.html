@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Lab3-pagetable | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Virtual Memory虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。  为什么需要虚拟内存？   每个进程可以使用更大的地址空间 进程与进程之间相互隔离，不会干扰 共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容 保护，对pte的标志位做一下操作就可以对进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab3-pagetable">
+<meta property="og:url" content="http://example.com/2022/02/26/Lab3-pagetable/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Virtual Memory虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。  为什么需要虚拟内存？   每个进程可以使用更大的地址空间 进程与进程之间相互隔离，不会干扰 共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容 保护，对pte的标志位做一下操作就可以对进">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/Lab3-pagetable/image-20220310100802814.png">
+<meta property="og:image" content="http://example.com/Lab3-pagetable/image-20220228121327909.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/Lab3-pagetable/image-20230313085847793.png">
+<meta property="og:image" content="http://example.com/Lab3-pagetable/image-20220228215322380.png">
+<meta property="og:image" content="http://example.com/Lab3-pagetable/image-20220307134228420.png">
+<meta property="article:published_time" content="2022-02-26T04:40:25.000Z">
+<meta property="article:modified_time" content="2023-09-04T15:37:11.276Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="xv6_riscv Lab">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/Lab3-pagetable/image-20220310100802814.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Lab3-pagetable" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/26/Lab3-pagetable/" class="article-date">
+  <time class="dt-published" datetime="2022-02-26T04:40:25.000Z" itemprop="datePublished">2022-02-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Lab3-pagetable
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Virtual-Memory"><a href="#Virtual-Memory" class="headerlink" title="Virtual Memory"></a>Virtual Memory</h2><p>虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。</p>
+<ul>
+<li>为什么需要虚拟内存？</li>
+</ul>
+<ol>
+<li>每个进程可以使用更大的地址空间</li>
+<li>进程与进程之间相互隔离，不会干扰</li>
+<li>共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容</li>
+<li>保护，对pte的标志位做一下操作就可以对进程的访问做限制</li>
+</ol>
+<h3 id="Kernel-Page"><a href="#Kernel-Page" class="headerlink" title="Kernel Page"></a>Kernel Page</h3><p>地址0x1000是boot ROM的物理地址，当你对主板上电，主板做的第一件事情就是运行存储在boot ROM中的代码，当boot完成之后，会跳转到地址0x80000000，操作系统需要确保那个地址有一些数据能够接着启动操作系统。</p>
+<ul>
+<li>PLIC是中断控制器（Platform-Level Interrupt Controller）我们下周的课会讲。</li>
+<li>CLINT（Core Local Interruptor）也是中断的一部分。所以多个设备都能产生中断，需要中断控制器来将这些中断路由到合适的处理函数。</li>
+<li>UART0（Universal Asynchronous Receiver&#x2F;Transmitter）负责与Console和显示器交互。</li>
+<li>VIRTIO disk，与磁盘进行交互</li>
+</ul>
+<h3 id="core-struct"><a href="#core-struct" class="headerlink" title="core struct"></a>core struct</h3><ul>
+<li>pte：page table entry 中存储的内容可以转化为实际物理地址  PTE2PA(pte)</li>
+<li>pa：physical address 实际物理地址，由freelist分配</li>
+</ul>
+<h3 id="walk"><a href="#walk" class="headerlink" title="walk"></a>walk</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Return the address of the PTE in page table pagetable that corresponds to virtual address va.  </span><br><span class="line">If alloc!=0,create any required page-table pages.</span><br><span class="line"> The risc-v Sv39 scheme has three levels of page-table</span><br><span class="line"> pages. A page-table page contains 512 64-bit PTEs.</span><br><span class="line"> A 64-bit virtual address is split into five fields:</span><br><span class="line">   39..63 -- must be zero.</span><br><span class="line">   30..38 -- 9 bits of level-2 index.</span><br><span class="line">   21..29 -- 9 bits of level-1 index.</span><br><span class="line">   12..20 -- 9 bits of level-0 index.</span><br><span class="line">	0..11 -- 12 bits of byte offset within the page.</span><br></pre></td></tr></table></figure>
+
+<p>walk函数会递归的将sv39的三级页表页表项取出，其中PX(level, va)会根据页表的级数取出对应的pte。如果当前页表项为空且允许为其分配新的页面地址，则调用kalloc分配一个页面，并将地址存入此pte中；如果不为空，则递归进入下一级页表。</p>
+<p>最终结果返回三级页表的某个地址，可用来查看内容也可以用来插入内容；</p>
+<p><img src="/./Lab3-pagetable/image-20220310100802814.png" alt="image-20220310100802814"></p>
+<h3 id="mappages"><a href="#mappages" class="headerlink" title="mappages"></a>mappages</h3><p>函数的作用是将va映射到pa上去，并将pte存入pagetable</p>
+<ul>
+<li>a ：va向4k对齐的基地址</li>
+<li>last ：映射区域向4k对齐的最后一个页面的基地址</li>
+<li><strong>walk函数则从pagetable中找到合适的 pte ，如果不存在会，会根据alloc参数决定是否分配页面</strong></li>
+</ul>
+<p><img src="/./Lab3-pagetable/image-20220228121327909.png" alt="image-20220228121327909"></p>
+<h3 id="uvmcopy"><a href="#uvmcopy" class="headerlink" title="uvmcopy()"></a>uvmcopy()</h3><p>函数会将父进程的页表内容复制到子进程的页表中，第一步先从0地址开始按页查找对应pte，并根据pte找到对应的pa，随后将pa为起始地址的PGSIZE内容复制到kalloc新分配的页中，随后将老的虚拟地址和新分配的物理地址相互映射。</p>
+<p>所以调用uvmcopy在用户态复制页表，只会复制页表的内容，而具体指向的物理地址并不一样。【fork系统调用会创建一个新的页表】</p>
+<p><u>uvmcopy会复制oldpagetable中va对应pa所属页的内容到kalloc()新分配的pa上，并将新的pa映射到new pagetable</u></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Given a parent process&#x27;s page table, copy</span></span><br><span class="line"><span class="comment">// its memory into a child&#x27;s page table.</span></span><br><span class="line"><span class="comment">// Copies both the page table and the</span></span><br><span class="line"><span class="comment">// physical memory.</span></span><br><span class="line"><span class="comment">// returns 0 on success, -1 on failure.</span></span><br><span class="line"><span class="comment">// frees any allocated pages on failure.</span></span><br></pre></td></tr></table></figure>
+
+<img src="./Lab3-pagetable/image-20230313085847793.png" alt="image-20230313085847793" style="zoom:50%;" />
+
+
+
+<h3 id="创建一个地址空间"><a href="#创建一个地址空间" class="headerlink" title="创建一个地址空间"></a>创建一个地址空间</h3><ol>
+<li>freearange(end, PYHSTOP) 会将物理内存空间挂载到 <strong>freemem</strong> 这样一个list上，因为xv6中采用头插法，因此freemem指向的是高空闲地址空间</li>
+<li>kinit() <code>physical page allocator</code>; kinit会初始化内存操作的自旋锁，并且根据kernel.ld提供的地址信息初始化物理内存空间</li>
+<li>kvminit() <code>Initialize the one kernel_pagetable</code>; 创建内核页表，将内核数据（I&#x2F;O PLIC等映射到0-0x80000000）内核页表将会被分配到物理内存最顶端的page中</li>
+<li>exec</li>
+<li>xv6支持内核线程的概念，每个用户进程都由一个内核线程执行。并且xv6通过共享内存的方式进行多线程的通信。</li>
+</ol>
+<p><img src="/./Lab3-pagetable/image-20220228215322380.png" alt="image-20220228215322380"></p>
+<hr>
+<h3 id="打印第一个进程的页表"><a href="#打印第一个进程的页表" class="headerlink" title="打印第一个进程的页表"></a>打印第一个进程的页表</h3><p>如何打印进程的页表呢？首先我们要明确页表什么时候被建立，并被存储到什么地方</p>
+<p>要回答第一个问题，最好的方式就是使用gdb跟踪initproc，追踪第一个用户进程的分配过程一定能够告诉我们页表建立的过程。</p>
+<p><img src="/./Lab3-pagetable/image-20220307134228420.png" alt="image-20220307134228420"></p>
+<p>上图展示的是xv6中的三级页表，在sv39中我们只用到了低39位，其中低12位为page offset，其余27位负责对三级页表进行索引，其中Page Directory 的首地址被存储在satp寄存器中，satp只有在陷入内核时或继承切换时能够被os修改，它对用户透明；</p>
+<p>打印页表结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">page table 0x0000000087f6e000</span><br><span class="line">..0: pte 0x0000000021fda801 pa 0x0000000087f6a000</span><br><span class="line">.. ..0: pte 0x0000000021fda401 pa 0x0000000087f69000</span><br><span class="line">.. .. ..0: pte 0x0000000021fdac1f pa 0x0000000087f6b000</span><br><span class="line">.. .. ..1: pte 0x0000000021fda00f pa 0x0000000087f68000</span><br><span class="line">.. .. ..2: pte 0x0000000021fd9c1f pa 0x0000000087f67000</span><br><span class="line">..255: pte 0x0000000021fdb401 pa 0x0000000087f6d000</span><br><span class="line">.. ..511: pte 0x0000000021fdb001 pa 0x0000000087f6c000</span><br><span class="line">.. .. ..510: pte 0x0000000021fdd807 pa 0x0000000087f76000</span><br><span class="line">.. .. ..511: pte 0x0000000020001c0b pa 0x0000000080007000</span><br></pre></td></tr></table></figure>
+
+<p>递归的遍历页表；</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Recursively free page-table pages.</span></span><br><span class="line"><span class="comment">// just like function freewalk</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">vmprint</span><span class="params">(<span class="type">pagetable_t</span> pagetable, <span class="type">int</span> level)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(level == <span class="number">2</span>)</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;page table %p\n&quot;</span>, pagetable);</span><br><span class="line">  <span class="comment">// there are 2^9 = 512 PTEs in a page table.</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">512</span>; i++)&#123;</span><br><span class="line">    <span class="type">pte_t</span> pte = pagetable[i];</span><br><span class="line">    <span class="keyword">if</span>((pte &amp; PTE_V) &amp;&amp; level &gt; <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="comment">// this PTE points to a lower-level page table.</span></span><br><span class="line">      <span class="keyword">if</span>(level == <span class="number">2</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));</span><br><span class="line">      <span class="keyword">if</span>(level == <span class="number">1</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;.. ..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));  </span><br><span class="line">      uint64 child = PTE2PA(pte);</span><br><span class="line">      vmprint((<span class="type">pagetable_t</span>)child, level<span class="number">-1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>((pte &amp; PTE_V) &amp;&amp; level == <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;.. .. ..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pte &amp; PTE_V)&#123;</span><br><span class="line">      panic(<span class="string">&quot;vmprint: leaf&quot;</span>);</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">0</span>); <span class="comment">//会发生panic init exiting 因为退出时p = initproc</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="A-kernel-page-table-for-per-process"><a href="#A-kernel-page-table-for-per-process" class="headerlink" title="A kernel page table for per process"></a>A kernel page table for per process</h3><p>本次实验的目的是为每一个进程创建一个专属的kernel pagetable。xv6的基础代码里只在内核中维护了一个内核页表，且内核页表被全部进程所共享，首先单一的内核栈很难允许多核并发的执行，<strong>其次专属的内核页表更有利于操作系统解引用？</strong></p>
+<ol>
+<li>当我们需要为进程增加一个属性时，首先需要做的就是在其结构体中增加一个属性，在这里我们添加一个pagetable_t kpagetable，表明每个进程都要维护了一个内核页表。</li>
+<li>其次我们需要在创建用户进程时初始化内核页表，其次每个内核空间都要维护一个内核栈kernel stack，我们还要想办法初始化内核栈；</li>
+<li>最后我们需要在进程切换时切换内核页表，在陷入时切换到进程所属的内核页表……</li>
+</ol>
+<h4 id="初始化进程的内核页表"><a href="#初始化进程的内核页表" class="headerlink" title="初始化进程的内核页表"></a>初始化进程的内核页表</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span>            <span class="title function_">proc_free_kpagetable</span><span class="params">(<span class="type">pagetable_t</span>, uint64)</span>;</span><br><span class="line"><span class="type">pagetable_t</span>     <span class="title function_">kpagetableinit</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">void</span>            <span class="title function_">kpagetable_map</span><span class="params">(<span class="type">pagetable_t</span> pagetable ,uint64 va, uint64 pa, uint64 sz, <span class="type">int</span> perm)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">pagetable_t</span></span><br><span class="line"><span class="title function_">kpagetableinit</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="type">pagetable_t</span> k_pagetable;</span><br><span class="line">  k_pagetable = (<span class="type">pagetable_t</span>) kalloc();</span><br><span class="line">  <span class="built_in">memset</span>(k_pagetable, <span class="number">0</span>, PGSIZE);</span><br><span class="line">  <span class="comment">// uart registers</span></span><br><span class="line">  kpagetable_map(k_pagetable, UART0, UART0, PGSIZE, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// virtio mmio disk interface</span></span><br><span class="line">  kpagetable_map(k_pagetable, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// CLINT</span></span><br><span class="line">  kpagetable_map(k_pagetable, CLINT, CLINT, <span class="number">0x10000</span>, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// PLIC</span></span><br><span class="line">  kpagetable_map(k_pagetable, PLIC, PLIC, <span class="number">0x400000</span>, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// map kernel text executable and read-only.</span></span><br><span class="line">  kpagetable_map(k_pagetable, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);</span><br><span class="line">  <span class="comment">// map kernel data and the physical RAM we&#x27;ll make use of.</span></span><br><span class="line">  kpagetable_map(k_pagetable, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W);</span><br><span class="line">  <span class="comment">// map the trampoline for trap entry/exit to</span></span><br><span class="line">  <span class="comment">// the highest virtual address in the kernel.</span></span><br><span class="line">  kpagetable_map(k_pagetable, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);</span><br><span class="line">  <span class="keyword">return</span> k_pagetable;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> </span><br><span class="line"><span class="title function_">kpagetable_map</span><span class="params">(<span class="type">pagetable_t</span> pagetable ,uint64 va, uint64 pa, uint64 sz, <span class="type">int</span> perm)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(mappages(pagetable, va, sz, pa, perm) != <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;kpagetable_map&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="映射内核栈"><a href="#映射内核栈" class="headerlink" title="映射内核栈"></a>映射内核栈</h4><p>在这个实验中，我们要把进程的内核栈映射到自己专属的内核页表中。如何做到这一点呢？其实就是将proc中的kstack映射到内核页表中，那么何时映射就是这个问题的关键。lab中提示我们将这个操作推迟到allocproc中，可以思考一下为什么</p>
+<ul>
+<li>很显然因为我们在allocproc中才有内核页表 （doge）</li>
+<li>实际上我们应该思考为什么不能在procinit中为每个进程初始化内核页表并映射内核栈？我的理解是这样os启动的速度会很慢，而且页没有必要，毕竟不是所有进程都会被分配出去，只有当真的需要使用它们时我们再去为proc映射内核栈也完全来得及</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在allocproc中调用相关函数</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">allocproc</span><span class="params">()</span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// Init the kernal page table</span></span><br><span class="line">  <span class="comment">// An empty kernal page table</span></span><br><span class="line">  p-&gt;k_pagetable = kpagetableinit();</span><br><span class="line">  <span class="keyword">if</span>(p-&gt;k_pagetable == <span class="number">0</span>)&#123;</span><br><span class="line">    freeproc(p-&gt;k_pagetable);</span><br><span class="line">    release(&amp;p-&gt;lock);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">char</span> *pa = kalloc();</span><br><span class="line">  <span class="keyword">if</span>(pa == <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;kalloc&quot;</span>);</span><br><span class="line">  uint64 va = KSTACK((<span class="type">int</span>) (p - proc));</span><br><span class="line">  kvmmap(va, (uint64)pa, PGSIZE, PTE_R | PTE_W);</span><br><span class="line">  p-&gt;kstack = va;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="free"><a href="#free" class="headerlink" title="free"></a>free</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">freeproc</span><span class="params">()</span>&#123;</span><br><span class="line">  uvmunmap(p-&gt;k_pagetable, p-&gt;kstack, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">  p-&gt;kstack = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span>(p-&gt;k_pagetable)</span><br><span class="line">    proc_free_kpagetable(p-&gt;k_pagetable, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> </span><br><span class="line"><span class="title function_">proc_free_kpagetable</span><span class="params">(<span class="type">pagetable_t</span> pagetable, uint64 depth)</span>&#123;</span><br><span class="line">  <span class="comment">// there are 2^9 = 512 PTEs in a page table.</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">512</span>; i++)&#123;</span><br><span class="line">    <span class="type">pte_t</span> pte = pagetable[i];</span><br><span class="line">    <span class="keyword">if</span>((pte &amp; PTE_V))&#123;</span><br><span class="line">      uint64 child = PTE2PA(pte);</span><br><span class="line">      <span class="keyword">if</span>(depth &lt; <span class="number">2</span> &amp;&amp; (pte &amp; (PTE_R|PTE_W|PTE_X)) == <span class="number">0</span>)&#123;</span><br><span class="line">        proc_free_kpagetable((<span class="type">pagetable_t</span>)child, depth+<span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      pagetable[i] = <span class="number">0</span>;</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">  kfree((<span class="type">void</span>*)pagetable);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调度上的切换</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">w_satp(MAKE_SATP(p-&gt;k_pagetable));</span><br><span class="line">sfence_vma();</span><br><span class="line">swtch(&amp;c-&gt;context, &amp;p-&gt;context);</span><br><span class="line">kvminithart();</span><br></pre></td></tr></table></figure>
+
+<h4 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h4><p>我们还需要修改scheduler中的一些细节，比如在进程切换时我们要切换进程所属的内核页表，在释放进程空间时，我们需要释放kpagetable和内核栈</p>
+<h3 id="copyin-copyinstr"><a href="#copyin-copyinstr" class="headerlink" title="copyin copyinstr"></a>copyin copyinstr</h3><p>本实验的目的是为了让内核页表拥有用户空间的映射关系，这样我们就可以在内核空间对用户地址进行操作了</p>
+<p>内核的<code>copyin</code>函数读取用户指针指向的内存。它通过将用户指针转换为内核可以直接解引用的物理地址来实现这一点。这个转换是通过在软件中遍历进程页表来执行的。在本部分的实验中，您的工作是将用户空间的映射添加到每个进程的内核页表（上一节中创建），以允许<code>copyin</code>（和相关的字符串函数<code>copyinstr</code>）直接解引用用户指针。</p>
+<h4 id="复制用户页表到内核页表"><a href="#复制用户页表到内核页表" class="headerlink" title="复制用户页表到内核页表"></a>复制用户页表到内核页表</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">u2kvmcopy</span><span class="params">(<span class="type">pagetable_t</span> pagetable, <span class="type">pagetable_t</span> kpagetable, uint64 oldsz, uint64 newsz)</span>&#123;</span><br><span class="line">  <span class="type">pte_t</span> *pte_from, *pte_to;</span><br><span class="line">  oldsz = PGROUNDUP(oldsz);</span><br><span class="line">  <span class="keyword">for</span> (uint64 i = oldsz; i &lt; newsz; i += PGSIZE)&#123;</span><br><span class="line">    <span class="keyword">if</span>((pte_from = walk(pagetable, i, <span class="number">0</span>)) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;u2kvmcopy: src pte does not exist&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>((pte_to = walk(kpagetable, i, <span class="number">1</span>)) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;u2kvmcopy: pte walk failed&quot;</span>);</span><br><span class="line">    uint64 pa = PTE2PA(*pte_from);</span><br><span class="line">    uint flags = (PTE_FLAGS(*pte_from)) &amp; (~PTE_U);</span><br><span class="line">    *pte_to = PA2PTE(pa) | flags;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>除此之外，每次用户页表可能发生改变的时候我们都要对内核页表上的这部分进行修改，那么有哪些函数可能对用户页表进行操作呢？</li>
+</ul>
+<p>exec 时也会需要对内核页表进行操作</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">exec</span><span class="params">(<span class="type">char</span> *path, <span class="type">char</span> **argv)</span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  sp = sz;</span><br><span class="line">  stackbase = sp - PGSIZE;</span><br><span class="line">  <span class="comment">// 添加复制逻辑</span></span><br><span class="line">  u2kvmcopy(pagetable, p-&gt;kpagetable, <span class="number">0</span>, sz);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>fork 需要把parent的内核页表复制到child的内核页表中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">fork</span><span class="params">(<span class="type">void</span>)</span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// Copy user memory from parent to child.</span></span><br><span class="line">  <span class="keyword">if</span>(uvmcopy(p-&gt;pagetable, np-&gt;pagetable, p-&gt;sz) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">    freeproc(np);</span><br><span class="line">    release(&amp;np-&gt;lock);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  np-&gt;sz = p-&gt;sz;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 复制到新进程的内核页表</span></span><br><span class="line">  u2kvmcopy(np-&gt;pagetable, np-&gt;kernelpt, <span class="number">0</span>, np-&gt;sz);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>sbrk &#x3D;&gt; growproc</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">growproc</span><span class="params">(<span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">  uint sz;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p</span> =</span> myproc();</span><br><span class="line"></span><br><span class="line">  sz = p-&gt;sz;</span><br><span class="line">  <span class="keyword">if</span>(n &gt; <span class="number">0</span>)&#123;</span><br><span class="line">    <span class="comment">// 加上PLIC限制</span></span><br><span class="line">    <span class="keyword">if</span> (PGROUNDUP(sz + n) &gt;= PLIC)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>((sz = uvmalloc(p-&gt;pagetable, sz, sz + n)) == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 复制一份到内核页表</span></span><br><span class="line">    u2kvmcopy(p-&gt;pagetable, p-&gt;kpagetable, sz - n, sz);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(n &lt; <span class="number">0</span>)&#123;</span><br><span class="line">    sz = uvmdealloc(p-&gt;pagetable, sz, sz + n);</span><br><span class="line">  &#125;</span><br><span class="line">  p-&gt;sz = sz;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/02/26/Lab3-pagetable/" data-id="clmdk0mgh000v09v6bnr20bou" data-title="Lab3-pagetable" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/26/leetcode/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          leetcode
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/26/Lab2-syscall/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Lab2-syscall</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

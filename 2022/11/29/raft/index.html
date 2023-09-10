@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Raft | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Raft0. Raft的内部结构什么是raft raft是分布式系统中的一致性算法，其目的是保障分布式集群中不同节点上数据的一致性，同时为分布式系统提供高可用性，能够持续对外提供服务。   Leader 负责与Client和集群中的Follower沟通，主要控制数据的流向  Client 接受用户的指令，并将数据传递给Leader Follower 可以理解为正在运行的机器，接受Leader传递的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Raft">
+<meta property="og:url" content="http://example.com/2022/11/29/raft/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Raft0. Raft的内部结构什么是raft raft是分布式系统中的一致性算法，其目的是保障分布式集群中不同节点上数据的一致性，同时为分布式系统提供高可用性，能够持续对外提供服务。   Leader 负责与Client和集群中的Follower沟通，主要控制数据的流向  Client 接受用户的指令，并将数据传递给Leader Follower 可以理解为正在运行的机器，接受Leader传递的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/raft/image-20230201175417736.png">
+<meta property="og:image" content="http://example.com/2022/11/29/raft/raft/image-20230316215346215.png">
+<meta property="article:published_time" content="2022-11-29T13:45:56.000Z">
+<meta property="article:modified_time" content="2023-09-04T17:15:23.004Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Distributed System">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/raft/image-20230201175417736.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-raft" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/11/29/raft/" class="article-date">
+  <time class="dt-published" datetime="2022-11-29T13:45:56.000Z" itemprop="datePublished">2022-11-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Raft
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Raft"><a href="#Raft" class="headerlink" title="Raft"></a>Raft</h1><h2 id="0-Raft的内部结构"><a href="#0-Raft的内部结构" class="headerlink" title="0. Raft的内部结构"></a>0. Raft的内部结构</h2><h3 id="什么是raft"><a href="#什么是raft" class="headerlink" title="什么是raft"></a>什么是raft</h3><ul>
+<li>raft是分布式系统中的一致性算法，其目的是保障分布式集群中不同节点上数据的一致性，同时为分布式系统提供高可用性，能够持续对外提供服务。</li>
+</ul>
+<p> Leader 负责与Client和集群中的Follower沟通，主要控制数据的流向</p>
+<ol>
+<li>Client 接受用户的指令，并将数据传递给Leader</li>
+<li>Follower 可以理解为正在运行的机器，接受Leader传递的日志，并将日志执行到状态机中</li>
+</ol>
+<h3 id="Raft-中存在的struct"><a href="#Raft-中存在的struct" class="headerlink" title="Raft 中存在的struct"></a>Raft 中存在的struct</h3><p>在RPC响应之前，需要更新稳定存储介质</p>
+<table>
+<thead>
+<tr>
+<th align="center">需要持久化的状态</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">currentTerm</td>
+<td align="center">server存储的最新任期（初始化为0且单调递增）</td>
+</tr>
+<tr>
+<td align="center">votedFor</td>
+<td align="center">当前任期接受到的candidateID（初始化为0）</td>
+</tr>
+<tr>
+<td align="center">log[ ]</td>
+<td align="center">日志记录包含状态机的命令和从leader接收到的日志任期</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">所有机器可变状态</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">commitIndex</td>
+<td align="center">即将被提交的日志记录的索引</td>
+</tr>
+<tr>
+<td align="center">lastApplied</td>
+<td align="center">已经被提交到状态机的最后一个日志的索引（初值为0且单调递增）</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">leader可变状态</th>
+<th align="center">每次选举后重新初始化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">nextIndex[ ]</td>
+<td align="center">每台机器在数组占据一个元素，元素的值为下条发送到该机器的日志索引 (初始值为 leader 最新一条日志的索引 +1)</td>
+</tr>
+<tr>
+<td align="center">matchIndex[ ]</td>
+<td align="center">每台机器在数组中占据一个元素，元素的记录将要复制给该机器日志的索引</td>
+</tr>
+</tbody></table>
+<ul>
+<li>AppendEntriesArgs</li>
+</ul>
+<p>appendentries 是leader用来维持心跳机制和日志添加功能的结构，具体包含的参数如下</p>
+<p>其中PreLogIndex和PreLogTerm是用来为确定follower所需的日志号</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> AppendEntriesArgs <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">// Your data here (2A, 2B).</span></span><br><span class="line">	Term         <span class="type">int</span>			<span class="comment">// 表明这是Term这个任期的Leader</span></span><br><span class="line">	LeaderId     <span class="type">int</span>			<span class="comment">// </span></span><br><span class="line">	PreLogIndex  <span class="type">int</span>			<span class="comment">// 前一条日志的槽位，不一定是已提交的日志</span></span><br><span class="line">	PreLogTerm   <span class="type">int</span>			<span class="comment">// 前一条日志的任期号</span></span><br><span class="line">	LeaderCommit <span class="type">int</span>			<span class="comment">// leader已经提交的日志号</span></span><br><span class="line">  Log					 []Entry	<span class="comment">// 日志内容</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>RequestVoteArgs</li>
+</ul>
+<p>LastLogIndex和LastLogTerm用来做Election Restriction，确保能够选出当前任期内具有最新日志的节点作为leader</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> RequestVoteArgs <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">// Your data here (2A, 2B).</span></span><br><span class="line">	Term         <span class="type">int</span></span><br><span class="line">	CandidateId  <span class="type">int</span></span><br><span class="line">	LastLogTerm  <span class="type">int</span>	<span class="comment">// leader最后一条日志所属的任期号</span></span><br><span class="line">	LastLogIndex <span class="type">int</span>	<span class="comment">// leader最后一条日志的槽位</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="一、-Leader-election"><a href="#一、-Leader-election" class="headerlink" title="一、 Leader election"></a>一、 Leader election</h2><p>Raft 使用心跳机制来触发选主</p>
+<p>每次随机时间结束，server都会将term+1，较少的随机时间会导致先结束的server变成Candidate</p>
+<p>下图为raft中节点的状态转换图，其中Leader状态只能由Candidate转变而来</p>
+<p><img src="/./raft/image-20230201175417736.png" alt="image-20230201175417736"></p>
+<h3 id="1-选主流程"><a href="#1-选主流程" class="headerlink" title="1. 选主流程"></a>1. 选主流程</h3><p>在随机事件到达后，follower先将自己的term+1，立刻将自身状态更新为candidate并投自己一票，随后向其他节点发送request vote，等待大多数节点的返回；</p>
+<ol>
+<li>若candidate收到大多数的投票，自己直接转变为leader，并向其他节点发送心跳抑制其他节点进行选举</li>
+<li>若candidate先接受到leader的心跳，若心跳任期大余candidate任期，则当前节点转变为follower；若小于或等于其任期，无需操作；</li>
+<li>若candidate在规定时间既没收到大多数选票，则等待一个随机事件后重新进行选主过程</li>
+</ol>
+<h3 id="2-细节"><a href="#2-细节" class="headerlink" title="2. 细节"></a>2. 细节</h3><ul>
+<li>节点如何判断是否向candidate投票？</li>
+</ul>
+<p>若candidate的任期号大于当前节点的任期号，进入Election Restriction判断（其余情况均无法投票）</p>
+<p>若candidate 的 LastLogTerm &gt; 当前节点的最后一条日志的任期号，则可以投票</p>
+<p>若candidate 的 LastLogTerm &#x3D; 当前节点的最后一条日志的任期号，则比较二者日志的index，若candidate的index号 &gt; 当前的index号，则可以投票</p>
+<ul>
+<li>在安全性章节中我们规定了选主时的限制，以保证当前leader包含了最新的日志信息</li>
+</ul>
+<p>此时只有s2可以向s4投票，因为s1，s3，s5都有新的日志[ 5 ]</p>
+<p><strong>日志文件是指写入的日志，并不一定要是提交的日志（实验证明）</strong></p>
+<img src="./raft/image-20230316215346215.png" alt="image-20230316215346215" style="zoom:50%;" />
+
+
+
+<h2 id="二、-Log-Replicated"><a href="#二、-Log-Replicated" class="headerlink" title="二、 Log Replicated"></a>二、 Log Replicated</h2><h3 id="1-日志复制流程"><a href="#1-日志复制流程" class="headerlink" title="1. 日志复制流程"></a>1. 日志复制流程</h3><p>candidate变为leader后，会开始处理客户端的请求，那么client怎么确定那台机器是leader呢？</p>
+<ul>
+<li>client会直接向集群中任意一台机器发送询问请求，若机器恰好为leader则直接确定；若为普通follower，则可以等待Leader的心跳结果并返回；若当前为宕机的机器，经过一段时间后重新发送请求即可</li>
+</ul>
+<p>client发送指令给leader，leader首先会将其写入自己的日志，并发送appendEntry开启日志复制阶段，当集群复制完毕，leader会将日志应用到当前状态机，并开启应用阶段，当集群应用完毕，leader会提交当前日志（只要复制成功，此日志就一定存在于大多数节点中，无需关注提交是否成功）</p>
+<h3 id="2-一致性检测（日志恢复）"><a href="#2-一致性检测（日志恢复）" class="headerlink" title="2. 一致性检测（日志恢复）"></a>2. 一致性检测（日志恢复）</h3><p>判断leader发来的AppendEntry RPC是否能成功的应用在当前节点上</p>
+<ul>
+<li>为什么需要做这样的判断呢？</li>
+</ul>
+<p>因为Raft中只要求大多数节点保持一致，整个集群就可用，因此集群中可能存在落后很多日志的慢速节点。为了保障慢速节点的一致性，我们不能将最新的日志插入这样的节点，一旦为慢速节点插入新的日志就会造成不一致的现象发生。所以在插入日志前我们需要对节点做一致性检测</p>
+<ul>
+<li>如何做一致性检测？</li>
+</ul>
+<p>AppendEntry中包含这样两个参数，并且Leader还维护了两个数组分别是nextIndex和matchIndex	</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PreLogIndex  <span class="type">int</span>	<span class="comment">// 待插入日志的前一条日志的槽位，不一定是已提交的日志</span></span><br><span class="line">PreLogTerm   <span class="type">int</span>	<span class="comment">// 待插入日志的前一条日志的任期号</span></span><br></pre></td></tr></table></figure>
+
+<p>节点收到AppendEntry时，会将自己的最后一条日志的index与PreLogIndex相比较，若相等，则比较最后一条日志的任期号和PreLogTerm，若也相等则可以顺利插入日志，返回插入成功更新nextIndex和matchIndex</p>
+<p>若index比较不等（只有可能是最后一条日志的index小），则返回插入失败，Leader更新nextIndex &#x3D; nextIndex - 1；随后Leader重新发送AppendEntry，并对此前插入日志失败的节点调整PreLogIndex和PreLogIndex，PreLogIndex &#x3D; nextIndex[ rf.me ] - 1，并重复做上面两步骤，直到成功插入</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(rf *Raft)</span></span> AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply) &#123;</span><br><span class="line">	rf.mu.Lock()</span><br><span class="line">	<span class="keyword">defer</span> rf.mu.Unlock()</span><br><span class="line">	reply.Success = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Reply false if term &lt; currentTerm (§5.1)</span></span><br><span class="line">	<span class="keyword">if</span> args.Term &lt; rf.currentTerm &#123;</span><br><span class="line">		reply.Term = rf.currentTerm</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// For Candidates. If AppendEntries RPC received from new leader: convert to follower</span></span><br><span class="line">	<span class="keyword">if</span> rf.state == CandidateState &amp;&amp; rf.currentTerm == args.Term &#123;</span><br><span class="line">		rf.state = FollowerState</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	rf.checkTerm(args.Term)</span><br><span class="line">	reply.Term = rf.currentTerm</span><br><span class="line">	rf.setElectionTimeout(randHeartbeatTimeout())</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Reply false if log doesn’t contain an entry at prevLogIndex whose term matches prevLogTerm (§5.3)</span></span><br><span class="line">	<span class="keyword">if</span> args.PrevLogTerm == <span class="number">-1</span> || args.PrevLogTerm != rf.log.getEntry(args.PrevLogIndex).Term &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// If an existing entry conflicts with a new one (same index but different terms),</span></span><br><span class="line">	<span class="comment">// delete the existing entry and all that follow it (§5.3)</span></span><br><span class="line">	<span class="keyword">for</span> i, entry := <span class="keyword">range</span> args.Entries &#123;</span><br><span class="line">		<span class="keyword">if</span> rf.log.getEntry(i+<span class="number">1</span>+args.PrevLogIndex).Term != entry.Term &#123;</span><br><span class="line">			rf.log = <span class="built_in">append</span>(rf.log.getSlice(<span class="number">1</span>, i+<span class="number">1</span>+args.PrevLogIndex), args.Entries[i:]...)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	reply.Success = <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>hints</li>
+</ul>
+<p>在此阶段，我们有可能会擦除一些节点的日志，为什么这样擦出是安全的呢，因为这些日志一定是没有应用到大多数节点的日志</p>
+<ul>
+<li>什么时候重置ElectionTimeOut？</li>
+</ul>
+<p>每次发起</p>
+<ul>
+<li>什么时候重置HeartBeatTimeOut？</li>
+</ul>
+<h2 id="三、-持久化和日志压缩"><a href="#三、-持久化和日志压缩" class="headerlink" title="三、 持久化和日志压缩"></a>三、 持久化和日志压缩</h2><h3 id="1-日志压缩流程"><a href="#1-日志压缩流程" class="headerlink" title="1. 日志压缩流程"></a>1. 日志压缩流程</h3><ul>
+<li>为什么要日志压缩？</li>
+</ul>
+<p>集群中每一个机器的容量是有限的，如果日志无限的增长一定会对我们的机器带来隐患，因此在某些时间点对过去的一些已经被应用的日志做压缩是十分有必要的。</p>
+<ul>
+<li>怎么做日志压缩？</li>
+</ul>
+<p>TODO：</p>
+<p>好复杂。。不知道怎么写了。。找时间再补上</p>
+<h2 id="四、面试题"><a href="#四、面试题" class="headerlink" title="四、面试题"></a>四、面试题</h2><ol>
+<li>如果worker节点重启后直接变为candidate会怎么样？</li>
+</ol>
+<h2 id="五、性能优化"><a href="#五、性能优化" class="headerlink" title="五、性能优化"></a>五、性能优化</h2><h2 id="五、引用"><a href="#五、引用" class="headerlink" title="五、引用"></a>五、引用</h2><blockquote>
+<p>Raft Scope 演示视频地址 <a target="_blank" rel="noopener" href="https://raft.github.io/raftscope/index.html">https://raft.github.io/raftscope/index.html</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/11/29/raft/" data-id="clmdk0mgl001m09v61mchd3b0" data-title="Raft" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/01/14/TCP-IP/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          TCP/IP
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/11/18/Lab6-COW/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Lab6-COW</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

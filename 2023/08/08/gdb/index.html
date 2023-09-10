@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>gdb | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="GDB 使用技巧gdb调试多线程死锁出现死锁的必要条件：  互斥条件：一个资源每次只能被一个进程使用 请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放 不剥夺条件：进程已获得的资源，在末使用完之前，不能强行剥夺 循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系   g++ -o deadlock -g -lpthread deadlock.cpp  ​		多线程程序编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gdb">
+<meta property="og:url" content="http://example.com/2023/08/08/gdb/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="GDB 使用技巧gdb调试多线程死锁出现死锁的必要条件：  互斥条件：一个资源每次只能被一个进程使用 请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放 不剥夺条件：进程已获得的资源，在末使用完之前，不能强行剥夺 循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系   g++ -o deadlock -g -lpthread deadlock.cpp  ​		多线程程序编">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/gdb/image-20230808231006297.png">
+<meta property="og:image" content="http://example.com/gdb/image-20230808231203795.png">
+<meta property="article:published_time" content="2023-08-08T14:07:22.000Z">
+<meta property="article:modified_time" content="2023-09-07T09:02:40.332Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/gdb/image-20230808231006297.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-gdb" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/08/gdb/" class="article-date">
+  <time class="dt-published" datetime="2023-08-08T14:07:22.000Z" itemprop="datePublished">2023-08-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      gdb
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="GDB-使用技巧"><a href="#GDB-使用技巧" class="headerlink" title="GDB 使用技巧"></a>GDB 使用技巧</h1><h2 id="gdb调试多线程死锁"><a href="#gdb调试多线程死锁" class="headerlink" title="gdb调试多线程死锁"></a>gdb调试多线程死锁</h2><p><strong>出现死锁的必要条件：</strong></p>
+<ul>
+<li>互斥条件：一个资源每次只能被一个进程使用</li>
+<li>请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放</li>
+<li>不剥夺条件：进程已获得的资源，在末使用完之前，不能强行剥夺</li>
+<li>循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系</li>
+</ul>
+<ol start="0">
+<li>g++ -o deadlock -g <strong>-lpthread</strong> deadlock.cpp</li>
+</ol>
+<p>​		<strong>多线程程序编译时记得加上plthread，否则无法编译成功</strong></p>
+<ol>
+<li>首先找到出现死锁进程的pid<br><code>ps -ef | grep deadlock.out</code></li>
+<li>然后可以通过gdb -p 进程号，进入运行进程的gdb模式<br><code>gdb -p pid</code></li>
+<li>使用info threads查看所有的线程运行信息</li>
+</ol>
+<p><img src="/./gdb/image-20230808231006297.png" alt="image-20230808231006297"></p>
+<ul>
+<li><p>LWP (Light Weight Process) 是一种线程，它在操作系统中被称为轻量级进程。它与普通线程相比，具有更少的系统开销，因此在多线程程序中的使用非常广泛。</p>
+<p>当我们使用 GDB 调试多线程的 LWP 时，我们可以在程序运行时对每个线程的行为进行独立跟踪，以帮助我们找出线程间的冲突或其他问题。GDB 可以帮助我们暂停、继续、单步执行每个线程，并且可以查看每个线程的堆栈、变量和其他信息。</p>
+</li>
+</ul>
+<ol start="4">
+<li>使用<strong>backtrace</strong>即可查看死锁位置</li>
+</ol>
+<p><img src="/./gdb/image-20230808231203795.png" alt="image-20230808231203795"></p>
+<h2 id="gdb调试coredump"><a href="#gdb调试coredump" class="headerlink" title="gdb调试coredump"></a>gdb调试coredump</h2><p>coredump是指程序在发生错误退出时，计算机当时的状态，因此使用gdb对coredump程序调试就相当于对崩溃那一瞬间的程序进行调试。</p>
+<ul>
+<li>ulimit -c ulimit确保可以声称coredump程序</li>
+<li>正常执行调试即可</li>
+</ul>
+<p>编写代码的过程中总会遇到一些bug，有些会在编译阶段提示，而有些则会在程序运行时中断，还有些bug会不停的积累，直到严重时显现，以下为平常容易遇到bug info</p>
+<ol>
+<li>segment fault （段错误）</li>
+<li>heap buffer overflow （堆溢出）</li>
+<li>stack overflow（栈溢出）</li>
+</ol>
+<hr>
+<p><strong>Segment Fault</strong></p>
+<p>段错误就是程序访问了错误的内存段或者访问了不存在的地址空间（访问nullptr）</p>
+<ul>
+<li>数组越界（int array[10];   array[100] &#x3D; 10; ）<ul>
+<li>这种是在栈上声明一个数组，因此访问数组之外的空间会立刻提示Segment fault</li>
+</ul>
+</li>
+<li>访问系统数据区，尤其是往系统保护的内存地址写数据，最常见就是给一个指针以0地址<ul>
+<li>int* ptr &#x3D; nullptr; *ptr &#x3D; 1; </li>
+<li>char* ptr &#x3D; “hello world”; ptr[1] &#x3D; ‘a’; (hello world作为字符串常量会被存储在 <code>.rodata段</code>无法被修改)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Heap Buffer Overflow</strong></p>
+<p>堆溢出是由于<strong>new</strong> 或者 <strong>malloc</strong>等在堆上进行内存申请和释放时<strong>访问</strong>了或者<strong>写入了过多数据</strong>导致的bug</p>
+<ul>
+<li>int* array &#x3D; new int[10]; a[11] &#x3D; 1; <ul>
+<li>new 是在堆上分配内存空间，此时越界访问不一定会触发错误</li>
+</ul>
+</li>
+</ul>
+<p><strong>Stack Overflow</strong></p>
+<p>栈溢出是比较经典的错误，一般是由于无限调用栈，导致栈空间不够而带来的问题</p>
+<ul>
+<li>随便一个无限递归的函数都会带来这种bug</li>
+</ul>
+<h2 id="backtrace-和-signal"><a href="#backtrace-和-signal" class="headerlink" title="backtrace 和 signal"></a>backtrace 和 signal</h2><p>内存泄露检测<br>内存溢出和内存泄露</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/08/08/gdb/" data-id="clmdk0mgl001o09v67edp3z7q" data-title="gdb" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/08/19/c/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          c++
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/08/06/LSM/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LSM</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

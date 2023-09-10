@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Boot | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Bootx86为例：  加电后，CS&#x3D;0xF000 EIP&#x3D;0xFFF0 在CS寄存器中隐含的一个基址BASE&#x3D;FFFF0000，80386中实际地址是BASE+EIP&#x3D;FFFF0000h+0000FFF0h&#x3D;0xFFFFFFF0h（在8086中最初执行的地址是PC&#x3D;16×CS+IP，其实在GDB下调试ffffffff0h地址下的命令和f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Boot">
+<meta property="og:url" content="http://example.com/2022/03/12/Boot/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Bootx86为例：  加电后，CS&#x3D;0xF000 EIP&#x3D;0xFFF0 在CS寄存器中隐含的一个基址BASE&#x3D;FFFF0000，80386中实际地址是BASE+EIP&#x3D;FFFF0000h+0000FFF0h&#x3D;0xFFFFFFF0h（在8086中最初执行的地址是PC&#x3D;16×CS+IP，其实在GDB下调试ffffffff0h地址下的命令和f">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-12T15:02:30.000Z">
+<meta property="article:modified_time" content="2023-09-04T15:37:11.275Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Operating System">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Boot" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/12/Boot/" class="article-date">
+  <time class="dt-published" datetime="2022-03-12T15:02:30.000Z" itemprop="datePublished">2022-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Boot
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Boot"><a href="#Boot" class="headerlink" title="Boot"></a>Boot</h2><p>x86为例：</p>
+<ol>
+<li>加电后，CS&#x3D;0xF000 EIP&#x3D;0xFFF0 在CS寄存器中隐含的一个基址BASE&#x3D;FFFF0000，80386中实际地址是BASE+EIP&#x3D;FFFF0000h+0000FFF0h&#x3D;0xFFFFFFF0h（在8086中最初执行的地址是PC&#x3D;16×CS+IP，其实在GDB下调试ffffffff0h地址下的命令和ffff0地址处的命令相同，可能这就是8086架构的兼容）</li>
+<li>这是<strong>BIOS的EPROM所在地（只读）</strong>，从该地址中读取第一条指令，一般为长跳转指令，跳转到真正的BIOS中去执行即跳转到可以被访问的1M的内存空间中（在实模式下只能访问1M空间）。在实模式下寻址为PC&#x3D;16×CS+IP。BIOS先做初始化工作（初始化底层硬件），然后加载存储设备（硬盘，光盘，优盘）上的第一个扇区（主引导扇区）的512字节到内存的0x7c00,cpu执行0x7c00的指令开始执行，也就是bootloader。</li>
+<li>主引导扇区位于整个硬盘的 0 磁头 0 柱面 1 扇区，包括硬盘主引导记录 MBR （ MasterBootRecord ）和分区表 DPT （ DiskPartitionTable ）。规范的主引导扇区特征如下：<br>[1] 总大小为 512 字节，由主引导程序、分区表、结束标志三部分构成；<br>[2] 引导程序，从 0x0 位置起共 446 字节（隐含 windows 磁盘签名）；<br>[3] 分区表，占用 64 字节，是 MBR 中的重要结构；<br>[4] 结束标志，扇区的最后两个字节 “55AA” 是 MBR 的结束标志。</li>
+<li></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/03/12/Boot/" data-id="clmdk0mge000509v6ag1r9s9b" data-title="Boot" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/17/Lab8-lock/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Lab8-lock
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/10/%E5%B8%8C%E7%BD%97%E5%A4%9A%E5%BE%B7HISTORIAE%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">希罗多德HISTORIAE读书笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

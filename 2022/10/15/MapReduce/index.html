@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>MapReduce | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MapReduce什么是MapReduce?MapReduce是一种用来处理大规模数据的分布式计算框架。编程者只负责编写Map函数和Reduce函数，框架会将大型的数据处理任务切分成多个小型task，并将task分布式的处理。整个计算过程分为Map Phase和Reduce Phase，在Map阶段会将原始文件转化为intermediate kv pair，Reduce阶段则会将有关联的中间键合并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MapReduce">
+<meta property="og:url" content="http://example.com/2022/10/15/MapReduce/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MapReduce什么是MapReduce?MapReduce是一种用来处理大规模数据的分布式计算框架。编程者只负责编写Map函数和Reduce函数，框架会将大型的数据处理任务切分成多个小型task，并将task分布式的处理。整个计算过程分为Map Phase和Reduce Phase，在Map阶段会将原始文件转化为intermediate kv pair，Reduce阶段则会将有关联的中间键合并">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/MapReduce/image-20221015140345802.png">
+<meta property="article:published_time" content="2022-10-15T04:21:49.000Z">
+<meta property="article:modified_time" content="2023-09-04T15:37:11.287Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Distributed System">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/MapReduce/image-20221015140345802.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-MapReduce" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/10/15/MapReduce/" class="article-date">
+  <time class="dt-published" datetime="2022-10-15T04:21:49.000Z" itemprop="datePublished">2022-10-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      MapReduce
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><h3 id="什么是MapReduce"><a href="#什么是MapReduce" class="headerlink" title="什么是MapReduce?"></a>什么是MapReduce?</h3><p>MapReduce是一种用来处理大规模数据的分布式计算框架。编程者只负责编写Map函数和Reduce函数，框架会将大型的数据处理任务切分成多个小型task，并将task分布式的处理。整个计算过程分为Map Phase和Reduce Phase，在Map阶段会将原始文件转化为intermediate kv pair，Reduce阶段则会将有关联的中间键合并。</p>
+<p>在6.824的lab中，我们实现的MapReduce框架允许我们以加载.so文件的方式，实现相应的功能。例如wordcount、indexer、jobcount等工作。</p>
+<ul>
+<li>个人理解的MapReduce：一个divide and conquer 的大型计算模型</li>
+</ul>
+<p>（因为被Robert邮件提醒过，所以下面的代码均不是最后的正确结果，只是一个实例  :  ）</p>
+<h3 id="MapReduce-的工作流程"><a href="#MapReduce-的工作流程" class="headerlink" title="MapReduce 的工作流程"></a>MapReduce 的工作流程</h3><p><img src="/MapReduce/image-20221015140345802.png" alt="image-20221015140345802"></p>
+<ol>
+<li>MapReduce lib会将input file切片分成16MB或者64MB大小子文件split X，随后启动一系列进程。</li>
+<li>从启动的这些进程选择一个作为mater，其余作为worker【master负责整个计算过程的调度与任务的分配，worker负责具体任务的执行】<ul>
+<li>master会为worker创建一系列map_task和reduce_task（reduce task数量是用户指定的 n_Reduce）</li>
+<li>一系列worker启动并向master发送rpc请求，表明worker节点当前的状态</li>
+<li>master通过task_rpc返回给worker对应的task</li>
+</ul>
+</li>
+<li>首先worker对master分配的task执行map func，将intermediate result写入<strong>本地</strong>，并通过rpc返回写入的位置</li>
+<li>master在所有map task完成时进入Reduce阶段，分配reduce task</li>
+<li>根据之前返回的地址读取中间文件，并执行reduce func，将结果存入GFS并等待下一次运算</li>
+</ol>
+<h4 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h4><ul>
+<li>word count：Map函数会对将文件中的单词都转换为&lt;word, 1&gt;的形式，根据hash(word)的结果将单词分布到不同的中间文件中，随后通过Reduce函数对单词词频进行统计（相同的单词会因为同样的hash value存储在相同的中间文件）</li>
+<li>indexer：Map函数将文件中的单词转换为&lt;word, filename&gt;的形式，Reduce函数对结果进行整理可以获取单词在那个文件中出现</li>
+</ul>
+<h4 id="一些数据结构和函数"><a href="#一些数据结构和函数" class="headerlink" title="一些数据结构和函数"></a>一些数据结构和函数</h4><p>以下定义的数据结构是master与worker在rpc通信过程中需要用到的数据结构，其中包含了task的定义等元数据</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Add your RPC definitions here.</span></span><br><span class="line"><span class="keyword">type</span> TaskReply <span class="keyword">struct</span> &#123; <span class="comment">// Coordinator返回给worker的信息</span></span><br><span class="line">	Task             *Task</span><br><span class="line">	NReduce          <span class="type">int</span></span><br><span class="line">	Coordinatorstate Coordinatorstate</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Task <span class="keyword">struct</span> &#123;</span><br><span class="line">	Id        <span class="type">int</span>       <span class="comment">// 表示map任务号或者reduce任务号</span></span><br><span class="line">	TaskType  TaskType  <span class="comment">// 任务的类型</span></span><br><span class="line">	TaskState TaskState <span class="comment">// Task的执行状态</span></span><br><span class="line">	Filename  <span class="type">string</span>    <span class="comment">// map task需要读取的文件名称 reduce task需要的intermidiate files</span></span><br><span class="line">	StartTime time.Time <span class="comment">// task的起始时间</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Coordinatorstate <span class="type">int</span></span><br><span class="line"><span class="keyword">type</span> TaskType <span class="type">int</span></span><br><span class="line"><span class="keyword">type</span> TaskState <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	MapPhase Coordinatorstate = <span class="literal">iota</span></span><br><span class="line">	ReducePhase</span><br><span class="line">	AllDone</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Map TaskType = <span class="literal">iota</span></span><br><span class="line">	Reduce</span><br><span class="line">	Waiting			<span class="comment">// task已经分配完毕，等待当前阶段task完成</span></span><br><span class="line">	Done</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Idle TaskState = <span class="literal">iota</span>	<span class="comment">// 暂未执行</span></span><br><span class="line">	InProgress				<span class="comment">//</span></span><br><span class="line">	Completed				<span class="comment">//</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// files 表示所有文件名称</span></span><br><span class="line"><span class="comment">// nReduce 表示要执行多少次reduce</span></span><br><span class="line"><span class="comment">// MapReduce框架会为所有Map函数输出的每一个key，调用一次Reduce函数</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MakeCoordinator</span><span class="params">(files []<span class="type">string</span>, nReduce <span class="type">int</span>)</span></span> *Coordinator &#123;</span><br><span class="line"></span><br><span class="line">	c := Coordinator&#123;</span><br><span class="line">		filenames:     files,</span><br><span class="line">		nReduce:       nReduce,</span><br><span class="line">		taskId:        <span class="number">0</span>,</span><br><span class="line">		Phase:         MapPhase,</span><br><span class="line">		MapTasks:      <span class="built_in">make</span>(<span class="keyword">chan</span> *Task, <span class="built_in">len</span>(files)),</span><br><span class="line">		ReduceTasks:   <span class="built_in">make</span>(<span class="keyword">chan</span> *Task, nReduce),</span><br><span class="line">		ExcecuteState: <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">int</span>]*TaskMeta, <span class="built_in">len</span>(files)+nReduce),</span><br><span class="line">	&#125;</span><br><span class="line">	c.MakeMapTask(c.filenames, c.MapTasks)</span><br><span class="line">	c.MakeReduceTask(c.ReduceTasks)</span><br><span class="line">	<span class="comment">// go c.CrashTest()</span></span><br><span class="line">	<span class="comment">// test</span></span><br><span class="line">	c.server()</span><br><span class="line">	<span class="keyword">return</span> &amp;c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Coordinator中处理worker申请任务的函数</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在这里为worker分配相应map task 返回对应文件名称，并且等待worker在规定时间完成</span></span><br><span class="line"><span class="comment">// worker完成后将结果返回至Coordinator，Coordinator整合结果后再分配Reduce task</span></span><br><span class="line"><span class="comment">// coordinator wait for ten seconds; after that the coordinator should assume the worker has died</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Coordinator)</span></span> RequestTask(args *TaskArgs, reply *TaskReply) <span class="type">error</span> &#123;</span><br><span class="line">	mutex.Lock()</span><br><span class="line">	<span class="keyword">defer</span> mutex.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">switch</span> c.Phase &#123;</span><br><span class="line">	<span class="keyword">case</span> MapPhase:</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(c.MapTasks) &gt; <span class="number">0</span> &#123;</span><br><span class="line">			reply.Task = &lt;-c.MapTasks</span><br><span class="line">			reply.Task.TaskState = InProgress</span><br><span class="line">			reply.Task.StartTime = time.Now()</span><br><span class="line">			reply.NReduce = c.nReduce</span><br><span class="line">			reply.Coordinatorstate = MapPhase</span><br><span class="line"></span><br><span class="line">			<span class="comment">// c.ExcecuteState[reply.Task.Id].Task.TaskState = InProgress</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> c.IsAllDone() &#123;</span><br><span class="line">				fmt.Println(<span class="string">&quot;To the next Phase Reduce&quot;</span>)</span><br><span class="line">				c.NextPhase()</span><br><span class="line">			&#125;</span><br><span class="line">			reply.Task = &amp;Task&#123;&#125;</span><br><span class="line">			reply.Task.TaskType = Waiting</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">case</span> ReducePhase:</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(c.ReduceTasks) &gt; <span class="number">0</span> &#123;</span><br><span class="line">			reply.Task = &lt;-c.ReduceTasks</span><br><span class="line">			reply.Task.TaskState = InProgress</span><br><span class="line">			reply.Task.StartTime = time.Now()</span><br><span class="line">			reply.NReduce = c.nReduce</span><br><span class="line">			reply.Coordinatorstate = ReducePhase</span><br><span class="line"></span><br><span class="line">			<span class="comment">// c.ExcecuteState[reply.Task.Id].Task.TaskState = InProgress</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> c.IsAllDone() &#123;</span><br><span class="line">				fmt.Println(<span class="string">&quot;To the next Phase AllDone&quot;</span>)</span><br><span class="line">				c.NextPhase()</span><br><span class="line">			&#125;</span><br><span class="line">			reply.Task = &amp;Task&#123;&#125;</span><br><span class="line">			reply.Task.TaskType = Waiting</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">case</span> AllDone:</span><br><span class="line">		<span class="keyword">if</span> c.IsAllDone() &#123;</span><br><span class="line">			reply.Coordinatorstate = AllDone</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="容错机制"><a href="#容错机制" class="headerlink" title="容错机制"></a>容错机制</h3><p>容错机制是分布式计算中一个很重要的功能，受限于各种因素，MapReduce中worker很有可能出现执行错误的问题，我们需要确保master能够一直与worker保持网络通信，worker返回给master的结果是正确的，并且在worker与master失联后能够将任务分配给其他的worker重新执行。因为master一般为单个机器，出现错误的可能性较小，暂不讨论。</p>
+<h4 id="Worker-Failure"><a href="#Worker-Failure" class="headerlink" title="Worker Failure"></a>Worker Failure</h4><p>Master节点周期性的向worker节点发送Ping信号，若Worker节点长时间未恢复则默认节点不可用，将这个节点正在处理的任务标记为idle，并将这个task重新加入到等待队列中。下面是不同阶段出现worker failure的处理办法</p>
+<ul>
+<li>Map Task：无论Map task任务是否完成，Master都需要将重新分配给其他worker。并且worker失效意味着存储在本地的中间结果也是不可用的。若此时已经进入到Reduce阶段，那么Master还需要通知所有Reducer无法从过去的Mapper上读取中间结果，要从新的Mapper上获取数据。</li>
+</ul>
+<p>若一个map task 先被 Worker A执行，随后又被worker B执行，那么其他的reduce会被提示到此map task已被重新执行，读取中间结果将从B的地址读取。</p>
+<ul>
+<li>Reduce Task：已经完成的Reduce无需过多处理，因为Reduce的结果存储在GFS上；</li>
+</ul>
+<h4 id="hints"><a href="#hints" class="headerlink" title="hints"></a>hints</h4><p>map和reduce阶段必须是有严格的先后顺序的，可以使用<code>sync.Cond</code>解决，就是worker去要任务的时候，如果没有空闲的并且还有正在running的，就陷入沉睡，之后被<code>broadcast</code>唤醒然后返回。但这样做在no crash 下是可行的，如果有crash，就会发生这样的情况：几个worker在沉睡，正在运行的那个worker崩了，但没有worker能够调度去解决。 因此作如下改进：每次发现有worker failure，就随机唤醒单个worker，被唤醒的worker重新检查一下是否有任务；在所有任务完成时，将沉睡的worker全唤醒。</p>
+<h4 id="Backup"><a href="#Backup" class="headerlink" title="Backup"></a>Backup</h4><h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><h4 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h4><p>阿里CTO线面试：你做的MapReduce应用在实际生产中会存在什么问题？怎么解决这些问题？</p>
+<ul>
+<li>有可能存在一个worker节点，不停的向Master申请任务，并返回错误的执行结果</li>
+</ul>
+<p>解决方法：对worker节点做一些标记，一旦返回了错误的结果，悲观的认为这个节点以后也无法正确的执行，Master不再优先给这个节点分配任务</p>
+<ul>
+<li>落伍者(Stragglers)，有一个节点执行任务速度较慢，导致Master无法进入下一个阶段，所有节点阻塞等待</li>
+</ul>
+<p>解决方法：通过备用任务来处理执行较慢的任务，或者调用被sync.Cond睡眠的任务来代替</p>
+<ul>
+<li>重复执行？（节点失联后重新和master取得联系，之前的执行结果怎么办）</li>
+</ul>
+<p>解决办法：</p>
+<ul>
+<li>热点问题shuffle（例如map阶段将很多相同的单词都放入同一个中间结果，导致针对某一个reduce节点的执行速度过慢）</li>
+</ul>
+<p>解决办法：计算word的哈希值时加salt，让pair尽量分散到不同的hash bucket中，防止聚集现象</p>
+<h4 id="实际情况"><a href="#实际情况" class="headerlink" title="实际情况"></a>实际情况</h4><ul>
+<li>如何对数据进行分片？</li>
+</ul>
+<p>最好将Task读取的文件大小设定为128MB，接近HDFS中块的大小</p>
+<ul>
+<li>map阶段会存在缓冲区，不会让数据直接写入本地（防止频繁的IO）</li>
+</ul>
+<p>第一步对输入的数据进行切片，每个切片分配一个map()任务，map()对其中的数据进行计算，对每个数据用键值对的形式记录，然后输出到环形缓冲区map（）中输出的数据在环形缓冲区内进行快排，每个环形缓冲区默认大小100M，当数据达到80M时（默认），锁定这80M的数据并对其排序，分别按照partition和key排序（同一partition内key有序）</p>
+<ul>
+<li><p>如何做到负载均衡？</p>
+</li>
+<li><p>如何保证执行结果的正确性？</p>
+</li>
+<li><p>扩展性？</p>
+</li>
+</ul>
+<h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><blockquote>
+<p>MapReduce Paper <a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf</a></p>
+<p>知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/55884610">https://zhuanlan.zhihu.com/p/55884610</a></p>
+<p>shuffle 过程 知乎  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350428188">https://zhuanlan.zhihu.com/p/350428188</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/10/15/MapReduce/" data-id="clmdk0mgi000z09v64wjw6sbm" data-title="MapReduce" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/11/01/Lab5-Lazy-Allocation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Lab5-Lazy Allocation
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/29/GFS/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">GFS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Interrupt | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="中断机制 描述中断处理的流程  对于任何中断，是否都需要保存寄存器？  触发、捕获、处理异常   RISC-V相关中断 RISCV架构下有三种特权级别，分别是Machine、Supervisor和User，简称M模式、S模式和U模式。 123M模式权限最高，在这个级别下的程序可以访问一切硬件和执行所有特权指令；S模式一般用于运行操作系统，可以设置MMU使用虚拟地址；U模式一般是普通应用程序使用，权">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Interrupt">
+<meta property="og:url" content="http://example.com/2022/02/19/Interrupt/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="中断机制 描述中断处理的流程  对于任何中断，是否都需要保存寄存器？  触发、捕获、处理异常   RISC-V相关中断 RISCV架构下有三种特权级别，分别是Machine、Supervisor和User，简称M模式、S模式和U模式。 123M模式权限最高，在这个级别下的程序可以访问一切硬件和执行所有特权指令；S模式一般用于运行操作系统，可以设置MMU使用虚拟地址；U模式一般是普通应用程序使用，权">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-19T03:57:40.000Z">
+<meta property="article:modified_time" content="2023-09-04T15:37:11.276Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Operating System">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Interrupt" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/19/Interrupt/" class="article-date">
+  <time class="dt-published" datetime="2022-02-19T03:57:40.000Z" itemprop="datePublished">2022-02-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Interrupt
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="中断机制"><a href="#中断机制" class="headerlink" title="中断机制"></a>中断机制</h2><ul>
+<li><p>描述中断处理的流程</p>
+</li>
+<li><p>对于任何中断，是否都需要保存寄存器？</p>
+</li>
+<li><p>触发、捕获、处理异常</p>
+</li>
+</ul>
+<h2 id="RISC-V相关中断"><a href="#RISC-V相关中断" class="headerlink" title="RISC-V相关中断"></a>RISC-V相关中断</h2><ul>
+<li><p>RISCV架构下有三种特权级别，分别是Machine、Supervisor和User，简称M模式、S模式和U模式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">M模式权限最高，在这个级别下的程序可以访问一切硬件和执行所有特权指令；</span><br><span class="line">S模式一般用于运行操作系统，可以设置MMU使用虚拟地址；</span><br><span class="line">U模式一般是普通应用程序使用，权限最低。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>sstatus</code>寄存器(Supervisor Status Register)里面有一个二进制位<code>SIE</code>(supervisor interrupt enable，在RISCV标准里是2^1 对应的二进制位)，数值为0的时候，如果当程序在S态运行，将禁用全部中断。（对于在U态运行的程序，SIE这个二进制位的数值没有任何意义），<code>sstatus</code>还有一个二进制位<code>UIE</code>(user interrupt enable)可以在置零的时候禁止用户态程序产生中断。</p>
+</li>
+<li><p>RISC-V用一个<strong>stvec (Supervisor Trap Vector Base Address Reg )</strong> 寄存器来存储中断向量表的位置。中断向量表能将不同种类的中断映射到各自的中断处理程序上，如果只有一个中断处理程序，那么stvec直接指向中断处理程序的地址</p>
+</li>
+<li><p><strong>sepc</strong>(supervisor exception program counter)，它会记录触发中断的那条指令的地址；</p>
+</li>
+<li><p><strong>scause</strong>，它会记录中断发生的原因，还会记录该中断是不是一个外部中断；</p>
+</li>
+<li><p><strong>stval</strong>，它会记录一些中断处理所需要的辅助信息，比如指令获取(instruction fetch)、访存、缺页异常，它会把发生问题的目标地址或者出错的指令记录下来，这样我们在中断处理程序中就知道处理目标了。</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><strong>ra</strong> return address</li>
+</ul>
+<ol>
+<li><p>The return address is specified in the stack when a program contains a function call or subroutine.</p>
+</li>
+<li><p>When the function is called then, after its complete execution it has to return back to the original program i.e., the next instruction after the function call in the program. </p>
+</li>
+<li><p>When the function call is to be executed then, the program counter PC holds the address of the next instruction after the function call in the program.</p>
+</li>
+<li><p>For executing the function, the control has to go to the function definition and after executing the function it has to return to the next instruction after the function call in the program.</p>
+</li>
+<li><p>So, when the function is to be executed then, the PC value i.e., the next instruction address is stored onto the stack (SP incremented) and the PC is updated by the address where the function is stored.</p>
+</li>
+<li><p>After the complete execution of the function, the PC gets updated by the return address present in the stack (value at the top of the stack).</p>
+</li>
+</ol>
+<hr>
+<h2 id="Trap-流程"><a href="#Trap-流程" class="headerlink" title="Trap 流程"></a>Trap 流程</h2><ol>
+<li>首先，我们需要保存32个用户寄存器。因为很显然我们需要恢复用户应用程序的执行，尤其是当用户程序随机的被设备中断所打断时。我们希望内核能够响应中断，之后在用户程序完全无感知的情况下再恢复用户代码的执行。所以这意味着32个用户寄存器不能被内核弄乱。但是这些寄存器又要被内核代码所使用，所以在trap之前，你必须先在某处保存这32个用户寄存器。</li>
+<li>程序计数器也需要在某个地方保存，它几乎跟一个用户寄存器的地位是一样的，我们需要能够在用户程序运行中断的位置继续执行用户程序</li>
+<li>我们需要将mode改成supervisor mode，因为我们想要使用内核中的各种各样的特权指令。</li>
+<li>SATP寄存器现在正指向user page table，而user page table只包含了用户程序所需要的内存映射和一两个其他的映射，它并没有包含整个内核数据的内存映射。所以在运行内核代码之前，我们需要将SATP指向kernel page table。</li>
+<li>我们需要将堆栈寄存器指向位于内核的一个地址，因为我们需要一个堆栈来调用内核的C函数。</li>
+<li>一旦我们设置好了，并且所有的硬件状态都适合在内核中使用， 我们需要跳入内核的C代码。</li>
+</ol>
+<p>supervisor mode时，你可以：读写SATP寄存器，也就是page table的指针；STVEC，也就是处理trap的内核指令地址；SEPC，保存当发生trap时的程序计数器；SSCRATCH等等。在supervisor mode你可以读写这些寄存器，而用户代码不能做这样的操作。</p>
+<p>另一件事情supervisor mode可以做的是，它可以使用PTE_U标志位为0的PTE。当PTE_U标志位为1的时候，表明用户代码可以使用这个页表；如果这个标志位为0，则只有supervisor mode可以使用这个页表。我们接下来会看一下为什么这很重要</p>
+<p>需要特别指出的是，supervisor mode中的代码并不能读写任意物理地址。在supervisor mode中，就像普通的用户代码一样，也需要通过page table来访问内存。如果一个虚拟地址并不在当前由SATP指向的page table中，又或者SATP指向的page table中PTE_U&#x3D;1，那么supervisor mode不能使用那个地址。所以，即使我们在supervisor mode，我们还是受限于当前page table设置的虚拟地址。</p>
+<p>Trap执行流程;</p>
+<p><strong>ecall  &#x3D;&#x3D;&gt;  uservec()  (trampoline.S)  &#x3D;&#x3D;&gt;  usertrap()  (trap.c)   &#x3D;&#x3D;&gt;   syscall()</strong></p>
+<p>ecall并不会切换page table，这是ecall指令的一个非常重要的特点</p>
+<h2 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h2><p>中断的处理需要“放下当前的事情但之后还能回来接着之前往下做”，对于CPU来说，实际上只需要把原先的寄存器保存下来，做完其他事情把寄存器恢复回来就可以了。这些**寄存器也被叫做CPU的context(上下文，情境)**。</p>
+<p>我们要用汇编实现上下文切换(context switch)机制，这包含两步：</p>
+<ul>
+<li>保存CPU的寄存器（上下文）到内存中（栈上）</li>
+<li>从内存中（栈上）恢复CPU的寄存器</li>
+</ul>
+<p>上下文切换的过程</p>
+<p>上下文切换需要利用到一个csr寄存器，sscratch, 它存储了当前执行进程的上下文状态；那么上下文切换实质上就是保存当前寄存器的所有状态，将sscratch指向下一个进程的context并将信息恢复至寄存器中</p>
+<ol>
+<li>Task A按照顺序执行，执行到 call switch时，保存当前context</li>
+<li>操作系统会在内存中分配一段内存用于保存寄存器现场，并将下次执行开始的地址作为ra的值存入contextA</li>
+<li>操作系统会管理一个Context的链表，将contextA存入，并将sscratch执行contexB</li>
+<li>将contextB的寄存器现场恢复至CPU中，执行Task B</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/02/19/Interrupt/" data-id="clmdk0mgf000d09v60vw62i07" data-title="Interrupt" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/20/Lab1-util/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Lab1-util
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/19/Chapter1-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Chapter1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

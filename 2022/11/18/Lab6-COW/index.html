@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Lab6-COW | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Copy on Write什么是写时复制机制？写时复制机制是操作系统中非常常见的一种优化机制，主要为了解决fork-exec这一系列的问题。 例如，当我们使用shell处理指令时，shell通常会通过fork创建一个子进程，并利用exec加载指令程序到子进程中。通常fork会将shell父进程中的所有内容都做一份拷贝，例如pagetable，用户栈，甚至包括打开文件表。然而exec会加载一个新的程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab6-COW">
+<meta property="og:url" content="http://example.com/2022/11/18/Lab6-COW/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Copy on Write什么是写时复制机制？写时复制机制是操作系统中非常常见的一种优化机制，主要为了解决fork-exec这一系列的问题。 例如，当我们使用shell处理指令时，shell通常会通过fork创建一个子进程，并利用exec加载指令程序到子进程中。通常fork会将shell父进程中的所有内容都做一份拷贝，例如pagetable，用户栈，甚至包括打开文件表。然而exec会加载一个新的程">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/Lab6-COW/image-20230407152403851.png">
+<meta property="og:image" content="http://example.com/2022/11/18/Lab6-COW/Lab3-pagetable/image-20230313085847793.png">
+<meta property="article:published_time" content="2022-11-18T12:32:48.000Z">
+<meta property="article:modified_time" content="2023-09-04T15:37:11.285Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="xv6_riscv Lab">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/Lab6-COW/image-20230407152403851.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Lab6-COW" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/11/18/Lab6-COW/" class="article-date">
+  <time class="dt-published" datetime="2022-11-18T12:32:48.000Z" itemprop="datePublished">2022-11-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Lab6-COW
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Copy-on-Write"><a href="#Copy-on-Write" class="headerlink" title="Copy on Write"></a>Copy on Write</h2><h3 id="什么是写时复制机制？"><a href="#什么是写时复制机制？" class="headerlink" title="什么是写时复制机制？"></a>什么是写时复制机制？</h3><p>写时复制机制是操作系统中非常常见的一种优化机制，主要为了解决fork-exec这一系列的问题。</p>
+<p>例如，当我们使用shell处理指令时，shell通常会通过fork创建一个子进程，并利用exec加载指令程序到子进程中。通常fork会将shell父进程中的所有内容都做一份拷贝，例如pagetable，用户栈，甚至包括打开文件表。然而exec会加载一个新的程序占据子进程，所以以上这些资源会被立刻丢弃，在用户的视角这样的操作显然有点浪费</p>
+<p>那么我们就可以利用一种乐观的心态来解决这个问题，例如在fork的时候并不去真正的复制内存空间（因为uvmcopy会为我们分配新的物理空间），而是仅仅复制页表中的内容呢？</p>
+<p><img src="/./Lab6-COW/image-20230407152403851.png" alt="image-20230407152403851"></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>上图给我们一种复制地址空间的思路，只复制映射而不去分配物理地址空间，当真正被访问时再去分配。那么如何实现这样的操作呢？我们可以结合lazy- allocation中的实验过程来完成这个lab</p>
+<h4 id="修改uvmcopy"><a href="#修改uvmcopy" class="headerlink" title="修改uvmcopy"></a>修改uvmcopy</h4><p>对虚拟地址的操作免不了利用uvmcopy这个函数，我们使用这个函数进行地址空间的复制。在Lab3中我们介绍了这个函数，其中uvmcopy会在复制地址空间时eager的为子进程分配物理页面，尽然我们要lazy的处理这个问题，那么一定要对这个函数进行修改</p>
+<img src="./Lab3-pagetable/image-20230313085847793.png" alt="image-20230313085847793" style="zoom:50%;" />
+
+<p>COW要求我们在此时将父子进程的页表项都标记为只读的，并为这些pte做好标记，当进程需要对页表内容进行修改时，我们能够识别出COW带来的问题。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// COW fault</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_COW (1L &lt;&lt; 8)</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span></span><br><span class="line"><span class="title function_">uvmcopy</span><span class="params">(<span class="type">pagetable_t</span> old, <span class="type">pagetable_t</span> new, uint64 sz)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">pte_t</span> *pte;</span><br><span class="line">  uint64 pa, i;</span><br><span class="line">  uint flags;</span><br><span class="line">  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; sz; i += PGSIZE)&#123;</span><br><span class="line">    <span class="keyword">if</span>((pte = walk(old, i, <span class="number">0</span>)) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;uvmcopy: pte should exist&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">      panic(<span class="string">&quot;uvmcopy: page not present&quot;</span>);</span><br><span class="line">    pa = PTE2PA(*pte);</span><br><span class="line">    flags = PTE_FLAGS(*pte);</span><br><span class="line">    <span class="comment">// 仅对可写页面设置COW标记</span></span><br><span class="line">    <span class="keyword">if</span>(flags &amp; PTE_W) &#123;</span><br><span class="line">      <span class="comment">// 禁用写并设置COW Fork标记</span></span><br><span class="line">      flags = (flags | PTE_COW) &amp; ~PTE_W;</span><br><span class="line">      *pte = PA2PTE(pa) | flags;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(mappages(new, i, PGSIZE, pa, flags) != <span class="number">0</span>) &#123;</span><br><span class="line">      uvmunmap(new, <span class="number">0</span>, i / PGSIZE, <span class="number">1</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="应对COW-fault"><a href="#应对COW-fault" class="headerlink" title="应对COW fault"></a>应对COW fault</h4><p>既然父子进程都被我们修改为只读的，那么我们对子进程的任何修改都会触发page fault，于此同时我们还可以根据我们uvmcopy时的标记来判断这个page fault是否是cow fault，如果是一个cow fault我们便可以为其分配一块实际的物理页面</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">uint64 cause = r_scause();</span><br><span class="line"><span class="keyword">if</span>(cause == <span class="number">13</span> || cause == <span class="number">15</span>) &#123;</span><br><span class="line">  uint64 fault_va = r_stval();  <span class="comment">// 获取出错的虚拟地址</span></span><br><span class="line">  <span class="keyword">if</span>(fault_va &gt;= sz)</span><br><span class="line">    p-&gt;killed = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span>(fault_va &gt;= MAXVA)</span><br><span class="line">    panic(<span class="string">&quot;MAXVA!&quot;</span>);</span><br><span class="line">  <span class="type">pte_t</span>* pte = walk(pagetable, fault_va, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span>(pte == <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;pte is null!&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span>((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">    panic(<span class="string">&quot;pte is not allow!&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span>(*pte &amp; PTE_F)&#123;</span><br><span class="line">    <span class="comment">// is cow pagefault</span></span><br><span class="line">    <span class="comment">// TODO alloc an phscial page just like kalloc</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  panic(<span class="string">&quot;not cow!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="释放地址空间"><a href="#释放地址空间" class="headerlink" title="释放地址空间"></a>释放地址空间</h4><p>通过以上的设计我们看似完成了COW机制，然而当进程释放地址空间时问题就发生了。父子进程中其中任何一个进程释放内存空间时，都会导致另一个进程的内存空间失效，因此我们不能随意的释放内存空间。</p>
+<p>那么如何保证安全的释放呢？我们应该在复制页表时对页表中的每一个pte有一个计数器，通过计数器确定这个pte是否还被引用，若被引用那么只需要对计数器进行操作，若只剩一个引用，那么我们可以正常的释放pte的内容。（ std::shared_ptr ）</p>
+<p><strong>初始化计数器</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">run</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> <span class="title">lock</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">freelist</span>;</span></span><br><span class="line">&#125; kmem;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 只需要在freerange()时对数组进行初始化即可</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ref_stru</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">spinlock</span> <span class="title">lock</span>;</span></span><br><span class="line">  <span class="type">int</span> cnt[PHYSTOP / PGSIZE];  <span class="comment">// 引用计数</span></span><br><span class="line">&#125; ref;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Free the page of physical memory pointed at by v,</span></span><br><span class="line"><span class="comment">// which normally should have been returned by a</span></span><br><span class="line"><span class="comment">// call to kalloc().  (The exception is when</span></span><br><span class="line"><span class="comment">// initializing the allocator; see kinit above.)</span></span><br><span class="line"><span class="type">void</span> *</span><br><span class="line"><span class="title function_">kalloc</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line"></span><br><span class="line">  acquire(&amp;kmem.lock);</span><br><span class="line">  r = kmem.freelist;</span><br><span class="line">  <span class="keyword">if</span>(r) &#123;</span><br><span class="line">    kmem.freelist = r-&gt;next;</span><br><span class="line">    acquire(&amp;ref.lock);</span><br><span class="line">    ref.cnt[(uint64)r / PGSIZE] = <span class="number">1</span>;  <span class="comment">// 将引用计数初始化为1</span></span><br><span class="line">    release(&amp;ref.lock);</span><br><span class="line">  &#125;</span><br><span class="line">  release(&amp;kmem.lock);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(r)</span><br><span class="line">    <span class="built_in">memset</span>((<span class="type">char</span>*)r, <span class="number">5</span>, PGSIZE); <span class="comment">// fill with junk</span></span><br><span class="line">  <span class="keyword">return</span> (<span class="type">void</span>*)r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>释放页表</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">kfree</span><span class="params">(<span class="type">void</span> *pa)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(((uint64)pa % PGSIZE) != <span class="number">0</span> || (<span class="type">char</span>*)pa &lt; end || (uint64)pa &gt;= PHYSTOP)</span><br><span class="line">    panic(<span class="string">&quot;kfree&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 只有当引用计数为0了才回收空间</span></span><br><span class="line">  <span class="comment">// 否则只是将引用计数减1</span></span><br><span class="line">  acquire(&amp;ref.lock);</span><br><span class="line">  <span class="keyword">if</span>(--ref.cnt[(uint64)pa / PGSIZE] == <span class="number">0</span>) &#123;</span><br><span class="line">    release(&amp;ref.lock);</span><br><span class="line"></span><br><span class="line">    r = (<span class="keyword">struct</span> run*)pa;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Fill with junk to catch dangling refs.</span></span><br><span class="line">    <span class="built_in">memset</span>(pa, <span class="number">1</span>, PGSIZE);</span><br><span class="line"></span><br><span class="line">    acquire(&amp;kmem.lock);</span><br><span class="line">    r-&gt;next = kmem.freelist;</span><br><span class="line">    kmem.freelist = r;</span><br><span class="line">    release(&amp;kmem.lock);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    release(&amp;ref.lock);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>实验整体思路不是很难，但有很多细节需要处理。做完这个实验可以深入理解进程创建和执行的一个流程， 并且能够让我们充分理解计算机系统中一些lazy的思想</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/11/18/Lab6-COW/" data-id="clmdk0mgh000q09v61zd4b2dy" data-title="Lab6-COW" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/11/29/raft/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Raft
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/11/01/Lab5-Lazy-Allocation/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Lab5-Lazy Allocation</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>leetcode | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="算法算法的核心就是穷举所有可能的结果，并从这些结果中找到符合要求的一项。所以在我们解决问题时需要对问题进行拆解，将问题放入我们已经熟悉的模版中，利用模版并对当前条件进行调整从而解决问题 双指针 数组 链表1234567&#x2F;&#x2F; arrayint slow &#x3D; 0;int fast &#x3D; 0;&#x2F;&#x2F; linklist 链表有时还会用到dummy节点ListNode *slow &#x3D; head;	&#x2F;&#x2F; List">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode">
+<meta property="og:url" content="http://example.com/2022/02/26/leetcode/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="算法算法的核心就是穷举所有可能的结果，并从这些结果中找到符合要求的一项。所以在我们解决问题时需要对问题进行拆解，将问题放入我们已经熟悉的模版中，利用模版并对当前条件进行调整从而解决问题 双指针 数组 链表1234567&#x2F;&#x2F; arrayint slow &#x3D; 0;int fast &#x3D; 0;&#x2F;&#x2F; linklist 链表有时还会用到dummy节点ListNode *slow &#x3D; head;	&#x2F;&#x2F; List">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-26T05:13:04.000Z">
+<meta property="article:modified_time" content="2023-09-04T15:37:11.290Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="leetcode">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-leetcode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/26/leetcode/" class="article-date">
+  <time class="dt-published" datetime="2022-02-26T05:13:04.000Z" itemprop="datePublished">2022-02-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      leetcode
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p><strong>算法的核心就是穷举所有可能的结果，并从这些结果中找到符合要求的一项。所以在我们解决问题时需要对问题进行拆解，将问题放入我们已经熟悉的模版中，利用模版并对当前条件进行调整从而解决问题</strong></p>
+<h3 id="双指针-数组-链表"><a href="#双指针-数组-链表" class="headerlink" title="双指针 数组 链表"></a>双指针 数组 链表</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// array</span></span><br><span class="line"><span class="type">int</span> slow = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> fast = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// linklist 链表有时还会用到dummy节点</span></span><br><span class="line">ListNode *slow = head;	<span class="comment">// ListNode* dummy = new ListNode();</span></span><br><span class="line">ListNode *fast = slow;</span><br></pre></td></tr></table></figure>
+
+<p>  主要用来处理数组和链表问题，主要有快慢指针和双指针两种。快慢指针一般是通向，一块一慢；双指针一般是相向相背前进。</p>
+<h4 id="快慢指针（滑动窗口）"><a href="#快慢指针（滑动窗口）" class="headerlink" title="快慢指针（滑动窗口）"></a>快慢指针（滑动窗口）</h4><ol>
+<li>一般用nums[slow…fast]代表结果串，fast作为索引去处理或判断节点是否符合题意</li>
+<li></li>
+</ol>
+<h5 id="26-删除有序数组中的重复项"><a href="#26-删除有序数组中的重复项" class="headerlink" title="26. 删除有序数组中的重复项"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array/description/">26. 删除有序数组中的重复项</a></h5><h5 id="27-移除元素"><a href="#27-移除元素" class="headerlink" title="27. 移除元素"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-element/description/">27. 移除元素</a></h5><h5 id="209-长度最小的子数组"><a href="#209-长度最小的子数组" class="headerlink" title="209. 长度最小的子数组"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/">209. 长度最小的子数组</a></h5><p><strong>子数组问题</strong>，为了保持数组连续，可以选择使用滑动窗口的方法，但是要控制好窗口的移动</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> slow = <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> fast = <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span>(fast &lt; nums.<span class="built_in">size</span>())&#123;</span><br><span class="line">    sum += nums[fast];</span><br><span class="line">    <span class="keyword">while</span>(sum &gt;= target)&#123;</span><br><span class="line">      <span class="keyword">if</span>(sum == target)&#123;</span><br><span class="line">				<span class="comment">// to do for result</span></span><br><span class="line">      &#125;</span><br><span class="line">      sum -= nums[slow];</span><br><span class="line">      slow++;</span><br><span class="line">    &#125;</span><br><span class="line">    fast++;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对一段子数组或区间（可以是一维可以是二维）求和都可以使用<strong>前缀和数组</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用来求i到j之间的和</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preSum</span><span class="params">(vector&lt;<span class="type">int</span>&gt; nums)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> size = nums.<span class="built_in">size</span>();</span><br><span class="line">  <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preSum</span><span class="params">(size, <span class="number">0</span>)</span></span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; sz; i++)&#123;</span><br><span class="line">    preSum[i] = preSum[i - <span class="number">1</span>] + nums[i - <span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">preSum</span>(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; nums)&#123;</span><br><span class="line">	<span class="comment">// 矩形算面积的方法构建preSum</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>前缀和 + 哈希表</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用来求i到j之间的和</span></span><br><span class="line"><span class="comment">// 找到和为k的子数组  </span></span><br><span class="line"><span class="comment">// preSum[i] - preSum[j] == k ===&gt; preSum[j] == preSum[i] - k</span></span><br><span class="line"><span class="comment">// preSum[j] 就是我们要找的前缀和，只需要在哈希表中判断是否存在这样一个前缀和为preSum[i] - k的值即可</span></span><br><span class="line"><span class="comment">// 找到平局值为k的字数组</span></span><br><span class="line"><span class="comment">// preSum[i] - preSum[j] = k*(i - j)</span></span><br><span class="line"><span class="comment">// preSum[j] - k * j = preSum[i] - k * i</span></span><br><span class="line"><span class="comment">// preSum[j] - k * j 就是我们要找的前缀和，只需要在哈希表中判断是否存在这样一个前缀和为preSum[i] - k * i的值即可</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">findSubArr</span><span class="params">(vector&lt;<span class="type">int</span>&gt; nums, <span class="type">int</span> k)</span></span>&#123;</span><br><span class="line"><span class="comment">//nums     1 3 2  4  1 </span></span><br><span class="line"><span class="comment">//preSum 0 1 4 6 10 11 </span></span><br><span class="line">	<span class="type">int</span> size = nums.<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">  <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">preSum</span><span class="params">(size, <span class="number">0</span>)</span></span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt; sz; i++)&#123;</span><br><span class="line">    preSum[i] = preSum[i - <span class="number">1</span>] + nums[i - <span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">  map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; subArr_map;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(subArr_map.<span class="built_in">count</span>(preSum[i] - k) != <span class="number">0</span>)&#123;</span><br><span class="line">      result = subArr_map[preSum[i] - k];</span><br><span class="line">      subArr_map[preSum[i]] = subArr_map[preSum[i] - k] + <span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      subArr_map[preSum[i]] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>对一段子数组或区间，进行增减或者操作，可以使用差分数组</li>
+</ul>
+<h4 id="回文子串"><a href="#回文子串" class="headerlink" title="回文子串"></a>回文子串</h4><h5 id="5-最长回文子串"><a href="#5-最长回文子串" class="headerlink" title="5. 最长回文子串"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-palindromic-substring/">5. 最长回文子串</a></h5><ol>
+<li>奇数长度的回文串 奇数长度时left &#x3D;&#x3D; right向外扩散</li>
+<li>偶数长度的回文串 偶数长度时正常向外扩散</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">judge</span><span class="params">(string str, <span class="type">int</span> left, <span class="type">int</span> right)</span></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">0</span> &lt;= left &amp;&amp; right &lt; str.<span class="built_in">size</span>() &amp;&amp; str[left] == str[right])&#123;</span><br><span class="line">    left++;</span><br><span class="line">    right--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(left+<span class="number">1</span>&gt;right)</span><br><span class="line">    	<span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="keyword">return</span>  s.<span class="built_in">substr</span>(left+<span class="number">1</span>, right-left<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二叉树专题"><a href="#二叉树专题" class="headerlink" title="二叉树专题"></a>二叉树专题</h3><h4 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h4><p>二叉树的题目以二叉树的遍历为核心，通过不同的遍历顺序对树种节点操作，并返回结果。</p>
+<p>pre_order:	先序遍历会在进入节点的时候对节点进行操作</p>
+<p>in_order:	中序遍历是二叉树所特有的遍历方式，一般用在二叉搜索树中</p>
+<p>post_order:	后序遍历会在离开当前节点时对节点进行操作，<strong>离开节点时意味着已经拥有了左右子树的相关信息</strong></p>
+<ul>
+<li><strong>后序遍历有分而治之的思想，即先将问题划分成两个小问题，合并后大问题自然就解决了</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">order</span><span class="params">(TreeNode* root)</span>&#123;		<span class="comment">// 1. 首先确定传入参数与返回值</span></span><br><span class="line">    <span class="keyword">if</span>(root == null)			<span class="comment">// 2. 确定如何结束，二叉树一般是遍历到底层的叶子节点</span></span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    <span class="comment">// pre_order				// 3. 确定何时对节点进行操作以及操作细节</span></span><br><span class="line">    order(root-&gt;left);</span><br><span class="line">    <span class="comment">// in_order</span></span><br><span class="line">    order(root-&gt;right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="617-合并二叉树"><a href="#617-合并二叉树" class="headerlink" title="617. 合并二叉树"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/merge-two-binary-trees/solutions/">617. 合并二叉树</a></h5><p>思路: 如果节点的左子树和右子树都被合并了，那只需要将当前节点合并即可</p>
+<ol>
+<li>传入参数：两个树的节点</li>
+<li>返回值：合并后的二叉树根节点 root1</li>
+<li>暂停条件：若root1为nullptr，返回root2；若root2为nullptr同理</li>
+</ol>
+<h5 id="104-二叉树的最大深度"><a href="#104-二叉树的最大深度" class="headerlink" title="104. 二叉树的最大深度"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/">104. 二叉树的最大深度</a></h5><p>思路：如果我们知道左子树和右子树的高度，只需取二者的最大值并+1即可</p>
+<ol>
+<li>返回值：子树高度</li>
+</ol>
+<h5 id="111-二叉树的最小深度"><a href="#111-二叉树的最小深度" class="headerlink" title="111. 二叉树的最小深度"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-depth-of-binary-tree/">111. 二叉树的最小深度</a></h5><p>思路：如果我们知道从左子树出发到最近叶子节点的距离和右子树出发到最近叶子节点的距离，只需取二者的最小值并+1即可</p>
+<ol>
+<li>返回值：距离叶子节点最近的距离</li>
+<li>操作：<strong>判断返回的距离是否是到达叶子节点的距离</strong></li>
+</ol>
+<ul>
+<li>如果左右子树返回均为0，则证明当前节点为叶子节点；若左右子树有任一节点返回不为0，则证明当前节点并非叶子节点</li>
+</ul>
+<h5 id="110-平衡二叉树判断它是否是高度平衡的二叉树。"><a href="#110-平衡二叉树判断它是否是高度平衡的二叉树。" class="headerlink" title="110. 平衡二叉树判断它是否是高度平衡的二叉树。"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/balanced-binary-tree/">110. 平衡二叉树</a>判断它是否是高度平衡的二叉树。</h5><p>思路：高度平衡表示左右子树高度差不大于1</p>
+<ol>
+<li>返回值：是否是高度平衡的二叉树</li>
+</ol>
+<h5 id="106-从中序与后序遍历序列构造二叉树"><a href="#106-从中序与后序遍历序列构造二叉树" class="headerlink" title="106. 从中序与后序遍历序列构造二叉树"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/">106. 从中序与后序遍历序列构造二叉树</a></h5><p>思路：后续或者前序确定root，中序确定左右子树的范围</p>
+<ol>
+<li><p>返回值：返回构造的二叉树</p>
+</li>
+<li><p>参数：后序、中序遍历的数组范围  </p>
+</li>
+<li><p>终止：</p>
+</li>
+</ol>
+<h5 id="501-二叉搜索树中的众数"><a href="#501-二叉搜索树中的众数" class="headerlink" title="501. 二叉搜索树中的众数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-mode-in-binary-search-tree/description/">501. 二叉搜索树中的众数</a></h5><h5 id="450-删除二叉搜索树中的节点"><a href="#450-删除二叉搜索树中的节点" class="headerlink" title="450. 删除二叉搜索树中的节点"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/delete-node-in-a-bst/description/">450. 删除二叉搜索树中的节点</a></h5><h5 id="116-填充每个节点的下一个右侧节点指针"><a href="#116-填充每个节点的下一个右侧节点指针" class="headerlink" title="116. 填充每个节点的下一个右侧节点指针"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/">116. 填充每个节点的下一个右侧节点指针</a></h5><p>思路：二叉树的问题可以被拆解为每一个字节点的任务，我们只需根据函数定义处理一个节点上的情况即可递归的得到全部的结果。本题目如果只依赖一个节点肯定无法实现跨节点的连接，因此我们需要传入两个参数，即传入两个相邻的节点。</p>
+<h5 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h5><p><strong>你甚至可以这样理解：快速排序的过程是一个构造二叉搜索树的过程(基本就是一个前序遍历，先将一个元素的位置确定，再确定左右两侧元素的顺序)</strong></p>
+<h5 id="215-TopK-数组中最大的第k个元素"><a href="#215-TopK-数组中最大的第k个元素" class="headerlink" title="215.TopK, 数组中最大的第k个元素"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/kth-largest-element-in-an-array/submissions/400771309/">215.TopK, 数组中最大的第k个元素</a></h5><p>快速排序可以理解为某中意义上的前序排序。quicksort  每次排序会先确定一个数的位置并确保这个数之前的都是小于它的，之后的数都是大于它的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">sort</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;num, <span class="type">int</span> low, <span class="type">int</span> high, <span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(low &lt; high)&#123;</span><br><span class="line">      <span class="type">int</span> pos = <span class="built_in">partation</span>(num, low, high);</span><br><span class="line">      <span class="keyword">if</span>(pos &lt; k)&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">sort</span>(num, pos + <span class="number">1</span>, high, k);</span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pos == k)&#123;</span><br><span class="line">          <span class="keyword">return</span> num[k];</span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(k &lt; pos)&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">sort</span>(num, low, pos - <span class="number">1</span>, k);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num[low];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">partation</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;num, <span class="type">int</span> low, <span class="type">int</span> high)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> pivot = num[low];</span><br><span class="line">    <span class="keyword">while</span>(low &lt; high)&#123;</span><br><span class="line">        <span class="keyword">while</span>(low &lt; high &amp;&amp; pivot &lt;= num[high])&#123;</span><br><span class="line">            high--;</span><br><span class="line">        &#125;</span><br><span class="line">        num[low] = num[high];</span><br><span class="line">        <span class="keyword">while</span>(low &lt; high &amp;&amp; num[low] &lt;= pivot)&#123;</span><br><span class="line">            low++;</span><br><span class="line">        &#125;</span><br><span class="line">        num[high] = num[low];</span><br><span class="line">    &#125;</span><br><span class="line">    num[low] = pivot;</span><br><span class="line">    <span class="keyword">return</span> low;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="递归算法"><a href="#递归算法" class="headerlink" title="递归算法"></a>递归算法</h3><p>反转链表:主要还是围绕递归，所以关于链表的题目我们要明确递归函数的定义（递归函数的输入是什么，输出是什么，中间做了什么）</p>
+<ul>
+<li>反转链表</li>
+</ul>
+<p>reverse(ListNode* head)函数表示反转从head开始的链表，并返回新的头节点，因此我们只需要接受新的头节点并作为最终头节点，并反转当前节点即可（当前节点的next指针还连接着一个节点）</p>
+<p><strong>有点像是把当前节点重新插入一个链表的尾部</strong></p>
+<ul>
+<li>反转链表中前N个数</li>
+</ul>
+<p>reverse(ListNode* head, int n)函数表示反转从head开始的N个数，并返回新的头节点，因此我们只需要接受新的头节点并作为最终头节点，并把当前节点插入已经反转的链表中（这时需要注意要存下来第N + 1个节点，并让当前节点指向N+1个节点 ）</p>
+<ul>
+<li>两两交换反转链表</li>
+</ul>
+<p>ListNode* swapPairs(ListNode* head) 函数表示反转head开始的两个节点，并返回新的头节点；我们可以先反转两个节点，并接着反转后面的节点，也可以先接收后面已经反转成功的链表。再反转head和head-&gt;next</p>
+<ul>
+<li>反转left到right之间的数</li>
+</ul>
+<p>利用反转前N个数的函数定义</p>
+<ul>
+<li>K个一组反转链表</li>
+</ul>
+<p>和两个一组交换节点的感觉差不多，先反转k个节点，再接收后面已经反转好的链表</p>
+<h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p><strong>我们一般用动态规划求解最值问题，例如fib，如何爬楼梯，零钱兑换等问题，一般不需要具体的例子，只需要一个结果即可</strong></p>
+<ul>
+<li><p>dp数组负责记录过去某一时刻的状态，动态规划则是构造dp数组并找到合适的结果，所以动态规划可以解决子数组或者子序列等问题（其中dp[i]表示第i个字符状态为截止的状态，最长递增子序列，最大子数组之和），<strong>所以动态规划的题目要明确dp数组的含义</strong></p>
+</li>
+<li><p>所有设计到递归函数的问题我们都需要确定函数的定义，根据函数的定义进出递归函数</p>
+</li>
+<li><p>动态规划的核心是<strong>穷举</strong>，从所有可行答案中找出最值。</p>
+</li>
+</ul>
+<ol>
+<li><strong>列出正确的状态转移方程</strong></li>
+<li>判断是否具有<strong>最优子结构</strong>，能否通过子问题的最值得到原问题的最值</li>
+<li>判断重叠子问题</li>
+</ol>
+<p><strong>明确 base case -&gt; 明确「状态」-&gt; 明确「选择」 -&gt; 定义 <code>dp</code> 数组&#x2F;函数的含义</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自顶向下递归的动态规划</span></span><br><span class="line">def <span class="title function_">dp</span><span class="params">(状态<span class="number">1</span>, 状态<span class="number">2</span>, ...)</span>:</span><br><span class="line">    <span class="keyword">for</span> 选择 in 所有可能的选择:</span><br><span class="line">        # 此时的状态已经因为做了选择而改变</span><br><span class="line">        result = 求最值(result, dp(状态<span class="number">1</span>, 状态<span class="number">2</span>, ...))</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment">// 自底向上迭代的动态规划  // 爬楼梯 fib</span></span><br><span class="line"><span class="comment">// 初始化 base case</span></span><br><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>][...] = base <span class="keyword">case</span></span><br><span class="line"><span class="comment">// 进行状态转移</span></span><br><span class="line"><span class="keyword">for</span> 状态<span class="number">1</span> in 状态<span class="number">1</span>的所有取值：</span><br><span class="line">    <span class="keyword">for</span> 状态<span class="number">2</span> in 状态<span class="number">2</span>的所有取值：</span><br><span class="line">        <span class="keyword">for</span> ...</span><br><span class="line">            dp[状态<span class="number">1</span>][状态<span class="number">2</span>][...] = 求最值(选择<span class="number">1</span>，选择<span class="number">2.</span>..)</span><br></pre></td></tr></table></figure>
+
+<p><strong>最优子结构</strong></p>
+<p><strong>状态</strong></p>
+<p><strong>选择</strong></p>
+<p>base case</p>
+<h3 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h3><p>回溯算法和 DFS 算法的细微差别是：<strong>回溯算法是在遍历「树枝」，DFS 算法是在遍历「节点」</strong>，</p>
+<ul>
+<li><strong>形式一、元素无重不可复选，即 <code>nums</code> 中的元素都是唯一的，每个元素最多只能被使用一次，这也是最基本的形式</strong>。</li>
+</ul>
+<p>以组合为例，如果输入 <code>nums = [2,3,6,7]</code>，和为 7 的组合应该只有 <code>[7]</code>。</p>
+<ul>
+<li><strong>形式二、元素可重不可复选，即 <code>nums</code> 中的元素可以存在重复，每个元素最多只能被使用一次</strong>。</li>
+</ul>
+<p>以组合为例，如果输入 <code>nums = [2,5,2,1,2]</code>，和为 7 的组合应该有两种 <code>[2,2,2,1]</code> 和 <code>[5,2]</code>。</p>
+<ul>
+<li><strong>形式三、元素无重可复选，即 <code>nums</code> 中的元素都是唯一的，每个元素可以被使用若干次</strong>。</li>
+</ul>
+<p>以组合为例，如果输入 <code>nums = [2,3,6,7]</code>，和为 7 的组合应该有两种 <code>[2,2,3]</code> 和 <code>[7]</code></p>
+<h3 id="多线程编程"><a href="#多线程编程" class="headerlink" title="多线程编程"></a>多线程编程</h3><ol>
+<li>素数筛</li>
+</ol>
+<ul>
+<li>思路：fork() and pipe()  </li>
+<li>每个线程从标准输入中获取n个数，第一个数作为start必定是素数，随后遍历其余数字，若能被start整除则一定不是素数，因此把不能整除的数输入到标准输出给子进程。</li>
+</ul>
+<p>fd[0] 读出端；fd[1]写入端</p>
+<ol start="2">
+<li>交替打印a b 100 次</li>
+</ol>
+<ul>
+<li>思路：conditional_variable and unique_lock</li>
+</ul>
+<ol start="3">
+<li>交替打印a b c 100 次</li>
+</ol>
+<ul>
+<li>思路：conditional_variable and unique_lock</li>
+</ul>
+<h3 id="只出现一次的元素"><a href="#只出现一次的元素" class="headerlink" title="只出现一次的元素"></a>只出现一次的元素</h3><p>给定一个<strong>非空</strong>整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">全部元素进行异或操作，得到结果就是只出现一次的数</span><br><span class="line"></span><br><span class="line">解释：</span><br><span class="line">	相同的两个数进行异或结果为0，0与另一个数异或结果为另一个数</span><br><span class="line">	1111 ^ 1100 = 0011 ; 0000 ^ 1100 = 1100</span><br></pre></td></tr></table></figure>
+
+<h3 id="搜索二维矩阵"><a href="#搜索二维矩阵" class="headerlink" title="搜索二维矩阵"></a>搜索二维矩阵</h3><p>编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：</p>
+<ul>
+<li>每行的元素从左到右升序排列。</li>
+<li>每列的元素从上到下升序排列。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">解释：</span><br><span class="line">	从数组的左下角或者右上角开始遍历，因为左下角的元素比其上方的任意一个元素都大，比起右边的任意一个元素都小</span><br><span class="line">	如果此图形为方阵，可以从主对角线开始遍历；</span><br></pre></td></tr></table></figure>
+
+<h3 id="合并两个有序数组"><a href="#合并两个有序数组" class="headerlink" title="合并两个有序数组"></a>合并两个有序数组</h3><p>给你两个按 非递减顺序 排列的整数数组 nums1 和 nums2，另有两个整数 m 和 n ，分别表示 nums1 和 nums2 中的元素数目。</p>
+<p>请你 合并 nums2 到 nums1 中，使合并后的数组同样按 非递减顺序 排列。</p>
+<p>注意：最终，合并后数组不应由函数返回，而是存储在数组 nums1 中。为了应对这种情况，nums1 的初始长度为 m + n，其中前 m 个元素表示应合并的元素，后 n 个元素为 0 ，应忽略。nums2 的长度为 n 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3</span><br><span class="line">输出：[1,2,2,3,5,6]</span><br><span class="line">解释：需要合并 [1,2,3] 和 [2,5,6] 。</span><br><span class="line">合并结果是 [1,2,2,3,5,6] ，其中斜体加粗标注的为 nums1 中的元素。</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/02/26/leetcode/" data-id="clmdk0mgk001i09v612vhggwq" data-title="leetcode" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/08/Lab4-trap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Lab4-trap
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/26/Lab3-pagetable/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Lab3-pagetable</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

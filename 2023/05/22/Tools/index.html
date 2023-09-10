@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Tools | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession    CMake 设置项目名称 PROJECT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tools">
+<meta property="og:url" content="http://example.com/2023/05/22/Tools/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession    CMake 设置项目名称 PROJECT">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-05-22T08:53:34.000Z">
+<meta property="article:modified_time" content="2023-09-04T15:37:11.288Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Tools">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Tools" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/05/22/Tools/" class="article-date">
+  <time class="dt-published" datetime="2023-05-22T08:53:34.000Z" itemprop="datePublished">2023-05-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Tools
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Tmux"><a href="#Tmux" class="headerlink" title="Tmux"></a>Tmux</h1><p>使用tmux在服务器后台运行程序</p>
+<ol>
+<li>创建一个会话，并进入该会话</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session -s mysession</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>运行对应程序</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python my_program.py</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>退出当前会话，先按下***<u>ctrl + b</u>***再按d，即可退出当前会话</p>
+</li>
+<li><p>重新连接该会话</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t mysession</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h1><ol>
+<li><p>设置项目名称</p>
+<p>PROJECT (DEMO)</p>
+<p>设置项目名称为DEMO</p>
+</li>
+<li><p>设置头文件或者项目文件目录</p>
+<p>include_directories(${CMAKE_CURRENT_LIST_DIR}&#x2F;include)</p>
+<p>${CMAKE_CURRENT_LIST_DIR} 表示CMakelist.txt所在位置</p>
+</li>
+<li><p>将项目源文件添加至变量中</p>
+<p>aux_source_directory(.&#x2F;src SRC) </p>
+<p>将.&#x2F;src 下的所有源文件递归的加入SRC变量中</p>
+</li>
+<li><p>构造可执行文件</p>
+<p>ADD_EXECUTABLE(${PROJECT_NAME} ${SRC})</p>
+<p>将变量SRC内的源文件构建成可执行文件，并命名为开头设置的project_name</p>
+</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">PROJECT</span> (DEMO)</span><br><span class="line"></span><br><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(CMAKE_CXX_STANDARD <span class="number">14</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;CMAKE_CURRENT_LIST_DIR&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># link_directories($&#123;CMAKE_CURRENT_LIST_DIR&#125;/lib)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">aux_source_directory</span>(./src SRC)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把所有.cpp的main函数都构建起来</span></span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">file</span> <span class="variable">$&#123;files&#125;</span>)</span><br><span class="line"><span class="keyword">string</span>(REGEX REPLACE <span class="string">&quot;.+/(.+)\\..*&quot;</span> <span class="string">&quot;\\1&quot;</span> exe <span class="variable">$&#123;file&#125;</span>)</span><br><span class="line"><span class="keyword">add_executable</span> (<span class="variable">$&#123;exe&#125;</span> <span class="variable">$&#123;file&#125;</span>)</span><br><span class="line"><span class="keyword">message</span> (\ \ \ \ --\ src/<span class="variable">$&#123;exe&#125;</span>.cpp\ will\ be\ compiled\ to\ bin/<span class="variable">$&#123;exe&#125;</span>)</span><br><span class="line"><span class="keyword">endforeach</span> ()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ADD_EXECUTABLE($&#123;PROJECT_NAME&#125; $&#123;SRC&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># target_link_libraries($&#123;PROJECT_NAME&#125; util)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_COMPILER      &quot;clang++&quot; )         # 显示指定使用的C++编译器</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS   &quot;-std=c++11&quot;)             # c++11</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS   &quot;-g&quot;)                     # 调试信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS   &quot;-Wall&quot;)                  # 开启所有警告</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS_DEBUG   &quot;-O0&quot; )             # 调试包不优化</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># set(CMAKE_CXX_FLAGS_RELEASE &quot;-O2 -DNDEBUG &quot; )   # release包优化</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[CMake 构建测试用例 ]<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39766005/article/details/122686185">https://blog.csdn.net/weixin_39766005/article/details/122686185</a></p>
+</blockquote>
+<h1 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a><a target="_blank" rel="noopener" href="https://linux265.com/course/vim-intro.html">Vim</a></h1><h2 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h2><ul>
+<li><p>行内的向后移动： <strong>w</strong></p>
+</li>
+<li><p>行内的向前移动：<strong>b</strong> (e 可以移动到词尾)</p>
+</li>
+<li><p>移动到当前行尾：**$**</p>
+</li>
+<li><p>移动到当前行首：<strong>0</strong></p>
+</li>
+<li><p>移动到屏幕顶部：<strong>H</strong></p>
+</li>
+<li><p>移动到屏幕末尾：<strong>L</strong></p>
+</li>
+<li><p>移动到屏幕中间：<strong>M</strong></p>
+</li>
+<li><p>删除至行尾：<strong>D</strong></p>
+</li>
+<li><p>跳转到某一行：<strong>n</strong></p>
+</li>
+<li><p>移动到文件尾部：<strong>gg</strong></p>
+</li>
+<li><p>移动到文件首部：<strong>G</strong></p>
+</li>
+</ul>
+<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git 中的对象可以是 blob、tree或commit</p>
+<p>Git 在储存数据时，所有的对象都会基于它们的 <strong>SHA-1哈希</strong> 进行寻址。所有的快照都可以通过它们的 SHA-1 哈希值来标记。针对这一问题，Git 的解决方法是给这些哈希值赋予人类可读的名字，也就是引用**(references)**。引用是指向提交的指针。与对象不同的是，它是可变的(引用可以被更新，指向新的提交)。例如，master 引用通常会指向主分支的最新一次提交。</p>
+<p>HEAD branch都是指向这个commit的<strong>引用</strong>，而commit本质就是一个hash</p>
+<h2 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h2><p>HEAD 指向当前的commit，每当执行git commit操作时，会生成一个新的commit对象，并移动HEAD指针，若HEAD指向一个branch，则带动branch一起向前移动</p>
+<h2 id="git-rebase"><a href="#git-rebase" class="headerlink" title="git rebase"></a>git rebase</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 代表把HEAD移动到another上</span></span></span><br><span class="line">git rebase anthoer -i</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 代表把main移动到another上</span></span></span><br><span class="line">git rebase another main -i</span><br><span class="line">git rebase target_commit ready_to_move_commit -i</span><br></pre></td></tr></table></figure>
+
+<p>当你知道你所需要的提交记录（<strong>并且</strong>还知道这些提交记录的哈希值）时, 用 cherry-pick 再好不过了 —— 没有比这更简单的方式了。</p>
+<p>但是如果你不清楚你想要的提交记录的哈希值呢? 幸好 Git 帮你想到了这一点, 我们可以利用交互式的 rebase —— 如果你想从一系列的提交记录中找到想要的记录, 这就是最好的方法了</p>
+<p>当 rebase UI界面打开时, 你能做3件事:</p>
+<ul>
+<li>调整提交记录的顺序（通过鼠标拖放来完成）</li>
+<li>删除你不想要的提交（通过切换 <code>pick</code> 的状态来完成，关闭就意味着你不想要这个提交记录）</li>
+<li>合并提交</li>
+</ul>
+<p><strong>变基操作：</strong></p>
+<ol>
+<li><p>可以把当前HEAD所指向的commit变为rebase指定的commit <strong>&#x2F;&#x2F; 代表将HEAD移动到target git rebase target_commit</strong> </p>
+</li>
+<li><p>也可以用来把父commit指向继承的commit</p>
+</li>
+</ol>
+<p><strong>交互式rebase</strong></p>
+<p>-i : 可以指定以交互形式在当前节点提交，放弃某些提交</p>
+<h2 id="git-cherry-pick"><a href="#git-cherry-pick" class="headerlink" title="git cherry-pick"></a>git cherry-pick</h2><p>要在心里牢记 cherry-pick 可以将提交树上任何地方的提交记录取过来追加到 HEAD 上</p>
+<p>如果你想将一些提交复制到当前所在的位置（<code>HEAD</code>）下面的话， Cherry-pick 是最直接的方式了。我个人非常喜欢 <code>cherry-pick</code>，因为它特别简单。</p>
+<h2 id="git-reset-git-revert"><a href="#git-reset-git-revert" class="headerlink" title="git reset &amp;&amp; git revert"></a>git reset &amp;&amp; git revert</h2><h2 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h2><p>由于先抓取更新再合并到本地分支这个流程很常用，因此 Git 提供了一个专门的命令来完成这两个操作。它就是我们要讲的 <code>git pull</code>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/05/22/Tools/" data-id="clmdk0mgj001809v6hosg9sw6" data-title="Tools" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/06/12/6-12/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          6.12
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/05/14/15445-lab2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">15445-lab2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMU15445/" rel="tag">CMU15445</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/" rel="tag">Data Structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Database/" rel="tag">Database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Distributed-System/" rel="tag">Distributed System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HISTORIAE/" rel="tag">HISTORIAE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/" rel="tag">Language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MLC/" rel="tag">MLC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System/" rel="tag">Operating System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Operating-System-JYY/" rel="tag">Operating System:JYY</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tools/" rel="tag">Tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs144/" rel="tag">cs144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daily/" rel="tag">daily</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/daliy/" rel="tag">daliy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xv6-riscv-Lab/" rel="tag">xv6_riscv Lab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag">八股文</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CMU15445/" style="font-size: 10px;">CMU15445</a> <a href="/tags/Data-Structure/" style="font-size: 12.5px;">Data Structure</a> <a href="/tags/Database/" style="font-size: 17.5px;">Database</a> <a href="/tags/Distributed-System/" style="font-size: 15px;">Distributed System</a> <a href="/tags/HISTORIAE/" style="font-size: 10px;">HISTORIAE</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/MLC/" style="font-size: 10px;">MLC</a> <a href="/tags/Operating-System/" style="font-size: 12.5px;">Operating System</a> <a href="/tags/Operating-System-JYY/" style="font-size: 10px;">Operating System:JYY</a> <a href="/tags/Tools/" style="font-size: 10px;">Tools</a> <a href="/tags/cs144/" style="font-size: 10px;">cs144</a> <a href="/tags/daily/" style="font-size: 10px;">daily</a> <a href="/tags/daliy/" style="font-size: 10px;">daliy</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/xv6-riscv-Lab/" style="font-size: 20px;">xv6_riscv Lab</a> <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" style="font-size: 10px;">八股文</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">September 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/Optimizer/">Optimizer</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/25/LRU/">LRU</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/20/mysql/">mysql</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/19/c/">c++</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
