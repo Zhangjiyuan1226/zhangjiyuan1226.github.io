@@ -16,22 +16,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="LRU什么是LRU？Xv6 中的LRULevelDB 数据结构之 LRU 缓存Leveldb中使用了一种基于LRUCache的缓存机制，用于缓存：  已打开的sstable文件对象和相关元数据； sstable中的dataBlock的内容；  如何实现一个线程安全的LRU LevelDB中实现LRU">
+    <meta name="description" content="分布式数据库 银行业选型 一致性 账务不能错，数据不能丢  高可用  系统不能停，应用可逃生 主要验证 RTO 和 RPO  多中心切换： 整体切换（中心整体切换） 中心间网路故障（网络抖动，网络中断、网络阻塞）   内中心切换 计算资源故障（服务器故障） 存储资源故障（磁盘异常） 网络资源故障 软件故障 NTP时间异常 进程异常（进程崩溃、进程挂起） 文件异常（权限、误删除、文件系统慢）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LRU">
-<meta property="og:url" content="http://example.com/2023/08/25/LRU/index.html">
+<meta property="og:title" content="Software  Engineering">
+<meta property="og:url" content="http://example.com/2023/10/28/Software-Engineering/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="LRU什么是LRU？Xv6 中的LRULevelDB 数据结构之 LRU 缓存Leveldb中使用了一种基于LRUCache的缓存机制，用于缓存：  已打开的sstable文件对象和相关元数据； sstable中的dataBlock的内容；  如何实现一个线程安全的LRU LevelDB中实现LRU">
+<meta property="og:description" content="分布式数据库 银行业选型 一致性 账务不能错，数据不能丢  高可用  系统不能停，应用可逃生 主要验证 RTO 和 RPO  多中心切换： 整体切换（中心整体切换） 中心间网路故障（网络抖动，网络中断、网络阻塞）   内中心切换 计算资源故障（服务器故障） 存储资源故障（磁盘异常） 网络资源故障 软件故障 NTP时间异常 进程异常（进程崩溃、进程挂起） 文件异常（权限、误删除、文件系统慢）">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-08-25T14:47:26.000Z">
-<meta property="article:modified_time" content="2023-09-18T11:23:10.040Z">
+<meta property="article:published_time" content="2023-10-28T12:38:26.000Z">
+<meta property="article:modified_time" content="2023-10-31T12:06:37.276Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="Data Structure">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>LRU - Hexo</title>
+  <title>Software  Engineering - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -197,7 +196,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="LRU"></span>
+            <span id="subtitle" data-typed-text="Software  Engineering"></span>
           
         </div>
 
@@ -208,8 +207,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-08-25 22:47" pubdate>
-          August 25, 2023 pm
+        <time datetime="2023-10-28 20:38" pubdate>
+          October 28, 2023 pm
         </time>
       </span>
     
@@ -221,7 +220,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          140 字
+          365 字
         
       </span>
     
@@ -233,7 +232,7 @@
         
         
           <!-- compatible with older versions-->
-          2 分钟
+          4 分钟
         
       </span>
     
@@ -270,19 +269,64 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">LRU</h1>
+            <h1 id="seo-header">Software  Engineering</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="LRU"><a href="#LRU" class="headerlink" title="LRU"></a>LRU</h1><h2 id="什么是LRU？"><a href="#什么是LRU？" class="headerlink" title="什么是LRU？"></a>什么是LRU？</h2><h2 id="Xv6-中的LRU"><a href="#Xv6-中的LRU" class="headerlink" title="Xv6 中的LRU"></a>Xv6 中的LRU</h2><h2 id="LevelDB-数据结构之-LRU-缓存"><a href="#LevelDB-数据结构之-LRU-缓存" class="headerlink" title="LevelDB 数据结构之 LRU 缓存"></a>LevelDB 数据结构之 LRU 缓存</h2><p>Leveldb中使用了一种基于LRUCache的缓存机制，用于缓存：</p>
+                <h2 id="分布式数据库-银行业"><a href="#分布式数据库-银行业" class="headerlink" title="分布式数据库 银行业"></a>分布式数据库 银行业</h2><h3 id="选型"><a href="#选型" class="headerlink" title="选型"></a>选型</h3><ol>
+<li><p>一致性 账务不能错，数据不能丢</p>
+</li>
+<li><p>高可用 </p>
+<p>系统不能停，应用可逃生</p>
+<p>主要验证 RTO 和 RPO</p>
 <ul>
-<li>已打开的sstable文件对象和相关元数据；</li>
-<li>sstable中的dataBlock的内容；</li>
+<li>多中心切换：<ul>
+<li>整体切换（中心整体切换）</li>
+<li>中心间网路故障（网络抖动，网络中断、网络阻塞）</li>
 </ul>
-<h2 id="如何实现一个线程安全的LRU"><a href="#如何实现一个线程安全的LRU" class="headerlink" title="如何实现一个线程安全的LRU"></a>如何实现一个线程安全的LRU</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.51cto.com/article/661585.html">LevelDB中实现LRU</a></p>
-</blockquote>
+</li>
+<li>内中心切换<ul>
+<li>计算资源故障（服务器故障）</li>
+<li>存储资源故障（磁盘异常）</li>
+<li>网络资源故障</li>
+<li>软件故障<ul>
+<li>NTP时间异常</li>
+<li>进程异常（进程崩溃、进程挂起）</li>
+<li>文件异常（权限、误删除、文件系统慢）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>高性能 联机不能慢，批量不能晚</p>
+</li>
+<li><p>可扩展 线性扩容能力</p>
+</li>
+<li><p>生态</p>
+</li>
+<li><p>易于维护</p>
+</li>
+<li><p>什么时候split region？</p>
+</li>
+</ol>
+<p>tidb的split up是在region大小达到128MB或者region中有1w行数据时分裂</p>
+<p>2.<br>3. </p>
+<h3 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h3><h1 id="灰度发布"><a href="#灰度发布" class="headerlink" title="灰度发布"></a>灰度发布</h1><ol>
+<li>按流量阶段性发布</li>
+<li>按照用户业务属性发布</li>
+</ol>
+<h3 id="金融业务痛点"><a href="#金融业务痛点" class="headerlink" title="金融业务痛点"></a>金融业务痛点</h3><ol>
+<li>实时金融业务，转账</li>
+<li>定时批处理操作，对账、发工资</li>
+<li>热点数据感知，冷热数据分离</li>
+<li>无感知升级</li>
+</ol>
+<p>北京银行：医保代发</p>
+<h3 id="金融应用场景："><a href="#金融应用场景：" class="headerlink" title="金融应用场景："></a>金融应用场景：</h3><ol>
+<li>支付清算 快捷支付</li>
+</ol>
 
                 
               </div>
@@ -292,13 +336,6 @@
               <div class="post-metas my-3">
   
   
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/Data-Structure/" class="print-no-link">#Data Structure</a>
-      
-    </div>
-  
 </div>
 
 
@@ -307,8 +344,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>LRU</div>
-      <div>http://example.com/2023/08/25/LRU/</div>
+      <div>Software  Engineering</div>
+      <div>http://example.com/2023/10/28/Software-Engineering/</div>
     </div>
     <div class="license-meta">
       
@@ -320,7 +357,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>August 25, 2023</div>
+          <div>October 28, 2023</div>
         </div>
       
       
@@ -352,18 +389,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/08/25/Optimizer/" title="Optimizer">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Optimizer</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/08/20/mysql/" title="mysql">
-                        <span class="hidden-mobile">mysql</span>
+                      <a href="/2023/09/16/Financial-Engineering/" title="Financial Engineering">
+                        <span class="hidden-mobile">Financial Engineering</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

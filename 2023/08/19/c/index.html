@@ -24,7 +24,7 @@
 <meta property="og:description" content="C++ 11C++ 11新特性 智能指针 Shared_ptr Weak_ptr  Unique_ptr   RAII(智能指针，scope_lock) 左值 右值 lambda表达式 Auto decltype 尾返回 for each nullptr final  override   c++11新特性，所有知识点都在这了！  smart pointer什么是智能指针： 能够自动管理指针声明周">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-08-19T14:06:32.000Z">
-<meta property="article:modified_time" content="2023-09-10T16:52:50.040Z">
+<meta property="article:modified_time" content="2023-09-19T11:15:32.410Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Language">
 <meta name="twitter:card" content="summary_large_image">
@@ -221,7 +221,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          6.8k 字
+          7.2k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
           <!-- compatible with older versions-->
-          57 分钟
+          60 分钟
         
       </span>
     
@@ -407,7 +407,10 @@
 <blockquote>
 <p> static修饰符的作用 <a target="_blank" rel="noopener" href="https://blog.csdn.net/sss_369/article/details/90243145">https://blog.csdn.net/sss_369/article/details/90243145</a></p>
 </blockquote>
-<h2 id="inline"><a href="#inline" class="headerlink" title="inline"></a>inline</h2><p><strong>目的：</strong>这样可以解决一些频繁调用的函数大量消耗栈空间（栈内存）的问题；inline是在编译阶段，define是在预处理阶段</p>
+<h2 id="inline"><a href="#inline" class="headerlink" title="inline"></a>inline</h2><p><strong>目的：</strong>这样可以解决一些频繁调用的函数大量消耗栈空间（栈内存）的问题；</p>
+<ul>
+<li>inline是在编译阶段，define是在预处理阶段</li>
+</ul>
 <p>1．inline定义的类的内联函数，函数的代码被放入符号表中，在使用时直接进行替换（像宏一样展开），没有了调用的开销，效率也很高。<br>2．很明显，类的内联函数也是一个真正的函数，编译器在调用一个内联函数时，会首先检查它的参数的类型，保证调用正确。然后进行一系列的相关检查，就像对待任何一个真正的函数一样。这样就消除了它的隐患和局限性。<br>3．inline可以作为某个类的成员函数，当然就可以在其中使用所在类的保护成员及私有成员。</p>
 <ul>
 <li>为什么不能inline递归函数？</li>
@@ -416,6 +419,13 @@
 <p>由于内联函数在编译阶段展开，它的代码会在调用点完全展开，而不会像普通函数调用一样建立新的函数调用栈帧。然而，递归函数需要多个函数调用栈帧来保存不同递归层次的状态信息，这与内联函数的展开机制不兼容。如果将递归函数声明为内联函数，编译器将无法在编译阶段确定需要展开的次数，也无法正确地管理函数调用栈帧。</p>
 <p>因此，由于内联函数的展开方式和递归函数的调用栈需求不匹配，大多数编译器会禁止将递归函数声明为内联函数。如果确实需要在递归函数中获得类似内联函数的效果，通常需要手动展开递归，或者考虑其他的优化方式。</p>
 <h2 id="编译和链接"><a href="#编译和链接" class="headerlink" title="编译和链接"></a>编译和链接</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/369039101">https://zhuanlan.zhihu.com/p/369039101</a></p>
+<h2 id="优先级队列"><a href="#优先级队列" class="headerlink" title="优先级队列"></a>优先级队列</h2><p>C++优先队列是优先级高的在队首，定义优先级大小的方式是传入一个算子的参数比较a, b两个东西，返回true则a的优先级&lt;b的优先级。</p>
+<p>默认是less算子也就是返回a&lt;b，也就是小的优先级也小，而greater算子返回a&gt;b，小的优先级高。</p>
+<p>如果是默认的less算子，值大的优先级高，值大的排到了队头，优先队列大的先出队。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++">priority_queue&lt;<span class="hljs-type">int</span>, vector&lt;<span class="hljs-type">int</span>&gt;, less&lt;<span class="hljs-type">int</span>&gt;&gt;s;   <span class="hljs-comment">//less默认大堆</span><br><span class="hljs-comment">//less表示按照递减(从大到小)的顺序插入元素</span><br>priority_queue&lt;<span class="hljs-type">int</span>, vector&lt;<span class="hljs-type">int</span>&gt;, greater&lt;<span class="hljs-type">int</span>&gt;&gt;s; <span class="hljs-comment">//greater默认小堆</span><br><span class="hljs-comment">//greater表示按照递增（从小到大）的顺序插入元素</span><br></code></pre></td></tr></table></figure>
+
+
+
 
                 
               </div>
