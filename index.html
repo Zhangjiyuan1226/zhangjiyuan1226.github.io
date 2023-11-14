@@ -224,6 +224,72 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2023/11/13/6-824Lab2/" target="_self">
+          6.824Lab2
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/13/6-824Lab2/" target="_self">
+        <div>
+          准备工作日志函数测试命令 12345$ go test -race$ go test -race -run 2A $ go test -race -run 2B $ go test -race -run 2C $ go test -race -run 2D   debug格式 1Debug(dTimer, &quot;S%d Leader, checking heartbeats&quot;, r
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-11-13 15:17" pubdate>
+              2023-11-13
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/11/01/Database/" target="_self">
+          Database
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/01/Database/" target="_self">
+        <div>
+          分布式join  分布式join https://www.cnblogs.com/xueqiuqiu/articles/13716454.html  分布式数据库事务Percolator  为什么primary锁可以直接清除？如果有别的事务还没写完secondary锁的信息，这样会不会造成事务的不完整？ 为什么在get的阶段清理锁，如果proxy宕机，锁还被清理了，会不会导致事务的错误？ Clea
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-11-01 15:26" pubdate>
+              2023-11-01
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2023/10/28/Software-Engineering/" target="_self">
           Software  Engineering
         </a>
@@ -232,7 +298,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/10/28/Software-Engineering/" target="_self">
         <div>
-          分布式数据库 银行业选型 一致性 账务不能错，数据不能丢  高可用  系统不能停，应用可逃生 主要验证 RTO 和 RPO  多中心切换： 整体切换（中心整体切换） 中心间网路故障（网络抖动，网络中断、网络阻塞）   内中心切换 计算资源故障（服务器故障） 存储资源故障（磁盘异常） 网络资源故障 软件故障 NTP时间异常 进程异常（进程崩溃、进程挂起） 文件异常（权限、误删除、文件系统慢）
+          灰度发布 按流量阶段性发布 按照用户业务属性发布   灰度发布 滚动发布 https://testerhome.com/topics/15746  金融业务痛点 实时金融业务，转账 定时批处理操作，对账、发工资 热点数据感知，冷热数据分离 无感知升级  北京银行：医保代发 金融应用场景： 支付清算 快捷支付
         </div>
       </a>
 
@@ -505,86 +571,6 @@
           </div>
         
         
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/08/06/LSM/" target="_self">
-          LSM
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/08/06/LSM/" target="_self">
-        <div>
-          解决了什么问题？ 日志结构存储引擎是为了解决写多读少（整体系统对比是写多）的特定场景下的解决方案  场景：  日志系统 推荐系统 海量数据存储 数据分析  大量写：  数据大量写入以便分析 用于线上模型训练  少量读：  相对于写操作而言  我感觉分层设计并不是为了解决全量读的问题，因为仍然会有key是要遍历所有的层。分层设计的目的是为了分摊写放大，此时有一个memtable写满了，需要从内存刷入
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-08-06 02:48" pubdate>
-              2023-08-06
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Data-Structure/">#Data Structure</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/06/26/Detecting-bugs-of-join/" target="_self">
-          Detecting bugs of join
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/06/26/Detecting-bugs-of-join/" target="_self">
-        <div>
-          why? Optimizer 是十分重要的，好的执行计划能大幅度提高sql语句的执行效率 Nonetheless, existing generation-based debug tools are limited to single-table queries and there is a substantial research gap regarding multi-table querie
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-06-26 23:24" pubdate>
-              2023-06-26
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Database/">#Database</a>
-            
-          </div>
         
       </div>
     </article>

@@ -224,6 +224,86 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2023/08/06/LSM/" target="_self">
+          LSM
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/08/06/LSM/" target="_self">
+        <div>
+          解决了什么问题？ 日志结构存储引擎是为了解决写多读少（整体系统对比是写多）的特定场景下的解决方案  场景：  日志系统 推荐系统 海量数据存储 数据分析  大量写：  数据大量写入以便分析 用于线上模型训练  少量读：  相对于写操作而言  我感觉分层设计并不是为了解决全量读的问题，因为仍然会有key是要遍历所有的层。分层设计的目的是为了分摊写放大，此时有一个memtable写满了，需要从内存刷入
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-06 02:48" pubdate>
+              2023-08-06
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Data-Structure/">#Data Structure</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/06/26/Detecting-bugs-of-join/" target="_self">
+          Detecting bugs of join
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/06/26/Detecting-bugs-of-join/" target="_self">
+        <div>
+          why? Optimizer 是十分重要的，好的执行计划能大幅度提高sql语句的执行效率 Nonetheless, existing generation-based debug tools are limited to single-table queries and there is a substantial research gap regarding multi-table querie
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-06-26 23:24" pubdate>
+              2023-06-26
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Database/">#Database</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2023/06/15/%E5%85%AB%E8%82%A1%E6%96%87/" target="_self">
           八股文
         </a>
@@ -531,86 +611,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Database/">#Database</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/01/14/TCP-IP/" target="_self">
-          TCP/IP
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/14/TCP-IP/" target="_self">
-        <div>
-          TCP&#x2F;IP
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-01-14 00:25" pubdate>
-              2023-01-14
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/cs144/">#cs144</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2022/11/29/raft/" target="_self">
-          Raft
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/11/29/raft/" target="_self">
-        <div>
-          Raft0. Raft的内部结构什么是raft raft是分布式系统中的一致性算法，其目的是保障分布式集群中不同节点上数据的一致性，同时为分布式系统提供高可用性，能够持续对外提供服务。   Leader 负责与Client和集群中的Follower沟通，主要控制数据的流向  Client 接受用户的指令，并将数据传递给Leader Follower 可以理解为正在运行的机器，接受Leader传递的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-11-29 21:45" pubdate>
-              2022-11-29
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Distributed-System/">#Distributed System</a>
             
           </div>
         

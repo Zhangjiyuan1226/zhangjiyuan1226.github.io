@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="分布式数据库 银行业选型 一致性 账务不能错，数据不能丢  高可用  系统不能停，应用可逃生 主要验证 RTO 和 RPO  多中心切换： 整体切换（中心整体切换） 中心间网路故障（网络抖动，网络中断、网络阻塞）   内中心切换 计算资源故障（服务器故障） 存储资源故障（磁盘异常） 网络资源故障 软件故障 NTP时间异常 进程异常（进程崩溃、进程挂起） 文件异常（权限、误删除、文件系统慢）">
+    <meta name="description" content="灰度发布 按流量阶段性发布 按照用户业务属性发布   灰度发布 滚动发布 https:&#x2F;&#x2F;testerhome.com&#x2F;topics&#x2F;15746  金融业务痛点 实时金融业务，转账 定时批处理操作，对账、发工资 热点数据感知，冷热数据分离 无感知升级  北京银行：医保代发 金融应用场景： 支付清算 快捷支付">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Software  Engineering">
 <meta property="og:url" content="http://example.com/2023/10/28/Software-Engineering/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="分布式数据库 银行业选型 一致性 账务不能错，数据不能丢  高可用  系统不能停，应用可逃生 主要验证 RTO 和 RPO  多中心切换： 整体切换（中心整体切换） 中心间网路故障（网络抖动，网络中断、网络阻塞）   内中心切换 计算资源故障（服务器故障） 存储资源故障（磁盘异常） 网络资源故障 软件故障 NTP时间异常 进程异常（进程崩溃、进程挂起） 文件异常（权限、误删除、文件系统慢）">
+<meta property="og:description" content="灰度发布 按流量阶段性发布 按照用户业务属性发布   灰度发布 滚动发布 https:&#x2F;&#x2F;testerhome.com&#x2F;topics&#x2F;15746  金融业务痛点 实时金融业务，转账 定时批处理操作，对账、发工资 热点数据感知，冷热数据分离 无感知升级  北京银行：医保代发 金融应用场景： 支付清算 快捷支付">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-10-28T12:38:26.000Z">
-<meta property="article:modified_time" content="2023-10-31T12:06:37.276Z">
+<meta property="article:modified_time" content="2023-11-01T12:26:08.660Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -220,7 +220,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          365 字
+          136 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
           <!-- compatible with older versions-->
-          4 分钟
+          2 分钟
         
       </span>
     
@@ -274,49 +274,13 @@
             
               <div class="markdown-body">
                 
-                <h2 id="分布式数据库-银行业"><a href="#分布式数据库-银行业" class="headerlink" title="分布式数据库 银行业"></a>分布式数据库 银行业</h2><h3 id="选型"><a href="#选型" class="headerlink" title="选型"></a>选型</h3><ol>
-<li><p>一致性 账务不能错，数据不能丢</p>
-</li>
-<li><p>高可用 </p>
-<p>系统不能停，应用可逃生</p>
-<p>主要验证 RTO 和 RPO</p>
-<ul>
-<li>多中心切换：<ul>
-<li>整体切换（中心整体切换）</li>
-<li>中心间网路故障（网络抖动，网络中断、网络阻塞）</li>
-</ul>
-</li>
-<li>内中心切换<ul>
-<li>计算资源故障（服务器故障）</li>
-<li>存储资源故障（磁盘异常）</li>
-<li>网络资源故障</li>
-<li>软件故障<ul>
-<li>NTP时间异常</li>
-<li>进程异常（进程崩溃、进程挂起）</li>
-<li>文件异常（权限、误删除、文件系统慢）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>高性能 联机不能慢，批量不能晚</p>
-</li>
-<li><p>可扩展 线性扩容能力</p>
-</li>
-<li><p>生态</p>
-</li>
-<li><p>易于维护</p>
-</li>
-<li><p>什么时候split region？</p>
-</li>
-</ol>
-<p>tidb的split up是在region大小达到128MB或者region中有1w行数据时分裂</p>
-<p>2.<br>3. </p>
-<h3 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h3><h1 id="灰度发布"><a href="#灰度发布" class="headerlink" title="灰度发布"></a>灰度发布</h1><ol>
+                <h1 id="灰度发布"><a href="#灰度发布" class="headerlink" title="灰度发布"></a>灰度发布</h1><ol>
 <li>按流量阶段性发布</li>
 <li>按照用户业务属性发布</li>
 </ol>
+<blockquote>
+<p>灰度发布 滚动发布 <a target="_blank" rel="noopener" href="https://testerhome.com/topics/15746">https://testerhome.com/topics/15746</a></p>
+</blockquote>
 <h3 id="金融业务痛点"><a href="#金融业务痛点" class="headerlink" title="金融业务痛点"></a>金融业务痛点</h3><ol>
 <li>实时金融业务，转账</li>
 <li>定时批处理操作，对账、发工资</li>
@@ -388,6 +352,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2023/11/01/Database/" title="Database">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Database</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
