@@ -23,16 +23,16 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Raft0. Raft的内部结构什么是raft raft是分布式系统中的一致性算法，其目的是保障分布式集群中不同节点上数据的一致性，同时为分布式系统提供高可用性，能够持续对外提供服务。   Leader 负责与Client和集群中的Follower沟通，主要控制数据的流向  Client 接受用户的指令，并将数据传递给Leader Follower 可以理解为正在运行的机器，接受Leader传递的">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/raft/image-20230201175417736.png">
+<meta property="og:image" content="http://example.com/2022/11/29/raft/image-20230201175417736.png">
 <meta property="og:image" content="http://example.com/2022/11/29/raft/image-20230316215346215.png">
-<meta property="og:image" content="http://example.com/raft/image-20231110232838107.png">
-<meta property="og:image" content="http://example.com/raft/image-20231111094702450.png">
+<meta property="og:image" content="http://example.com/2022/11/29/raft/image-20231110232838107.png">
+<meta property="og:image" content="http://example.com/2022/11/29/raft/image-20231111094702450.png">
 <meta property="article:published_time" content="2022-11-29T13:45:56.000Z">
 <meta property="article:modified_time" content="2023-11-13T06:26:58.192Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Distributed System">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/raft/image-20230201175417736.png">
+<meta name="twitter:image" content="http://example.com/2022/11/29/raft/image-20230201175417736.png">
   
   
   
@@ -357,7 +357,7 @@
 <h2 id="一、-Leader-election"><a href="#一、-Leader-election" class="headerlink" title="一、 Leader election"></a>一、 Leader election</h2><p>Raft 使用心跳机制来触发选主</p>
 <p>每次随机时间结束，server都会将term+1，较少的随机时间会导致先结束的server变成Candidate</p>
 <p>下图为raft中节点的状态转换图，其中Leader状态只能由Candidate转变而来</p>
-<p><img src="/./raft/image-20230201175417736.png" srcset="/img/loading.gif" lazyload alt="image-20230201175417736"></p>
+<p><img src="/2022/11/29/raft/image-20230201175417736.png" srcset="/img/loading.gif" lazyload alt="image-20230201175417736"></p>
 <h3 id="1-选主流程"><a href="#1-选主流程" class="headerlink" title="1. 选主流程"></a>1. 选主流程</h3><p>在随机事件到达后，follower先将自己的term+1，立刻将自身状态更新为candidate并投自己一票，随后向其他节点发送request vote，等待大多数节点的返回；</p>
 <ol>
 <li>若candidate收到大多数的投票，自己直接转变为leader，并向其他节点发送心跳抑制其他节点进行选举</li>
@@ -419,11 +419,11 @@
 </ul>
 <p>TODO：</p>
 <p>好复杂。。不知道怎么写了。。找时间再补上</p>
-<p><img src="/./raft/image-20231110232838107.png" srcset="/img/loading.gif" lazyload alt="image-20231110232838107"></p>
+<p><img src="/2022/11/29/raft/image-20231110232838107.png" srcset="/img/loading.gif" lazyload alt="image-20231110232838107"></p>
 <h2 id="四、面试题"><a href="#四、面试题" class="headerlink" title="四、面试题"></a>四、面试题</h2><ol>
 <li>如果worker节点重启后直接变为candidate会怎么样？</li>
 </ol>
-<h2 id="五、性能优化"><a href="#五、性能优化" class="headerlink" title="五、性能优化"></a>五、性能优化</h2><h2 id="六、集群成员变更"><a href="#六、集群成员变更" class="headerlink" title="六、集群成员变更"></a>六、集群成员变更</h2><h3 id="联合一致"><a href="#联合一致" class="headerlink" title="联合一致"></a>联合一致</h3><p><img src="/./raft/image-20231111094702450.png" srcset="/img/loading.gif" lazyload alt="image-20231111094702450"></p>
+<h2 id="五、性能优化"><a href="#五、性能优化" class="headerlink" title="五、性能优化"></a>五、性能优化</h2><h2 id="六、集群成员变更"><a href="#六、集群成员变更" class="headerlink" title="六、集群成员变更"></a>六、集群成员变更</h2><h3 id="联合一致"><a href="#联合一致" class="headerlink" title="联合一致"></a>联合一致</h3><p><img src="/2022/11/29/raft/image-20231111094702450.png" srcset="/img/loading.gif" lazyload alt="image-20231111094702450"></p>
 <h2 id="七、引用"><a href="#七、引用" class="headerlink" title="七、引用"></a>七、引用</h2><blockquote>
 <p>Raft Scope 演示视频地址 <a target="_blank" rel="noopener" href="https://raft.github.io/raftscope/index.html">https://raft.github.io/raftscope/index.html</a></p>
 <p><a target="_blank" rel="noopener" href="https://observablehq.com/@stwind/raft-consensus-simulator">https://observablehq.com/@stwind/raft-consensus-simulator</a></p>

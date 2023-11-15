@@ -24,7 +24,7 @@
 <meta property="og:description" content="准备工作日志函数测试命令 12345$ go test -race$ go test -race -run 2A $ go test -race -run 2B $ go test -race -run 2C $ go test -race -run 2D   debug格式 1Debug(dTimer, &quot;S%d Leader, checking heartbeats&quot;, r">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-11-13T07:17:51.000Z">
-<meta property="article:modified_time" content="2023-11-13T09:05:24.706Z">
+<meta property="article:modified_time" content="2023-11-15T12:37:05.194Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -220,7 +220,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          682 字
+          873 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
           <!-- compatible with older versions-->
-          6 分钟
+          8 分钟
         
       </span>
     
@@ -281,7 +281,18 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go">Debug(dTimer, <span class="hljs-string">&quot;S%d Leader, checking heartbeats&quot;</span>, rf.me)<br></code></pre></td></tr></table></figure>
 
 <p>如何格式化debug</p>
-<figure class="highlight shell"><figcaption><span>l</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">You can just pipe the go <span class="hljs-built_in">test</span> output into the script</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">VERBOSE=1 go <span class="hljs-built_in">test</span> -run InitialElection | python log.py</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">... colored output will be printed</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">We can ignore verbose topics like timers or <span class="hljs-built_in">log</span> changes</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">VERBOSE=1 go <span class="hljs-built_in">test</span> -run Backup | python dslogs -c 5 -i TIMR,DROP,LOG2</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">... colored output <span class="hljs-keyword">in</span> 5 columns</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Dumping output to a file can be handy to iteratively</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">filter topics and when failures are hard to reproduce</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">VERBOSE=1 go <span class="hljs-built_in">test</span> -run Figure8Unreliable &gt; output.log</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Print from a file, selecting just two topics</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">python dslogs output.log -j CMIT,PERS</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">... colored output</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><figcaption><span>l</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">You can just pipe the go <span class="hljs-built_in">test</span> output into the script</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">VERBOSE=1 go <span class="hljs-built_in">test</span> -run InitialElection | python log.py</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">... colored output will be printed</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">We can ignore verbose topics like timers or <span class="hljs-built_in">log</span> changes</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">VERBOSE=1 go <span class="hljs-built_in">test</span> -run Backup | python log.py -c 5 -i TIMR,DROP,LOG2</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">... colored output <span class="hljs-keyword">in</span> 5 columns</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Dumping output to a file can be handy to iteratively</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">filter topics and when failures are hard to reproduce</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">VERBOSE=1 go <span class="hljs-built_in">test</span> -run Figure8Unreliable &gt; output.log</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Print from a file, selecting just two topics</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">python dslogs output.log -j CMIT,PERS</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">... colored output</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="lab-2b"><a href="#lab-2b" class="headerlink" title="lab 2b"></a>lab 2b</h2><p>默认Term从1开始计算，Index也从1开始</p>
+<p>所以nextindex[i]初始化为len(rf.log) + 1</p>
+<ol>
+<li><p>完成start函数，这个函数负责接收外部命令，但并不保证command被应用或提交</p>
+<p>start函数在收到command后需要将这个封装为entry添加到本地</p>
+<p>通过心跳把这个这个entry发送出去</p>
+</li>
+<li><p>sendHeartbeat函数，如何获取每个server需要被添加的日志？</p>
+</li>
+</ol>
 
                 
               </div>

@@ -23,14 +23,14 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Copy on Write什么是写时复制机制？写时复制机制是操作系统中非常常见的一种优化机制，主要为了解决fork-exec这一系列的问题。 例如，当我们使用shell处理指令时，shell通常会通过fork创建一个子进程，并利用exec加载指令程序到子进程中。通常fork会将shell父进程中的所有内容都做一份拷贝，例如pagetable，用户栈，甚至包括打开文件表。然而exec会加载一个新的程">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/Lab6-COW/image-20230407152403851.png">
+<meta property="og:image" content="http://example.com/2022/11/18/Lab6-COW/image-20230407152403851.png">
 <meta property="og:image" content="http://example.com/2022/11/18/Lab6-COW/image-20230313085847793.png">
 <meta property="article:published_time" content="2022-11-18T12:32:48.000Z">
 <meta property="article:modified_time" content="2023-09-04T15:37:11.285Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="xv6_riscv Lab">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/Lab6-COW/image-20230407152403851.png">
+<meta name="twitter:image" content="http://example.com/2022/11/18/Lab6-COW/image-20230407152403851.png">
   
   
   
@@ -281,7 +281,7 @@
                 <h2 id="Copy-on-Write"><a href="#Copy-on-Write" class="headerlink" title="Copy on Write"></a>Copy on Write</h2><h3 id="什么是写时复制机制？"><a href="#什么是写时复制机制？" class="headerlink" title="什么是写时复制机制？"></a>什么是写时复制机制？</h3><p>写时复制机制是操作系统中非常常见的一种优化机制，主要为了解决fork-exec这一系列的问题。</p>
 <p>例如，当我们使用shell处理指令时，shell通常会通过fork创建一个子进程，并利用exec加载指令程序到子进程中。通常fork会将shell父进程中的所有内容都做一份拷贝，例如pagetable，用户栈，甚至包括打开文件表。然而exec会加载一个新的程序占据子进程，所以以上这些资源会被立刻丢弃，在用户的视角这样的操作显然有点浪费</p>
 <p>那么我们就可以利用一种乐观的心态来解决这个问题，例如在fork的时候并不去真正的复制内存空间（因为uvmcopy会为我们分配新的物理空间），而是仅仅复制页表中的内容呢？</p>
-<p><img src="/./Lab6-COW/image-20230407152403851.png" srcset="/img/loading.gif" lazyload alt="image-20230407152403851"></p>
+<p><img src="/2022/11/18/Lab6-COW/image-20230407152403851.png" srcset="/img/loading.gif" lazyload alt="image-20230407152403851"></p>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>上图给我们一种复制地址空间的思路，只复制映射而不去分配物理地址空间，当真正被访问时再去分配。那么如何实现这样的操作呢？我们可以结合lazy- allocation中的实验过程来完成这个lab</p>
 <h4 id="修改uvmcopy"><a href="#修改uvmcopy" class="headerlink" title="修改uvmcopy"></a>修改uvmcopy</h4><p>对虚拟地址的操作免不了利用uvmcopy这个函数，我们使用这个函数进行地址空间的复制。在Lab3中我们介绍了这个函数，其中uvmcopy会在复制地址空间时eager的为子进程分配物理页面，尽然我们要lazy的处理这个问题，那么一定要对这个函数进行修改</p>
 <img src="/2022/11/18/Lab6-COW/image-20230313085847793.png" srcset="/img/loading.gif" lazyload alt="image-20230313085847793" style="zoom:50%;">

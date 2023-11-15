@@ -23,17 +23,17 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="分布式join  分布式join https:&#x2F;&#x2F;www.cnblogs.com&#x2F;xueqiuqiu&#x2F;articles&#x2F;13716454.html  分布式数据库事务Percolator  为什么primary锁可以直接清除？如果有别的事务还没写完secondary锁的信息，这样会不会造成事务的不完整？ 为什么在get的阶段清理锁，如果proxy宕机，锁还被清理了，会不会导致事务的错误？ Clea">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/Database/image-20231101152907378.png">
-<meta property="og:image" content="http://example.com/Database/image-20231101180440726.png">
-<meta property="og:image" content="http://example.com/Database/image-20231101180619575.png">
-<meta property="og:image" content="http://example.com/Database/image-20231109105310517.png">
-<meta property="og:image" content="http://example.com/Database/image-20231102232939962.png">
-<meta property="og:image" content="http://example.com/Database/image-20231102233119421.png">
+<meta property="og:image" content="http://example.com/2023/11/01/Database/image-20231101152907378.png">
+<meta property="og:image" content="http://example.com/2023/11/01/Database/image-20231101180440726.png">
+<meta property="og:image" content="http://example.com/2023/11/01/Database/image-20231101180619575.png">
+<meta property="og:image" content="http://example.com/2023/11/01/Database/image-20231109105310517.png">
+<meta property="og:image" content="http://example.com/2023/11/01/Database/image-20231102232939962.png">
+<meta property="og:image" content="http://example.com/2023/11/01/Database/image-20231102233119421.png">
 <meta property="article:published_time" content="2023-11-01T07:26:45.000Z">
 <meta property="article:modified_time" content="2023-11-09T03:11:54.787Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/Database/image-20231101152907378.png">
+<meta name="twitter:image" content="http://example.com/2023/11/01/Database/image-20231101152907378.png">
   
   
   
@@ -281,12 +281,12 @@
             
               <div class="markdown-body">
                 
-                <h2 id="分布式join"><a href="#分布式join" class="headerlink" title="分布式join"></a>分布式join</h2><p><img src="/./Database/image-20231101152907378.png" srcset="/img/loading.gif" lazyload alt="image-20231101152907378"></p>
+                <h2 id="分布式join"><a href="#分布式join" class="headerlink" title="分布式join"></a>分布式join</h2><p><img src="/2023/11/01/Database/image-20231101152907378.png" srcset="/img/loading.gif" lazyload alt="image-20231101152907378"></p>
 <blockquote>
 <p>分布式join <a target="_blank" rel="noopener" href="https://www.cnblogs.com/xueqiuqiu/articles/13716454.html">https://www.cnblogs.com/xueqiuqiu/articles/13716454.html</a></p>
 </blockquote>
-<h2 id="分布式数据库事务"><a href="#分布式数据库事务" class="headerlink" title="分布式数据库事务"></a>分布式数据库事务</h2><h4 id="Percolator"><a href="#Percolator" class="headerlink" title="Percolator"></a>Percolator</h4><p><img src="/./Database/image-20231101180440726.png" srcset="/img/loading.gif" lazyload alt="image-20231101180440726"></p>
-<p><img src="/./Database/image-20231101180619575.png" srcset="/img/loading.gif" lazyload alt="image-20231101180619575"></p>
+<h2 id="分布式数据库事务"><a href="#分布式数据库事务" class="headerlink" title="分布式数据库事务"></a>分布式数据库事务</h2><h4 id="Percolator"><a href="#Percolator" class="headerlink" title="Percolator"></a>Percolator</h4><p><img src="/2023/11/01/Database/image-20231101180440726.png" srcset="/img/loading.gif" lazyload alt="image-20231101180440726"></p>
+<p><img src="/2023/11/01/Database/image-20231101180619575.png" srcset="/img/loading.gif" lazyload alt="image-20231101180619575"></p>
 <p>为什么primary锁可以直接清除？如果有别的事务还没写完secondary锁的信息，这样会不会造成事务的不完整？</p>
 <p>为什么在get的阶段清理锁，如果proxy宕机，锁还被清理了，会不会导致事务的错误？</p>
 <h2 id="Cleanup-lock"><a href="#Cleanup-lock" class="headerlink" title="Cleanup lock"></a>Cleanup lock</h2><p>Cleanup primary lock: 看该主锁是否已超时，如果超时直接把锁删除，否则不做任何操作</p>
@@ -297,7 +297,7 @@
 <li>主锁未commit &amp;&amp; 未超时: 不做任何操作</li>
 </ol>
 <p>这个机制会造成大量已经prepare的事务的回滚，所以注册token</p>
-<p><img src="/./Database/image-20231109105310517.png" srcset="/img/loading.gif" lazyload alt="image-20231109105310517"></p>
+<p><img src="/2023/11/01/Database/image-20231109105310517.png" srcset="/img/loading.gif" lazyload alt="image-20231109105310517"></p>
 <h4 id="实践中存在的问题"><a href="#实践中存在的问题" class="headerlink" title="实践中存在的问题"></a>实践中存在的问题</h4><ol>
 <li>每个事务都会有四次RTT（两次 getTimeStamp）</li>
 </ol>
@@ -347,8 +347,8 @@
 <li><p>易于维护</p>
 </li>
 </ol>
-<p><img src="/./Database/image-20231102232939962.png" srcset="/img/loading.gif" lazyload alt="image-20231102232939962"></p>
-<p><img src="/./Database/image-20231102233119421.png" srcset="/img/loading.gif" lazyload alt="image-20231102233119421"></p>
+<p><img src="/2023/11/01/Database/image-20231102232939962.png" srcset="/img/loading.gif" lazyload alt="image-20231102232939962"></p>
+<p><img src="/2023/11/01/Database/image-20231102233119421.png" srcset="/img/loading.gif" lazyload alt="image-20231102233119421"></p>
 <h3 id="region分裂"><a href="#region分裂" class="headerlink" title="region分裂"></a>region分裂</h3><ol>
 <li>什么时候split region？</li>
 </ol>

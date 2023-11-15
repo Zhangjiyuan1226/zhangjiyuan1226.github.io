@@ -23,17 +23,17 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Virtual Memory虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。  为什么需要虚拟内存？   每个进程可以使用更大的地址空间 进程与进程之间相互隔离，不会干扰 共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容 保护，对pte的标志位做一下操作就可以对进">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/Lab3-pagetable/image-20220310100802814.png">
-<meta property="og:image" content="http://example.com/Lab3-pagetable/image-20220228121327909.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220310100802814.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220228121327909.png">
 <meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20230313085847793.png">
-<meta property="og:image" content="http://example.com/Lab3-pagetable/image-20220228215322380.png">
-<meta property="og:image" content="http://example.com/Lab3-pagetable/image-20220307134228420.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220228215322380.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220307134228420.png">
 <meta property="article:published_time" content="2022-02-26T04:40:25.000Z">
 <meta property="article:modified_time" content="2023-09-04T15:37:11.276Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="xv6_riscv Lab">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/Lab3-pagetable/image-20220310100802814.png">
+<meta name="twitter:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220310100802814.png">
   
   
   
@@ -306,14 +306,14 @@
 
 <p>walk函数会递归的将sv39的三级页表页表项取出，其中PX(level, va)会根据页表的级数取出对应的pte。如果当前页表项为空且允许为其分配新的页面地址，则调用kalloc分配一个页面，并将地址存入此pte中；如果不为空，则递归进入下一级页表。</p>
 <p>最终结果返回三级页表的某个地址，可用来查看内容也可以用来插入内容；</p>
-<p><img src="/./Lab3-pagetable/image-20220310100802814.png" srcset="/img/loading.gif" lazyload alt="image-20220310100802814"></p>
+<p><img src="/2022/02/26/Lab3-pagetable/image-20220310100802814.png" srcset="/img/loading.gif" lazyload alt="image-20220310100802814"></p>
 <h3 id="mappages"><a href="#mappages" class="headerlink" title="mappages"></a>mappages</h3><p>函数的作用是将va映射到pa上去，并将pte存入pagetable</p>
 <ul>
 <li>a ：va向4k对齐的基地址</li>
 <li>last ：映射区域向4k对齐的最后一个页面的基地址</li>
 <li><strong>walk函数则从pagetable中找到合适的 pte ，如果不存在会，会根据alloc参数决定是否分配页面</strong></li>
 </ul>
-<p><img src="/./Lab3-pagetable/image-20220228121327909.png" srcset="/img/loading.gif" lazyload alt="image-20220228121327909"></p>
+<p><img src="/2022/02/26/Lab3-pagetable/image-20220228121327909.png" srcset="/img/loading.gif" lazyload alt="image-20220228121327909"></p>
 <h3 id="uvmcopy"><a href="#uvmcopy" class="headerlink" title="uvmcopy()"></a>uvmcopy()</h3><p>函数会将父进程的页表内容复制到子进程的页表中，第一步先从0地址开始按页查找对应pte，并根据pte找到对应的pa，随后将pa为起始地址的PGSIZE内容复制到kalloc新分配的页中，随后将老的虚拟地址和新分配的物理地址相互映射。</p>
 <p>所以调用uvmcopy在用户态复制页表，只会复制页表的内容，而具体指向的物理地址并不一样。【fork系统调用会创建一个新的页表】</p>
 <p><u>uvmcopy会复制oldpagetable中va对应pa所属页的内容到kalloc()新分配的pa上，并将新的pa映射到new pagetable</u></p>
@@ -330,11 +330,11 @@
 <li>exec</li>
 <li>xv6支持内核线程的概念，每个用户进程都由一个内核线程执行。并且xv6通过共享内存的方式进行多线程的通信。</li>
 </ol>
-<p><img src="/./Lab3-pagetable/image-20220228215322380.png" srcset="/img/loading.gif" lazyload alt="image-20220228215322380"></p>
+<p><img src="/2022/02/26/Lab3-pagetable/image-20220228215322380.png" srcset="/img/loading.gif" lazyload alt="image-20220228215322380"></p>
 <hr>
 <h3 id="打印第一个进程的页表"><a href="#打印第一个进程的页表" class="headerlink" title="打印第一个进程的页表"></a>打印第一个进程的页表</h3><p>如何打印进程的页表呢？首先我们要明确页表什么时候被建立，并被存储到什么地方</p>
 <p>要回答第一个问题，最好的方式就是使用gdb跟踪initproc，追踪第一个用户进程的分配过程一定能够告诉我们页表建立的过程。</p>
-<p><img src="/./Lab3-pagetable/image-20220307134228420.png" srcset="/img/loading.gif" lazyload alt="image-20220307134228420"></p>
+<p><img src="/2022/02/26/Lab3-pagetable/image-20220307134228420.png" srcset="/img/loading.gif" lazyload alt="image-20220307134228420"></p>
 <p>上图展示的是xv6中的三级页表，在sv39中我们只用到了低39位，其中低12位为page offset，其余27位负责对三级页表进行索引，其中Page Directory 的首地址被存储在satp寄存器中，satp只有在陷入内核时或继承切换时能够被os修改，它对用户透明；</p>
 <p>打印页表结果</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">page table 0x0000000087f6e000<br>..0: pte 0x0000000021fda801 pa 0x0000000087f6a000<br>.. ..0: pte 0x0000000021fda401 pa 0x0000000087f69000<br>.. .. ..0: pte 0x0000000021fdac1f pa 0x0000000087f6b000<br>.. .. ..1: pte 0x0000000021fda00f pa 0x0000000087f68000<br>.. .. ..2: pte 0x0000000021fd9c1f pa 0x0000000087f67000<br>..255: pte 0x0000000021fdb401 pa 0x0000000087f6d000<br>.. ..511: pte 0x0000000021fdb001 pa 0x0000000087f6c000<br>.. .. ..510: pte 0x0000000021fdd807 pa 0x0000000087f76000<br>.. .. ..511: pte 0x0000000020001c0b pa 0x0000000080007000<br></code></pre></td></tr></table></figure>
