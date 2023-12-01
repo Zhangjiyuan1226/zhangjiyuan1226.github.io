@@ -224,6 +224,72 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2023/11/22/RulesEngine-Prative/" target="_self">
+          RulesEngine_Prative
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/22/RulesEngine-Prative/" target="_self">
+        <div>
+          Urule实践
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-11-22 14:43" pubdate>
+              2023-11-22
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/11/20/RulesEngine/" target="_self">
+          RulesEngine
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/20/RulesEngine/" target="_self">
+        <div>
+          某资管规则引擎调研以及实践背景调查资管公司的主要业务： 债券 股票 基金 投资类业务 风控 金融、投资等领域都属于数据密集型，需要处理大量数据并根据数据进行复杂决策，且收到市场变化等情况，决策条件需频繁变动调整。以上工作基于传统人工处理的方法，效率低下且难以保证实效性。 因此高效、轻量化、可验证的规则引擎能优化产品设计和销售、对现有案例进行优化调整，使其更贴合场景、增加业务扩展性 什么是规则引擎将
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-11-20 14:54" pubdate>
+              2023-11-20
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2023/11/13/6-824Lab2/" target="_self">
           6.824Lab2
         </a>
@@ -265,7 +331,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/11/01/Database/" target="_self">
         <div>
-          分布式join  分布式join https://www.cnblogs.com/xueqiuqiu/articles/13716454.html  分布式数据库事务Percolator  为什么primary锁可以直接清除？如果有别的事务还没写完secondary锁的信息，这样会不会造成事务的不完整？ 为什么在get的阶段清理锁，如果proxy宕机，锁还被清理了，会不会导致事务的错误？ Clea
+          分布式数据库架构  Shared Disk  多个数据库实例，每个实例有自己的内存，但是通过网络共享同一个disk。Shared Disk架构在云原生比较常见，这样的好处就是利于存算分离，计算层和存储层能够解耦，因此计算层和存储层在扩缩容的时候彼此不影响。 缺点是因为共享disk，因此对于高并发的写请求势必性能会比较差，因此这种架构比较适合OLAP这种读多写少的数仓。  Shared Nothin
         </div>
       </a>
 
@@ -498,79 +564,6 @@
               <a href="/tags/Database/">#Database</a>
             
           </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/08/19/c/" target="_self">
-          c++
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/08/19/c/" target="_self">
-        <div>
-          C++ 11C++ 11新特性 智能指针 Shared_ptr Weak_ptr  Unique_ptr   RAII(智能指针，scope_lock) 左值 右值 lambda表达式 Auto decltype 尾返回 for each nullptr final  override   c++11新特性，所有知识点都在这了！  smart pointer什么是智能指针： 能够自动管理指针声明周
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-08-19 22:06" pubdate>
-              2023-08-19
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Language/">#Language</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/08/08/gdb/" target="_self">
-          gdb
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/08/08/gdb/" target="_self">
-        <div>
-          GDB 使用技巧gdb调试多线程死锁出现死锁的必要条件：  互斥条件：一个资源每次只能被一个进程使用 请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放 不剥夺条件：进程已获得的资源，在末使用完之前，不能强行剥夺 循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系   g++ -o deadlock -g -lpthread deadlock.cpp  ​		多线程程序编
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-08-08 22:07" pubdate>
-              2023-08-08
-            </time>
-          </div>
-        
-        
         
       </div>
     </article>

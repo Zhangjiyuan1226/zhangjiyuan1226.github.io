@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession    CMake 设置项目名称 PROJECT">
+    <meta name="description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession  mac 脚本程序执行时间测试123456789">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tools">
 <meta property="og:url" content="http://example.com/2023/05/22/Tools/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession    CMake 设置项目名称 PROJECT">
+<meta property="og:description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession  mac 脚本程序执行时间测试123456789">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-05-22T08:53:34.000Z">
-<meta property="article:modified_time" content="2023-11-15T12:25:41.709Z">
+<meta property="article:modified_time" content="2023-11-23T06:04:54.013Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Tools">
 <meta name="twitter:card" content="summary_large_image">
@@ -221,7 +221,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.3k 字
+          4.5k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
           <!-- compatible with older versions-->
-          28 分钟
+          38 分钟
         
       </span>
     
@@ -294,8 +294,36 @@
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">tmux attach -t mysession<br></code></pre></td></tr></table></figure>
 
+<h2 id="mac-脚本程序执行时间测试"><a href="#mac-脚本程序执行时间测试" class="headerlink" title="mac 脚本程序执行时间测试"></a>mac 脚本程序执行时间测试</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">获取脚本开始时间（精确到毫秒）</span><br>start_time=$(ruby -e &#x27;puts (Time.now.to_f * 1000).to_i&#x27;)<br><span class="hljs-meta prompt_"># </span><span class="language-bash">循环一万次</span><br>for ((i=1; i&lt;=10; i++)); do<br><span class="hljs-meta prompt_">  # </span><span class="language-bash">使用curl访问指定URL并获取内容</span><br>  response=$(curl -s http://localhost:8091/task/do)<br><span class="hljs-meta prompt_">  # </span><span class="language-bash">打印获取到的内容</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;请求 <span class="hljs-variable">$i</span>: <span class="hljs-variable">$response</span>&quot;</span></span><br>done<br><span class="hljs-meta prompt_"># </span><span class="language-bash">获取脚本结束时间（精确到毫秒）</span><br>end_time=$(ruby -e &#x27;puts (Time.now.to_f * 1000).to_i&#x27;)<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">计算执行时间（精确到毫秒）</span><br>execution_time=$((end_time - start_time))<br><span class="hljs-meta prompt_"># </span><span class="language-bash">打印执行时间</span><br>echo &quot;脚本执行时间为 $execution_time 毫秒&quot;<br></code></pre></td></tr></table></figure>
 
+<p>这条命令使用 Ruby 编程语言来执行一个简单的脚本，并输出当前时间的毫秒级别时间戳。</p>
+<p>具体来说，这个命令执行以下操作：</p>
+<ol>
+<li><code>ruby -e</code>：这部分表示在命令行中运行 Ruby 解释器，并且 <code>-e</code> 选项后面跟着一段 Ruby 代码。</li>
+<li><code>&#39;puts (Time.now.to_f * 1000).to_i&#39;</code>：这是 Ruby 代码段，它执行以下操作：<ul>
+<li><code>Time.now</code> 获取当前时间，包括日期和时间。</li>
+<li><code>.to_f</code> 将时间转换为浮点数，表示从某个基准时间以来的秒数，包括小数部分。</li>
+<li><code>* 1000</code> 将秒数转换为毫秒，因为 1 秒 &#x3D; 1000 毫秒。</li>
+<li><code>.to_i</code> 将浮点数转换为整数，以获得毫秒级别的时间戳。</li>
+<li><code>puts</code> 命令用于将时间戳打印到标准输出（终端）。</li>
+</ul>
+</li>
+</ol>
+<p>因此，这个命令会在终端中打印出当前时间的毫秒级别时间戳，表示从某个基准时间以来的毫秒数。</p>
+<h2 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">./profiler.sh -d 20 -f 87484.html 87484</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">jps</span><br>87394<br>92580 Jps<br>87483 Launcher<br>87452 RemoteMavenServer36<br>87484 Main<br></code></pre></td></tr></table></figure>
 
+<p><code>jps</code> 命令用于列出 Java 进程的信息，显示每个 Java 进程的进程 ID（PID）以及 Java 进程的主类名。</p>
+<p>在你提供的输出中：</p>
+<ul>
+<li><code>87394</code> 是一个 Java 进程的 PID，但由于没有指定主类名，因此无法确定是哪个 Java 进程。</li>
+<li><code>92580</code> 是 <code>jps</code> 命令本身的 PID，<code>Jps</code> 是 Java 进程的监视工具。</li>
+<li><code>87483</code> 的主类名是 <code>Launcher</code>，这可能是某个 Java 应用程序的启动器。</li>
+<li><code>87452</code> 的主类名是 <code>RemoteMavenServer36</code>，这可能是一个与 Maven 相关的 Java 进程。</li>
+<li><code>87484</code> 的主类名是 <code>Main</code>，这可能是另一个 Java 应用程序的主类。</li>
+</ul>
+<blockquote>
+<p> async-profiler Java 程序性能分析 <a target="_blank" rel="noopener" href="https://www.wdbyte.com/2019/12/async-profiler/">https://www.wdbyte.com/2019/12/async-profiler/</a></p>
+</blockquote>
 <h1 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h1><ol>
 <li><p>设置项目名称</p>
 <p>PROJECT (DEMO)</p>
