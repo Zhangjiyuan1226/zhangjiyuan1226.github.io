@@ -24,7 +24,7 @@
 <meta property="og:description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession  mac 脚本程序执行时间测试123456789">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-05-22T08:53:34.000Z">
-<meta property="article:modified_time" content="2023-11-23T06:04:54.013Z">
+<meta property="article:modified_time" content="2023-12-05T02:35:31.453Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Tools">
 <meta name="twitter:card" content="summary_large_image">
@@ -221,7 +221,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.5k 字
+          4.9k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
           <!-- compatible with older versions-->
-          38 分钟
+          41 分钟
         
       </span>
     
@@ -397,7 +397,7 @@
 <h2 id="git-cherry-pick"><a href="#git-cherry-pick" class="headerlink" title="git cherry-pick"></a>git cherry-pick</h2><p>要在心里牢记 cherry-pick 可以将提交树上任何地方的提交记录取过来追加到 HEAD 上</p>
 <p>如果你想将一些提交复制到当前所在的位置（<code>HEAD</code>）下面的话， Cherry-pick 是最直接的方式了。我个人非常喜欢 <code>cherry-pick</code>，因为它特别简单。</p>
 <h2 id="git-reset-git-revert"><a href="#git-reset-git-revert" class="headerlink" title="git reset &amp;&amp; git revert"></a>git reset &amp;&amp; git revert</h2><h2 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h2><p>由于先抓取更新再合并到本地分支这个流程很常用，因此 Git 提供了一个专门的命令来完成这两个操作。它就是我们要讲的 <code>git pull</code>。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">git pull == git fetch &amp;&amp; git merge<br>git pull --rebase == git fetch &amp;&amp; git rebase<br><span class="hljs-meta prompt_"># </span><span class="language-bash">本地创建foo分支，并将远端main分支下的内容拉入foo</span><br>git pull origin main:foo <br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">git pull == git fetch &amp;&amp; git merge</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">git pull --rebase == git fetch &amp;&amp; git rebase</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">本地创建foo分支，并将远端main分支下的内容拉入foo</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">git pull origin main:foo</span> <br></code></pre></td></tr></table></figure>
 
 <h3 id="git-fetch-做了些什么"><a href="#git-fetch-做了些什么" class="headerlink" title="git fetch 做了些什么"></a>git fetch 做了些什么</h3><p><code>git fetch</code> 完成了仅有的但是很重要的两步:</p>
 <ul>
@@ -407,9 +407,20 @@
 <p><code>git fetch</code> 实际上将本地仓库中的远程分支更新成了远程仓库相应分支最新的状态。</p>
 <p>远程分支反映了远程仓库在你<strong>最后一次与它通信时</strong>的状态，<code>git fetch</code> 就是你与远程仓库通信的方式了！希望我说的够明白了，你已经了解 <code>git fetch</code> 与远程分支之间的关系了吧。</p>
 <p><code>git fetch</code> 通常通过互联网（使用 <code>http://</code> 或 <code>git://</code> 协议) 与远程仓库通信。</p>
+<p><code>&lt;place&gt;</code> 参数</p>
+<p>如果你像如下命令这样为 git fetch 设置 的话：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git fetch origin foo<br></code></pre></td></tr></table></figure>
+
+<p>Git 会到远程仓库的 <code>foo</code> 分支上，然后获取所有本地不存在的提交，放到本地的 <code>o/foo</code> 上。</p>
 <h3 id="git-fetch-不会做的事"><a href="#git-fetch-不会做的事" class="headerlink" title="git fetch 不会做的事"></a>git fetch 不会做的事</h3><p><code>git fetch</code> 并不会改变你本地仓库的状态。它不会更新你的 <code>main</code> 分支，也不会修改你磁盘上的文件。</p>
 <p>理解这一点很重要，因为许多开发人员误以为执行了 <code>git fetch</code> 以后，他们本地仓库就与远程仓库同步了。它可能已经将进行这一操作所需的所有数据都下载了下来，但是<strong>并没有</strong>修改你本地的文件。我们在后面的课程中将会讲解能完成该操作的命令 :D</p>
 <p><strong>所以, 你可以将 <code>git fetch</code> 的理解为单纯的下载操作。</strong></p>
+<h2 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git push &lt;remote&gt; &lt;place&gt;<br>$ git push origin main<br></code></pre></td></tr></table></figure>
+
+<p>把这个命令翻译过来就是：</p>
+<p><em>切到本地仓库中的“main”分支，获取所有的提交，再到远程仓库“origin”中找到“main”分支，将远程仓库中没有的提交记录都添加上去，搞定之后告诉我。</em></p>
+<p>我们通过“place”参数来告诉 Git 提交记录来自于 main, 要推送到远程仓库中的 main。它实际就是要同步的两个仓库的位置。</p>
+<p>需要注意的是，因为我们通过指定参数告诉了 Git 所有它需要的信息, 所以它就忽略了我们所切换分支的属性！</p>
 
                 
               </div>
