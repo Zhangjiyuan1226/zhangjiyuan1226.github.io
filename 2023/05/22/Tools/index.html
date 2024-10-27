@@ -1,0 +1,870 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession  mac 脚本程序执行时间测试123456789">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tools">
+<meta property="og:url" content="http://example.com/2023/05/22/Tools/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Tmux使用tmux在服务器后台运行程序  创建一个会话，并进入该会话  1tmux new-session -s mysession   运行对应程序  1python my_program.py   退出当前会话，先按下***ctrl + b***再按d，即可退出当前会话  重新连接该会话   1tmux attach -t mysession  mac 脚本程序执行时间测试123456789">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-05-22T08:53:34.000Z">
+<meta property="article:modified_time" content="2024-10-27T13:10:08.198Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Tools">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Tools - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"JVRHRgZvLvYzeUvgsPXkiSBi-MdYXbMMI","app_key":"eIfDDpCEwOjlXZsTnPUW3j5E","server_url":null,"path":"window.location.pathname","ignore_local":false,"enable":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Tools"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-22 16:53" pubdate>
+          May 22, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Tools</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Tmux"><a href="#Tmux" class="headerlink" title="Tmux"></a>Tmux</h1><p>使用tmux在服务器后台运行程序</p>
+<ol>
+<li>创建一个会话，并进入该会话</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">tmux new-session -s mysession<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>运行对应程序</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">python my_program.py<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>退出当前会话，先按下***<u>ctrl + b</u>***再按d，即可退出当前会话</p>
+</li>
+<li><p>重新连接该会话</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">tmux attach -t mysession<br></code></pre></td></tr></table></figure>
+
+<h2 id="mac-脚本程序执行时间测试"><a href="#mac-脚本程序执行时间测试" class="headerlink" title="mac 脚本程序执行时间测试"></a>mac 脚本程序执行时间测试</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">获取脚本开始时间（精确到毫秒）</span><br>start_time=$(ruby -e &#x27;puts (Time.now.to_f * 1000).to_i&#x27;)<br><span class="hljs-meta prompt_"># </span><span class="language-bash">循环一万次</span><br>for ((i=1; i&lt;=10; i++)); do<br><span class="hljs-meta prompt_">  # </span><span class="language-bash">使用curl访问指定URL并获取内容</span><br>  response=$(curl -s http://localhost:8091/task/do)<br><span class="hljs-meta prompt_">  # </span><span class="language-bash">打印获取到的内容</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;请求 <span class="hljs-variable">$i</span>: <span class="hljs-variable">$response</span>&quot;</span></span><br>done<br><span class="hljs-meta prompt_"># </span><span class="language-bash">获取脚本结束时间（精确到毫秒）</span><br>end_time=$(ruby -e &#x27;puts (Time.now.to_f * 1000).to_i&#x27;)<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">计算执行时间（精确到毫秒）</span><br>execution_time=$((end_time - start_time))<br><span class="hljs-meta prompt_"># </span><span class="language-bash">打印执行时间</span><br>echo &quot;脚本执行时间为 $execution_time 毫秒&quot;<br></code></pre></td></tr></table></figure>
+
+<p>这条命令使用 Ruby 编程语言来执行一个简单的脚本，并输出当前时间的毫秒级别时间戳。</p>
+<p>具体来说，这个命令执行以下操作：</p>
+<ol>
+<li><code>ruby -e</code>：这部分表示在命令行中运行 Ruby 解释器，并且 <code>-e</code> 选项后面跟着一段 Ruby 代码。</li>
+<li><code>&#39;puts (Time.now.to_f * 1000).to_i&#39;</code>：这是 Ruby 代码段，它执行以下操作：<ul>
+<li><code>Time.now</code> 获取当前时间，包括日期和时间。</li>
+<li><code>.to_f</code> 将时间转换为浮点数，表示从某个基准时间以来的秒数，包括小数部分。</li>
+<li><code>* 1000</code> 将秒数转换为毫秒，因为 1 秒 &#x3D; 1000 毫秒。</li>
+<li><code>.to_i</code> 将浮点数转换为整数，以获得毫秒级别的时间戳。</li>
+<li><code>puts</code> 命令用于将时间戳打印到标准输出（终端）。</li>
+</ul>
+</li>
+</ol>
+<p>因此，这个命令会在终端中打印出当前时间的毫秒级别时间戳，表示从某个基准时间以来的毫秒数。</p>
+<h2 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">./profiler.sh -d 20 -f 87484.html 87484</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">jps</span><br>87394<br>92580 Jps<br>87483 Launcher<br>87452 RemoteMavenServer36<br>87484 Main<br></code></pre></td></tr></table></figure>
+
+<p><code>jps</code> 命令用于列出 Java 进程的信息，显示每个 Java 进程的进程 ID（PID）以及 Java 进程的主类名。</p>
+<p>在你提供的输出中：</p>
+<ul>
+<li><code>87394</code> 是一个 Java 进程的 PID，但由于没有指定主类名，因此无法确定是哪个 Java 进程。</li>
+<li><code>92580</code> 是 <code>jps</code> 命令本身的 PID，<code>Jps</code> 是 Java 进程的监视工具。</li>
+<li><code>87483</code> 的主类名是 <code>Launcher</code>，这可能是某个 Java 应用程序的启动器。</li>
+<li><code>87452</code> 的主类名是 <code>RemoteMavenServer36</code>，这可能是一个与 Maven 相关的 Java 进程。</li>
+<li><code>87484</code> 的主类名是 <code>Main</code>，这可能是另一个 Java 应用程序的主类。</li>
+</ul>
+<blockquote>
+<p> async-profiler Java 程序性能分析 <a target="_blank" rel="noopener" href="https://www.wdbyte.com/2019/12/async-profiler/">https://www.wdbyte.com/2019/12/async-profiler/</a></p>
+</blockquote>
+<h1 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h1><ol>
+<li><p>设置项目名称</p>
+<p>PROJECT (DEMO)</p>
+<p>设置项目名称为DEMO</p>
+</li>
+<li><p>设置头文件或者项目文件目录</p>
+<p>include_directories(${CMAKE_CURRENT_LIST_DIR}&#x2F;include)</p>
+<p>${CMAKE_CURRENT_LIST_DIR} 表示CMakelist.txt所在位置</p>
+</li>
+<li><p>将项目源文件添加至变量中</p>
+<p>aux_source_directory(.&#x2F;src SRC) </p>
+<p>将.&#x2F;src 下的所有源文件递归的加入SRC变量中</p>
+</li>
+<li><p>构造可执行文件</p>
+<p>ADD_EXECUTABLE(${PROJECT_NAME} ${SRC})</p>
+<p>将变量SRC内的源文件构建成可执行文件，并命名为开头设置的project_name</p>
+</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">PROJECT</span> (DEMO)<br><br><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.10</span>)<br><br><span class="hljs-keyword">SET</span>(CMAKE_CXX_STANDARD <span class="hljs-number">14</span>)<br><br><span class="hljs-keyword">include_directories</span>(<span class="hljs-variable">$&#123;CMAKE_CURRENT_LIST_DIR&#125;</span>/<span class="hljs-keyword">include</span>)<br><br><span class="hljs-comment"># link_directories($&#123;CMAKE_CURRENT_LIST_DIR&#125;/lib)</span><br><br><span class="hljs-keyword">aux_source_directory</span>(./src SRC)<br><br><span class="hljs-comment"># 把所有.cpp的main函数都构建起来</span><br><span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">file</span> <span class="hljs-variable">$&#123;files&#125;</span>)<br><span class="hljs-keyword">string</span>(REGEX REPLACE <span class="hljs-string">&quot;.+/(.+)\\..*&quot;</span> <span class="hljs-string">&quot;\\1&quot;</span> exe <span class="hljs-variable">$&#123;file&#125;</span>)<br><span class="hljs-keyword">add_executable</span> (<span class="hljs-variable">$&#123;exe&#125;</span> <span class="hljs-variable">$&#123;file&#125;</span>)<br><span class="hljs-keyword">message</span> (\ \ \ \ --\ src/<span class="hljs-variable">$&#123;exe&#125;</span>.cpp\ will\ be\ compiled\ to\ bin/<span class="hljs-variable">$&#123;exe&#125;</span>)<br><span class="hljs-keyword">endforeach</span> ()<br><br><span class="hljs-comment"># ADD_EXECUTABLE($&#123;PROJECT_NAME&#125; $&#123;SRC&#125;)</span><br><br><span class="hljs-comment"># target_link_libraries($&#123;PROJECT_NAME&#125; util)</span><br><br><span class="hljs-comment"># set(CMAKE_CXX_COMPILER      &quot;clang++&quot; )         # 显示指定使用的C++编译器</span><br><br><span class="hljs-comment"># set(CMAKE_CXX_FLAGS   &quot;-std=c++11&quot;)             # c++11</span><br><br><span class="hljs-comment"># set(CMAKE_CXX_FLAGS   &quot;-g&quot;)                     # 调试信息</span><br><br><span class="hljs-comment"># set(CMAKE_CXX_FLAGS   &quot;-Wall&quot;)                  # 开启所有警告</span><br><br><span class="hljs-comment"># set(CMAKE_CXX_FLAGS_DEBUG   &quot;-O0&quot; )             # 调试包不优化</span><br><br><span class="hljs-comment"># set(CMAKE_CXX_FLAGS_RELEASE &quot;-O2 -DNDEBUG &quot; )   # release包优化</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[CMake 构建测试用例 ]<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39766005/article/details/122686185">https://blog.csdn.net/weixin_39766005/article/details/122686185</a></p>
+</blockquote>
+<h1 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a><a target="_blank" rel="noopener" href="https://linux265.com/course/vim-intro.html">Vim</a></h1><h2 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h2><ul>
+<li><p>行内的向后移动： <strong>w</strong></p>
+</li>
+<li><p>行内的向前移动：<strong>b</strong> (e 可以移动到词尾)</p>
+</li>
+<li><p>移动到当前行尾：**$**</p>
+</li>
+<li><p>移动到当前行首：<strong>0</strong></p>
+</li>
+<li><p>移动到屏幕顶部：<strong>H</strong></p>
+</li>
+<li><p>移动到屏幕末尾：<strong>L</strong></p>
+</li>
+<li><p>移动到屏幕中间：<strong>M</strong></p>
+</li>
+<li><p>删除至行尾：<strong>D</strong></p>
+</li>
+<li><p>跳转到某一行：<strong>n</strong></p>
+</li>
+<li><p>移动到文件尾部：<strong>gg</strong></p>
+</li>
+<li><p>移动到文件首部：<strong>G</strong></p>
+</li>
+</ul>
+<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git 中的对象可以是 blob、tree或commit</p>
+<p>Git 在储存数据时，所有的对象都会基于它们的 <strong>SHA-1哈希</strong> 进行寻址。所有的快照都可以通过它们的 SHA-1 哈希值来标记。针对这一问题，Git 的解决方法是给这些哈希值赋予人类可读的名字，也就是引用**(references)**。引用是指向提交的指针。与对象不同的是，它是可变的(引用可以被更新，指向新的提交)。例如，master 引用通常会指向主分支的最新一次提交。</p>
+<p>HEAD branch都是指向这个commit的<strong>引用</strong>，而commit本质就是一个hash</p>
+<h2 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h2><p>HEAD 指向当前的commit，每当执行git commit操作时，会生成一个新的commit对象，并移动HEAD指针，若HEAD指向一个branch，则带动branch一起向前移动</p>
+<h2 id="git-rebase"><a href="#git-rebase" class="headerlink" title="git rebase"></a>git rebase</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash"><span class="hljs-comment"># 代表把HEAD移动到another上</span></span><br>git rebase anthoer -i<br><span class="hljs-meta prompt_">#</span><span class="language-bash"><span class="hljs-comment"># 代表把main移动到another上</span></span><br>git rebase another main -i<br>git rebase target_commit ready_to_move_commit -i<br></code></pre></td></tr></table></figure>
+
+<p>当你知道你所需要的提交记录（<strong>并且</strong>还知道这些提交记录的哈希值）时, 用 cherry-pick 再好不过了 —— 没有比这更简单的方式了。</p>
+<p>但是如果你不清楚你想要的提交记录的哈希值呢? 幸好 Git 帮你想到了这一点, 我们可以利用交互式的 rebase —— 如果你想从一系列的提交记录中找到想要的记录, 这就是最好的方法了</p>
+<p>当 rebase UI界面打开时, 你能做3件事:</p>
+<ul>
+<li>调整提交记录的顺序（通过鼠标拖放来完成）</li>
+<li>删除你不想要的提交（通过切换 <code>pick</code> 的状态来完成，关闭就意味着你不想要这个提交记录）</li>
+<li>合并提交</li>
+</ul>
+<p><strong>变基操作：</strong></p>
+<ol>
+<li><p>可以把当前HEAD所指向的commit变为rebase指定的commit <strong>&#x2F;&#x2F; 代表将HEAD移动到target git rebase target_commit</strong> </p>
+</li>
+<li><p>也可以用来把父commit指向继承的commit</p>
+</li>
+</ol>
+<p><strong>交互式rebase</strong></p>
+<p>-i : 可以指定以交互形式在当前节点提交，放弃某些提交</p>
+<h2 id="git-cherry-pick"><a href="#git-cherry-pick" class="headerlink" title="git cherry-pick"></a>git cherry-pick</h2><p>要在心里牢记 cherry-pick 可以将提交树上任何地方的提交记录取过来追加到 HEAD 上</p>
+<p>如果你想将一些提交复制到当前所在的位置（<code>HEAD</code>）下面的话， Cherry-pick 是最直接的方式了。我个人非常喜欢 <code>cherry-pick</code>，因为它特别简单。</p>
+<h2 id="git-reset-git-revert"><a href="#git-reset-git-revert" class="headerlink" title="git reset &amp;&amp; git revert"></a>git reset &amp;&amp; git revert</h2><h2 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h2><p>由于先抓取更新再合并到本地分支这个流程很常用，因此 Git 提供了一个专门的命令来完成这两个操作。它就是我们要讲的 <code>git pull</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">git pull == git fetch &amp;&amp; git merge</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">git pull --rebase == git fetch &amp;&amp; git rebase</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">本地创建foo分支，并将远端main分支下的内容拉入foo</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">git pull origin main:foo</span> <br></code></pre></td></tr></table></figure>
+
+<h3 id="git-fetch-做了些什么"><a href="#git-fetch-做了些什么" class="headerlink" title="git fetch 做了些什么"></a>git fetch 做了些什么</h3><p><code>git fetch</code> 完成了仅有的但是很重要的两步:</p>
+<ul>
+<li>从远程仓库下载本地仓库中缺失的提交记录</li>
+<li>更新远程分支指针(如 <code>o/main</code>)</li>
+</ul>
+<p><code>git fetch</code> 实际上将本地仓库中的远程分支更新成了远程仓库相应分支最新的状态。</p>
+<p>远程分支反映了远程仓库在你<strong>最后一次与它通信时</strong>的状态，<code>git fetch</code> 就是你与远程仓库通信的方式了！希望我说的够明白了，你已经了解 <code>git fetch</code> 与远程分支之间的关系了吧。</p>
+<p><code>git fetch</code> 通常通过互联网（使用 <code>http://</code> 或 <code>git://</code> 协议) 与远程仓库通信。</p>
+<p><code>&lt;place&gt;</code> 参数</p>
+<p>如果你像如下命令这样为 git fetch 设置 的话：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git fetch origin foo<br></code></pre></td></tr></table></figure>
+
+<p>Git 会到远程仓库的 <code>foo</code> 分支上，然后获取所有本地不存在的提交，放到本地的 <code>o/foo</code> 上。</p>
+<h3 id="git-fetch-不会做的事"><a href="#git-fetch-不会做的事" class="headerlink" title="git fetch 不会做的事"></a>git fetch 不会做的事</h3><p><code>git fetch</code> 并不会改变你本地仓库的状态。它不会更新你的 <code>main</code> 分支，也不会修改你磁盘上的文件。</p>
+<p>理解这一点很重要，因为许多开发人员误以为执行了 <code>git fetch</code> 以后，他们本地仓库就与远程仓库同步了。它可能已经将进行这一操作所需的所有数据都下载了下来，但是<strong>并没有</strong>修改你本地的文件。我们在后面的课程中将会讲解能完成该操作的命令 :D</p>
+<p><strong>所以, 你可以将 <code>git fetch</code> 的理解为单纯的下载操作。</strong></p>
+<h2 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git push &lt;remote&gt; &lt;place&gt;<br>$ git push origin main<br></code></pre></td></tr></table></figure>
+
+<p>把这个命令翻译过来就是：</p>
+<p><em>切到本地仓库中的“main”分支，获取所有的提交，再到远程仓库“origin”中找到“main”分支，将远程仓库中没有的提交记录都添加上去，搞定之后告诉我。</em></p>
+<p>我们通过“place”参数来告诉 Git 提交记录来自于 main, 要推送到远程仓库中的 main。它实际就是要同步的两个仓库的位置。</p>
+<p>需要注意的是，因为我们通过指定参数告诉了 Git 所有它需要的信息, 所以它就忽略了我们所切换分支的属性！</p>
+<h3 id="冲突处理-线性提交"><a href="#冲突处理-线性提交" class="headerlink" title="冲突处理&amp;线性提交"></a>冲突处理&amp;线性提交</h3>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Tools/" class="print-no-link">#Tools</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Tools</div>
+      <div>http://example.com/2023/05/22/Tools/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 22, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/12/6-12/" title="6.12">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">6.12</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/14/15445-lab2/" title="15445-lab2">
+                        <span class="hidden-mobile">15445-lab2</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      <script src="//cdn.jsdelivr.net/npm/@waline/client"></script>
+
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"placeholder":null,"avatar":"retro","avatarCDN":"https://seccdn.libravatar.org/avatar/","avatarForce":false,"highlight":true},
+          {
+            el: '#waline',
+            path: window.location.pathname,
+            serverURL: 'https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app',
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,831 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="TrapRISC-V assembly (easy) caller saved register  ​	函数调用时无需关注的寄存器就是caller saved register，例如return address 则是caller saved register地址，既subfuction调用完毕后应当回到的地址。当函数调用结束时ra寄存器一定会被改写，所以要将call指令所在的地址+1作为ra并存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab4-trap">
+<meta property="og:url" content="http://example.com/2022/03/08/Lab4-trap/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="TrapRISC-V assembly (easy) caller saved register  ​	函数调用时无需关注的寄存器就是caller saved register，例如return address 则是caller saved register地址，既subfuction调用完毕后应当回到的地址。当函数调用结束时ra寄存器一定会被改写，所以要将call指令所在的地址+1作为ra并存储">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/08/Lab4-trap/image-20221028145622994.png">
+<meta property="og:image" content="http://example.com/2022/03/08/Lab4-trap/image-20221028145016637.png">
+<meta property="og:image" content="http://example.com/2022/03/08/Lab4-trap/image-20221028151232243.png">
+<meta property="og:image" content="http://example.com/2022/03/08/Lab4-trap/image-20221028152230459.png">
+<meta property="og:image" content="http://example.com/2022/03/08/Lab4-trap/image-20221101183358245.png">
+<meta property="article:published_time" content="2022-03-08T06:26:08.000Z">
+<meta property="article:modified_time" content="2024-10-27T13:10:08.174Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="xv6_riscv Lab">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/03/08/Lab4-trap/image-20221028145622994.png">
+  
+  
+  
+  <title>Lab4-trap - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"JVRHRgZvLvYzeUvgsPXkiSBi-MdYXbMMI","app_key":"eIfDDpCEwOjlXZsTnPUW3j5E","server_url":null,"path":"window.location.pathname","ignore_local":false,"enable":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab4-trap"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-03-08 14:26" pubdate>
+          March 8, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab4-trap</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Trap"><a href="#Trap" class="headerlink" title="Trap"></a>Trap</h2><h3 id="RISC-V-assembly-easy"><a href="#RISC-V-assembly-easy" class="headerlink" title="RISC-V assembly (easy)"></a>RISC-V assembly (easy)</h3><ul>
+<li>caller saved register</li>
+</ul>
+<p>​	函数调用时无需关注的寄存器就是caller saved register，<u>例如return address 则是caller saved register地址，既subfuction调用完毕后应当回到的地址。当函数调用结束时ra寄存器一定会被改写，所以要将call指令所在的地址+1作为ra并存储在某处</u></p>
+<ol>
+<li>哪些寄存器保存函数的参数？例如，在<code>main</code>对<code>printf</code>的调用中，哪个寄存器保存13？</li>
+</ol>
+<ul>
+<li>riscv中通过a0-a7八个寄存器传递参数，如果参数多余8个则通过栈帧传递。</li>
+</ul>
+<p><img src="/2022/03/08/Lab4-trap/image-20221028145622994.png" srcset="/img/loading.gif" lazyload alt="image-20221028145622994"></p>
+<p><img src="/2022/03/08/Lab4-trap/image-20221028145016637.png" srcset="/img/loading.gif" lazyload alt="image-20221028145016637"></p>
+<ol>
+<li><code>main</code>的汇编代码中对函数<code>f</code>的调用在哪里？对<code>g</code>的调用在哪里(提示：编译器可能会将函数内联）</li>
+</ol>
+<ul>
+<li>编译器在此处做了编译优化，直接传递g和f的结果给printf</li>
+</ul>
+<ol start="2">
+<li><code>printf</code>函数位于哪个地址？</li>
+</ol>
+<ul>
+<li>65a</li>
+</ul>
+<ol start="3">
+<li>在<code>main</code>中<code>printf</code>的<code>jalr</code>之后的寄存器<code>ra</code>中有什么值？</li>
+</ol>
+<ul>
+<li>ra保存的调用结束后返回的地址，即34的下一条指令的地址38</li>
+</ul>
+<ol start="4">
+<li>运行以下代码。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> i = <span class="hljs-number">0x00646c72</span>;<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;H%x Wo%s&quot;</span>, <span class="hljs-number">57616</span>, &amp;i);<br></code></pre></td></tr></table></figure>
+
+<p>执行结果 HE110 World</p>
+<ul>
+<li>57616换算成16进制的结果是E110，%x则是直接打印16进制结果，%s则是以字符串（一个字符1一个字节8位）的形式打印，RISCV是小端存储低位字序排在低字节端，因此i的0x72（114）会被优先打印出来一次类推</li>
+</ul>
+<h3 id="Backtrace-moderate"><a href="#Backtrace-moderate" class="headerlink" title="Backtrace(moderate)"></a>Backtrace(moderate)</h3><p>函数调用栈帧如下图所示，每个stackframe都有一些固定的结构，这些stackframe固定在用户栈下，用户栈的大小固定为一个PGSIZE。<strong>因此当我们无限调用递归函数时，可能出现栈溢出的情况。</strong></p>
+<ul>
+<li>由下图我们就知道无限的递归为什么会造成OOM问题了（doge）</li>
+</ul>
+<p>fp(或叫s0寄存器)表示调用栈的最高位，sp表示调用栈的最底部，fp - sp 则是生成栈的长度,一般会通过prologue阶段生成。</p>
+<p>在fp(0)的位置存储着调用结束后的return address，调用阶段结束会将这个值重新赋给ra寄存器。fp(-8)的位置存储着上一个栈帧的fp，在所有寄存器现场恢复后会修改取出fp并修改当前fp。</p>
+<p><img src="/2022/03/08/Lab4-trap/image-20221028151232243.png" srcset="/img/loading.gif" lazyload alt="image-20221028151232243"></p>
+<p><img src="/2022/03/08/Lab4-trap/image-20221028152230459.png" srcset="/img/loading.gif" lazyload alt="image-20221028152230459"></p>
+<ul>
+<li>question fp中读取的为什么是地址？</li>
+</ul>
+<h3 id="Alarm"><a href="#Alarm" class="headerlink" title="Alarm"></a>Alarm</h3><h4 id="trap-机制"><a href="#trap-机制" class="headerlink" title="trap 机制"></a>trap 机制</h4><img src="/2022/03/08/Lab4-trap/image-20221101183358245.png" srcset="/img/loading.gif" lazyload alt="image-20221101183358245" style="zoom:67%;">
+
+<p>ecall：由于RISCV将<strong>系统调用、异常、中断</strong>都归纳为trap，所以ecall指令在RISCV中会被频繁的调用，为了减少trap机制的开销，ecall所能提供的功能非常有限。ecall的功能有如下几点</p>
+<ul>
+<li><p>将xv6由用户态切换至内核态， user mode &#x3D;&gt; supervisor mode</p>
+</li>
+<li><p>将pc保存至sepc寄存器</p>
+</li>
+<li><p>pc指针切换至stvec的内容（即trampoline的起始位置</p>
+</li>
+<li><p>保存32个用户寄存器的内容，这样当我们想要恢复用户代码执行时，我们才能恢复这些寄存器的内容。</p>
+</li>
+<li><p>ecall指令刚开始satp指向user page table，trampoline执行会切换到kernel page table</p>
+</li>
+<li><p>我们需要创建或者找到一个kernel stack，并将Stack Pointer寄存器的内容指向那个kernel stack。这样才能给C代码提供栈</p>
+</li>
+<li><p>我们还需要跳转到内核中C代码的某些合理的位置</p>
+</li>
+</ul>
+<p>uservec：</p>
+<ul>
+<li>在trampoline中保存了CPU当前的现场（32个通用寄存器以及），并恢复内核态的寄存器状态</li>
+</ul>
+<p>usertrap:</p>
+<ul>
+<li>xv6会在usertrap中判断trap是系统调用还是异常或中断，并根据trap类型执行对应函数</li>
+</ul>
+<h4 id="Alarm-1"><a href="#Alarm-1" class="headerlink" title="Alarm"></a>Alarm</h4><p>您需要修改<code>usertrap()</code>，以便当进程的报警间隔期满时，用户进程执行处理程序函数。当RISC-V上的陷阱返回到用户空间时，什么决定了用户空间代码恢复执行的指令地址？</p>
+<p><strong>本实验的一个目的在于，实现某种能够在用户态处理中断或故障的机制</strong></p>
+<p>trap的过程简述：</p>
+<ol>
+<li><code>ecall</code>指令中将PC保存到SEPC</li>
+<li>在<code>usertrap</code>中将SEPC保存到<code>p-&gt;trapframe-&gt;epc</code></li>
+<li><code>p-&gt;trapframe-&gt;epc</code>加4指向下一条指令</li>
+<li>执行系统调用</li>
+<li>在<code>usertrapret</code>中将SEPC改写为<code>p-&gt;trapframe-&gt;epc</code>中的值</li>
+<li>在<code>sret</code>中将PC设置为SEPC的值</li>
+</ol>
+<ul>
+<li>在usertrap中若要执行报警函数，并不是直接将pc的内容改为报警函数的地址，而是在修改trampframe中的epc，在trap返回时会将pc的值修改为报警函数的地址</li>
+</ul>
+<p>我们还要确保报警函数执行完毕后能恢复报警函数执行前CPU的状态，因此在这之前要保存当时的所有寄存器，在sigreturn中恢复即可。</p>
+<h5 id="修改proc"><a href="#修改proc" class="headerlink" title="修改proc"></a>修改proc</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> strcut proc&#123;<br>	...<br>	<span class="hljs-type">int</span> interval;          							<span class="hljs-comment">// 触发间隔</span><br>	<span class="hljs-type">void</span> (*alarm_handler)();     				<span class="hljs-comment">// 用户态处理函数</span><br>	<span class="hljs-type">int</span> count;             							<span class="hljs-comment">// 触发计数器</span><br>  <span class="hljs-type">int</span> is_alarming;                    <span class="hljs-comment">// 是否正在调用alarm_handler</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">trapframe</span>* <span class="hljs-title">alarm_trapframe</span>;</span> <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>为什么需要一个alarm_trapframe和is_alarming？</li>
+</ul>
+<p>首先我们要确保我们进入alarmhandler之后还能正确的还原trap之前的状态，alarm_handler有可能更改用户寄存器的内容，因此我们要在进入handler之前保存好用户寄存器的状态，在handler结束时恢复这个状态；is_alarming是为了防止重复陷入（大佬说的。。）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// give up the CPU if this is a timer interrupt.</span><br><span class="hljs-keyword">if</span>(which_dev == <span class="hljs-number">2</span>) &#123;<br>  <span class="hljs-keyword">if</span>(p-&gt;alarm_interval != <span class="hljs-number">0</span> &amp;&amp; ++p-&gt;ticks_count == p-&gt;alarm_interval &amp;&amp; p-&gt;is_alarming == <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-comment">// 保存寄存器内容</span><br>    memmove(p-&gt;alarm_trapframe, p-&gt;trapframe, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> trapframe));<br>    <span class="hljs-comment">// 更改陷阱帧中保留的程序计数器，注意一定要在保存寄存器内容后再设置epc</span><br>    p-&gt;trapframe-&gt;epc = (uint64)p-&gt;alarm_handler;<br>    p-&gt;ticks_count = <span class="hljs-number">0</span>;<br>    p-&gt;is_alarming = <span class="hljs-number">1</span>;<br>  &#125;<br>  yield();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>这个lab本身难度不大，主要是让我们熟悉一下xv6 trap机制，并利用trap设计一些有意思的函数，比如通过改变epc的值能够使用用户指定的函数来处理中断</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/xv6-riscv-Lab/" class="print-no-link">#xv6_riscv Lab</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Lab4-trap</div>
+      <div>http://example.com/2022/03/08/Lab4-trap/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 8, 2022</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/10/Lab9-filesystem/" title="Lab9">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab9</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/26/leetcode/" title="leetcode">
+                        <span class="hidden-mobile">leetcode</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      <script src="//cdn.jsdelivr.net/npm/@waline/client"></script>
+
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"placeholder":null,"avatar":"retro","avatarCDN":"https://seccdn.libravatar.org/avatar/","avatarForce":false,"highlight":true},
+          {
+            el: '#waline',
+            path: window.location.pathname,
+            serverURL: 'https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app',
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

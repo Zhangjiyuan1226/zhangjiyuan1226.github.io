@@ -1,0 +1,830 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Virtual Memory虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。  为什么需要虚拟内存？   每个进程可以使用更大的地址空间 进程与进程之间相互隔离，不会干扰 共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容 保护，对pte的标志位做一下操作就可以对进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab3-pagetable">
+<meta property="og:url" content="http://example.com/2022/02/26/Lab3-pagetable/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Virtual Memory虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。  为什么需要虚拟内存？   每个进程可以使用更大的地址空间 进程与进程之间相互隔离，不会干扰 共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容 保护，对pte的标志位做一下操作就可以对进">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220310100802814.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220228121327909.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20230313085847793.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220228215322380.png">
+<meta property="og:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220307134228420.png">
+<meta property="article:published_time" content="2022-02-26T04:40:25.000Z">
+<meta property="article:modified_time" content="2024-10-27T13:10:08.170Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="xv6_riscv Lab">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/02/26/Lab3-pagetable/image-20220310100802814.png">
+  
+  
+  
+  <title>Lab3-pagetable - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"JVRHRgZvLvYzeUvgsPXkiSBi-MdYXbMMI","app_key":"eIfDDpCEwOjlXZsTnPUW3j5E","server_url":null,"path":"window.location.pathname","ignore_local":false,"enable":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab3-pagetable"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-26 12:40" pubdate>
+          February 26, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          478 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          4 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab3-pagetable</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Virtual-Memory"><a href="#Virtual-Memory" class="headerlink" title="Virtual Memory"></a>Virtual Memory</h2><p>虚拟内存提供了一种映射，将进程的内存映射到物理内存上，并提供进程之间的保护与隔离。RISC-V的映射以块为单位，在后续的介绍中我们会了解到以块为单位映射带来的好处。</p>
+<ul>
+<li>为什么需要虚拟内存？</li>
+</ul>
+<ol>
+<li>每个进程可以使用更大的地址空间</li>
+<li>进程与进程之间相互隔离，不会干扰</li>
+<li>共享内存，在xv6中我们发现进程之间可以通过pte共享某些页面的内容</li>
+<li>保护，对pte的标志位做一下操作就可以对进程的访问做限制</li>
+</ol>
+<h3 id="Kernel-Page"><a href="#Kernel-Page" class="headerlink" title="Kernel Page"></a>Kernel Page</h3><p>地址0x1000是boot ROM的物理地址，当你对主板上电，主板做的第一件事情就是运行存储在boot ROM中的代码，当boot完成之后，会跳转到地址0x80000000，操作系统需要确保那个地址有一些数据能够接着启动操作系统。</p>
+<ul>
+<li>PLIC是中断控制器（Platform-Level Interrupt Controller）我们下周的课会讲。</li>
+<li>CLINT（Core Local Interruptor）也是中断的一部分。所以多个设备都能产生中断，需要中断控制器来将这些中断路由到合适的处理函数。</li>
+<li>UART0（Universal Asynchronous Receiver&#x2F;Transmitter）负责与Console和显示器交互。</li>
+<li>VIRTIO disk，与磁盘进行交互</li>
+</ul>
+<h3 id="core-struct"><a href="#core-struct" class="headerlink" title="core struct"></a>core struct</h3><ul>
+<li>pte：page table entry 中存储的内容可以转化为实际物理地址  PTE2PA(pte)</li>
+<li>pa：physical address 实际物理地址，由freelist分配</li>
+</ul>
+<h3 id="walk"><a href="#walk" class="headerlink" title="walk"></a>walk</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Return</span> the address of the PTE in page table pagetable that corresponds to virtual address va.  <br><span class="hljs-attribute">If</span> alloc!=<span class="hljs-number">0</span>,create any required page-table pages.<br> <span class="hljs-attribute">The</span> risc-v Sv39 scheme has three levels of page-table<br> <span class="hljs-attribute">pages</span>. A page-table page contains <span class="hljs-number">512</span> <span class="hljs-number">64</span>-bit PTEs.<br> <span class="hljs-attribute">A</span> <span class="hljs-number">64</span>-bit virtual address is split into five fields:<br>   <span class="hljs-attribute">39</span>..<span class="hljs-number">63</span> -- must be zero.<br>   <span class="hljs-attribute">30</span>..<span class="hljs-number">38</span> -- <span class="hljs-number">9</span> bits of level-<span class="hljs-number">2</span> index.<br>   <span class="hljs-attribute">21</span>..<span class="hljs-number">29</span> -- <span class="hljs-number">9</span> bits of level-<span class="hljs-number">1</span> index.<br>   <span class="hljs-attribute">12</span>..<span class="hljs-number">20</span> -- <span class="hljs-number">9</span> bits of level-<span class="hljs-number">0</span> index.<br>	<span class="hljs-attribute">0</span>..<span class="hljs-number">11</span> -- <span class="hljs-number">12</span> bits of byte offset within the page.<br></code></pre></td></tr></table></figure>
+
+<p>walk函数会递归的将sv39的三级页表页表项取出，其中PX(level, va)会根据页表的级数取出对应的pte。如果当前页表项为空且允许为其分配新的页面地址，则调用kalloc分配一个页面，并将地址存入此pte中；如果不为空，则递归进入下一级页表。</p>
+<p>最终结果返回三级页表的某个地址，可用来查看内容也可以用来插入内容；</p>
+<p><img src="/2022/02/26/Lab3-pagetable/image-20220310100802814.png" srcset="/img/loading.gif" lazyload alt="image-20220310100802814"></p>
+<h3 id="mappages"><a href="#mappages" class="headerlink" title="mappages"></a>mappages</h3><p>函数的作用是将va映射到pa上去，并将pte存入pagetable</p>
+<ul>
+<li>a ：va向4k对齐的基地址</li>
+<li>last ：映射区域向4k对齐的最后一个页面的基地址</li>
+<li><strong>walk函数则从pagetable中找到合适的 pte ，如果不存在会，会根据alloc参数决定是否分配页面</strong></li>
+</ul>
+<p><img src="/2022/02/26/Lab3-pagetable/image-20220228121327909.png" srcset="/img/loading.gif" lazyload alt="image-20220228121327909"></p>
+<h3 id="uvmcopy"><a href="#uvmcopy" class="headerlink" title="uvmcopy()"></a>uvmcopy()</h3><p>函数会将父进程的页表内容复制到子进程的页表中，第一步先从0地址开始按页查找对应pte，并根据pte找到对应的pa，随后将pa为起始地址的PGSIZE内容复制到kalloc新分配的页中，随后将老的虚拟地址和新分配的物理地址相互映射。</p>
+<p>所以调用uvmcopy在用户态复制页表，只会复制页表的内容，而具体指向的物理地址并不一样。【fork系统调用会创建一个新的页表】</p>
+<p><u>uvmcopy会复制oldpagetable中va对应pa所属页的内容到kalloc()新分配的pa上，并将新的pa映射到new pagetable</u></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Given a parent process&#x27;s page table, copy</span><br><span class="hljs-comment">// its memory into a child&#x27;s page table.</span><br><span class="hljs-comment">// Copies both the page table and the</span><br><span class="hljs-comment">// physical memory.</span><br><span class="hljs-comment">// returns 0 on success, -1 on failure.</span><br><span class="hljs-comment">// frees any allocated pages on failure.</span><br></code></pre></td></tr></table></figure>
+
+<img src="/2022/02/26/Lab3-pagetable/image-20230313085847793.png" srcset="/img/loading.gif" lazyload alt="image-20230313085847793" style="zoom:50%;">
+
+
+
+<h3 id="创建一个地址空间"><a href="#创建一个地址空间" class="headerlink" title="创建一个地址空间"></a>创建一个地址空间</h3><ol>
+<li>freearange(end, PYHSTOP) 会将物理内存空间挂载到 <strong>freemem</strong> 这样一个list上，因为xv6中采用头插法，因此freemem指向的是高空闲地址空间</li>
+<li>kinit() <code>physical page allocator</code>; kinit会初始化内存操作的自旋锁，并且根据kernel.ld提供的地址信息初始化物理内存空间</li>
+<li>kvminit() <code>Initialize the one kernel_pagetable</code>; 创建内核页表，将内核数据（I&#x2F;O PLIC等映射到0-0x80000000）内核页表将会被分配到物理内存最顶端的page中</li>
+<li>exec</li>
+<li>xv6支持内核线程的概念，每个用户进程都由一个内核线程执行。并且xv6通过共享内存的方式进行多线程的通信。</li>
+</ol>
+<p><img src="/2022/02/26/Lab3-pagetable/image-20220228215322380.png" srcset="/img/loading.gif" lazyload alt="image-20220228215322380"></p>
+<hr>
+<h3 id="打印第一个进程的页表"><a href="#打印第一个进程的页表" class="headerlink" title="打印第一个进程的页表"></a>打印第一个进程的页表</h3><p>如何打印进程的页表呢？首先我们要明确页表什么时候被建立，并被存储到什么地方</p>
+<p>要回答第一个问题，最好的方式就是使用gdb跟踪initproc，追踪第一个用户进程的分配过程一定能够告诉我们页表建立的过程。</p>
+<p><img src="/2022/02/26/Lab3-pagetable/image-20220307134228420.png" srcset="/img/loading.gif" lazyload alt="image-20220307134228420"></p>
+<p>上图展示的是xv6中的三级页表，在sv39中我们只用到了低39位，其中低12位为page offset，其余27位负责对三级页表进行索引，其中Page Directory 的首地址被存储在satp寄存器中，satp只有在陷入内核时或继承切换时能够被os修改，它对用户透明；</p>
+<p>打印页表结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">page table 0x0000000087f6e000<br>..0: pte 0x0000000021fda801 pa 0x0000000087f6a000<br>.. ..0: pte 0x0000000021fda401 pa 0x0000000087f69000<br>.. .. ..0: pte 0x0000000021fdac1f pa 0x0000000087f6b000<br>.. .. ..1: pte 0x0000000021fda00f pa 0x0000000087f68000<br>.. .. ..2: pte 0x0000000021fd9c1f pa 0x0000000087f67000<br>..255: pte 0x0000000021fdb401 pa 0x0000000087f6d000<br>.. ..511: pte 0x0000000021fdb001 pa 0x0000000087f6c000<br>.. .. ..510: pte 0x0000000021fdd807 pa 0x0000000087f76000<br>.. .. ..511: pte 0x0000000020001c0b pa 0x0000000080007000<br></code></pre></td></tr></table></figure>
+
+<p>递归的遍历页表；</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Recursively free page-table pages.</span><br><span class="hljs-comment">// just like function freewalk</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">vmprint</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable, <span class="hljs-type">int</span> level)</span>&#123;<br>  <span class="hljs-keyword">if</span>(level == <span class="hljs-number">2</span>)<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;page table %p\n&quot;</span>, pagetable);<br>  <span class="hljs-comment">// there are 2^9 = 512 PTEs in a page table.</span><br>  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">512</span>; i++)&#123;<br>    <span class="hljs-type">pte_t</span> pte = pagetable[i];<br>    <span class="hljs-keyword">if</span>((pte &amp; PTE_V) &amp;&amp; level &gt; <span class="hljs-number">0</span>)&#123;<br>      <span class="hljs-comment">// this PTE points to a lower-level page table.</span><br>      <span class="hljs-keyword">if</span>(level == <span class="hljs-number">2</span>)<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));<br>      <span class="hljs-keyword">if</span>(level == <span class="hljs-number">1</span>)<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;.. ..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));  <br>      uint64 child = PTE2PA(pte);<br>      vmprint((<span class="hljs-type">pagetable_t</span>)child, level<span class="hljs-number">-1</span>);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((pte &amp; PTE_V) &amp;&amp; level == <span class="hljs-number">0</span>)&#123;<br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;.. .. ..%d: pte %p pa %p\n&quot;</span>, i, pte, PTE2PA(pte));<br>    &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(pte &amp; PTE_V)&#123;<br>      panic(<span class="hljs-string">&quot;vmprint: leaf&quot;</span>);<br>    &#125; <br>  &#125;<br>  <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">//会发生panic init exiting 因为退出时p = initproc</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="A-kernel-page-table-for-per-process"><a href="#A-kernel-page-table-for-per-process" class="headerlink" title="A kernel page table for per process"></a>A kernel page table for per process</h3><p>本次实验的目的是为每一个进程创建一个专属的kernel pagetable。xv6的基础代码里只在内核中维护了一个内核页表，且内核页表被全部进程所共享，首先单一的内核栈很难允许多核并发的执行，<strong>其次专属的内核页表更有利于操作系统解引用？</strong></p>
+<ol>
+<li>当我们需要为进程增加一个属性时，首先需要做的就是在其结构体中增加一个属性，在这里我们添加一个pagetable_t kpagetable，表明每个进程都要维护了一个内核页表。</li>
+<li>其次我们需要在创建用户进程时初始化内核页表，其次每个内核空间都要维护一个内核栈kernel stack，我们还要想办法初始化内核栈；</li>
+<li>最后我们需要在进程切换时切换内核页表，在陷入时切换到进程所属的内核页表……</li>
+</ol>
+<h4 id="初始化进程的内核页表"><a href="#初始化进程的内核页表" class="headerlink" title="初始化进程的内核页表"></a>初始化进程的内核页表</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span>            <span class="hljs-title function_">proc_free_kpagetable</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span>, uint64)</span>;<br><span class="hljs-type">pagetable_t</span>     <span class="hljs-title function_">kpagetableinit</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><span class="hljs-type">void</span>            <span class="hljs-title function_">kpagetable_map</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable ,uint64 va, uint64 pa, uint64 sz, <span class="hljs-type">int</span> perm)</span>;<br><br><span class="hljs-type">pagetable_t</span><br><span class="hljs-title function_">kpagetableinit</span><span class="hljs-params">()</span>&#123;<br><br>  <span class="hljs-type">pagetable_t</span> k_pagetable;<br>  k_pagetable = (<span class="hljs-type">pagetable_t</span>) kalloc();<br>  <span class="hljs-built_in">memset</span>(k_pagetable, <span class="hljs-number">0</span>, PGSIZE);<br>  <span class="hljs-comment">// uart registers</span><br>  kpagetable_map(k_pagetable, UART0, UART0, PGSIZE, PTE_R | PTE_W);<br>  <span class="hljs-comment">// virtio mmio disk interface</span><br>  kpagetable_map(k_pagetable, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);<br>  <span class="hljs-comment">// CLINT</span><br>  kpagetable_map(k_pagetable, CLINT, CLINT, <span class="hljs-number">0x10000</span>, PTE_R | PTE_W);<br>  <span class="hljs-comment">// PLIC</span><br>  kpagetable_map(k_pagetable, PLIC, PLIC, <span class="hljs-number">0x400000</span>, PTE_R | PTE_W);<br>  <span class="hljs-comment">// map kernel text executable and read-only.</span><br>  kpagetable_map(k_pagetable, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);<br>  <span class="hljs-comment">// map kernel data and the physical RAM we&#x27;ll make use of.</span><br>  kpagetable_map(k_pagetable, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W);<br>  <span class="hljs-comment">// map the trampoline for trap entry/exit to</span><br>  <span class="hljs-comment">// the highest virtual address in the kernel.</span><br>  kpagetable_map(k_pagetable, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);<br>  <span class="hljs-keyword">return</span> k_pagetable;<br>&#125;<br><span class="hljs-type">void</span> <br><span class="hljs-title function_">kpagetable_map</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable ,uint64 va, uint64 pa, uint64 sz, <span class="hljs-type">int</span> perm)</span>&#123;<br>  <span class="hljs-keyword">if</span>(mappages(pagetable, va, sz, pa, perm) != <span class="hljs-number">0</span>)<br>    panic(<span class="hljs-string">&quot;kpagetable_map&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="映射内核栈"><a href="#映射内核栈" class="headerlink" title="映射内核栈"></a>映射内核栈</h4><p>在这个实验中，我们要把进程的内核栈映射到自己专属的内核页表中。如何做到这一点呢？其实就是将proc中的kstack映射到内核页表中，那么何时映射就是这个问题的关键。lab中提示我们将这个操作推迟到allocproc中，可以思考一下为什么</p>
+<ul>
+<li>很显然因为我们在allocproc中才有内核页表 （doge）</li>
+<li>实际上我们应该思考为什么不能在procinit中为每个进程初始化内核页表并映射内核栈？我的理解是这样os启动的速度会很慢，而且页没有必要，毕竟不是所有进程都会被分配出去，只有当真的需要使用它们时我们再去为proc映射内核栈也完全来得及</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 在allocproc中调用相关函数</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">allocproc</span><span class="hljs-params">()</span>&#123;<br>...<br><span class="hljs-comment">// Init the kernal page table</span><br>  <span class="hljs-comment">// An empty kernal page table</span><br>  p-&gt;k_pagetable = kpagetableinit();<br>  <span class="hljs-keyword">if</span>(p-&gt;k_pagetable == <span class="hljs-number">0</span>)&#123;<br>    freeproc(p-&gt;k_pagetable);<br>    release(&amp;p-&gt;lock);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125;<br>  <span class="hljs-type">char</span> *pa = kalloc();<br>  <span class="hljs-keyword">if</span>(pa == <span class="hljs-number">0</span>)<br>    panic(<span class="hljs-string">&quot;kalloc&quot;</span>);<br>  uint64 va = KSTACK((<span class="hljs-type">int</span>) (p - proc));<br>  kvmmap(va, (uint64)pa, PGSIZE, PTE_R | PTE_W);<br>  p-&gt;kstack = va;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="free"><a href="#free" class="headerlink" title="free"></a>free</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span><br><span class="hljs-title function_">freeproc</span><span class="hljs-params">()</span>&#123;<br>  uvmunmap(p-&gt;k_pagetable, p-&gt;kstack, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>  p-&gt;kstack = <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">if</span>(p-&gt;k_pagetable)<br>    proc_free_kpagetable(p-&gt;k_pagetable, <span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-type">void</span> <br><span class="hljs-title function_">proc_free_kpagetable</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable, uint64 depth)</span>&#123;<br>  <span class="hljs-comment">// there are 2^9 = 512 PTEs in a page table.</span><br>  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">512</span>; i++)&#123;<br>    <span class="hljs-type">pte_t</span> pte = pagetable[i];<br>    <span class="hljs-keyword">if</span>((pte &amp; PTE_V))&#123;<br>      uint64 child = PTE2PA(pte);<br>      <span class="hljs-keyword">if</span>(depth &lt; <span class="hljs-number">2</span> &amp;&amp; (pte &amp; (PTE_R|PTE_W|PTE_X)) == <span class="hljs-number">0</span>)&#123;<br>        proc_free_kpagetable((<span class="hljs-type">pagetable_t</span>)child, depth+<span class="hljs-number">1</span>);<br>      &#125;<br>      pagetable[i] = <span class="hljs-number">0</span>;<br>    &#125; <br>  &#125;<br>  kfree((<span class="hljs-type">void</span>*)pagetable);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>调度上的切换</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">w_satp(MAKE_SATP(p-&gt;k_pagetable));<br>sfence_vma();<br>swtch(&amp;c-&gt;context, &amp;p-&gt;context);<br>kvminithart();<br></code></pre></td></tr></table></figure>
+
+<h4 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h4><p>我们还需要修改scheduler中的一些细节，比如在进程切换时我们要切换进程所属的内核页表，在释放进程空间时，我们需要释放kpagetable和内核栈</p>
+<h3 id="copyin-copyinstr"><a href="#copyin-copyinstr" class="headerlink" title="copyin copyinstr"></a>copyin copyinstr</h3><p>本实验的目的是为了让内核页表拥有用户空间的映射关系，这样我们就可以在内核空间对用户地址进行操作了</p>
+<p>内核的<code>copyin</code>函数读取用户指针指向的内存。它通过将用户指针转换为内核可以直接解引用的物理地址来实现这一点。这个转换是通过在软件中遍历进程页表来执行的。在本部分的实验中，您的工作是将用户空间的映射添加到每个进程的内核页表（上一节中创建），以允许<code>copyin</code>（和相关的字符串函数<code>copyinstr</code>）直接解引用用户指针。</p>
+<h4 id="复制用户页表到内核页表"><a href="#复制用户页表到内核页表" class="headerlink" title="复制用户页表到内核页表"></a>复制用户页表到内核页表</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span><br><span class="hljs-title function_">u2kvmcopy</span><span class="hljs-params">(<span class="hljs-type">pagetable_t</span> pagetable, <span class="hljs-type">pagetable_t</span> kpagetable, uint64 oldsz, uint64 newsz)</span>&#123;<br>  <span class="hljs-type">pte_t</span> *pte_from, *pte_to;<br>  oldsz = PGROUNDUP(oldsz);<br>  <span class="hljs-keyword">for</span> (uint64 i = oldsz; i &lt; newsz; i += PGSIZE)&#123;<br>    <span class="hljs-keyword">if</span>((pte_from = walk(pagetable, i, <span class="hljs-number">0</span>)) == <span class="hljs-number">0</span>)<br>      panic(<span class="hljs-string">&quot;u2kvmcopy: src pte does not exist&quot;</span>);<br>    <span class="hljs-keyword">if</span>((pte_to = walk(kpagetable, i, <span class="hljs-number">1</span>)) == <span class="hljs-number">0</span>)<br>      panic(<span class="hljs-string">&quot;u2kvmcopy: pte walk failed&quot;</span>);<br>    uint64 pa = PTE2PA(*pte_from);<br>    uint flags = (PTE_FLAGS(*pte_from)) &amp; (~PTE_U);<br>    *pte_to = PA2PTE(pa) | flags;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>除此之外，每次用户页表可能发生改变的时候我们都要对内核页表上的这部分进行修改，那么有哪些函数可能对用户页表进行操作呢？</li>
+</ul>
+<p>exec 时也会需要对内核页表进行操作</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span><br><span class="hljs-title function_">exec</span><span class="hljs-params">(<span class="hljs-type">char</span> *path, <span class="hljs-type">char</span> **argv)</span>&#123;<br>  ...<br>  sp = sz;<br>  stackbase = sp - PGSIZE;<br>  <span class="hljs-comment">// 添加复制逻辑</span><br>  u2kvmcopy(pagetable, p-&gt;kpagetable, <span class="hljs-number">0</span>, sz);<br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>fork 需要把parent的内核页表复制到child的内核页表中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span><br><span class="hljs-title function_">fork</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>&#123;<br>  ...<br>  <span class="hljs-comment">// Copy user memory from parent to child.</span><br>  <span class="hljs-keyword">if</span>(uvmcopy(p-&gt;pagetable, np-&gt;pagetable, p-&gt;sz) &lt; <span class="hljs-number">0</span>)&#123;<br>    freeproc(np);<br>    release(&amp;np-&gt;lock);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>  &#125;<br>  np-&gt;sz = p-&gt;sz;<br>  ...<br>  <span class="hljs-comment">// 复制到新进程的内核页表</span><br>  u2kvmcopy(np-&gt;pagetable, np-&gt;kernelpt, <span class="hljs-number">0</span>, np-&gt;sz);<br>  ...<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>sbrk &#x3D;&gt; growproc</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span><br><span class="hljs-title function_">growproc</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span><br>&#123;<br>  uint sz;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span> =</span> myproc();<br><br>  sz = p-&gt;sz;<br>  <span class="hljs-keyword">if</span>(n &gt; <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-comment">// 加上PLIC限制</span><br>    <span class="hljs-keyword">if</span> (PGROUNDUP(sz + n) &gt;= PLIC)&#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span>((sz = uvmalloc(p-&gt;pagetable, sz, sz + n)) == <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>    <span class="hljs-comment">// 复制一份到内核页表</span><br>    u2kvmcopy(p-&gt;pagetable, p-&gt;kpagetable, sz - n, sz);<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(n &lt; <span class="hljs-number">0</span>)&#123;<br>    sz = uvmdealloc(p-&gt;pagetable, sz, sz + n);<br>  &#125;<br>  p-&gt;sz = sz;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/xv6-riscv-Lab/" class="print-no-link">#xv6_riscv Lab</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Lab3-pagetable</div>
+      <div>http://example.com/2022/02/26/Lab3-pagetable/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 26, 2022</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/26/leetcode/" title="leetcode">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">leetcode</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/26/Lab2-syscall/" title="Lab2-syscall">
+                        <span class="hidden-mobile">Lab2-syscall</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      <script src="//cdn.jsdelivr.net/npm/@waline/client"></script>
+
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"placeholder":null,"avatar":"retro","avatarCDN":"https://seccdn.libravatar.org/avatar/","avatarForce":false,"highlight":true},
+          {
+            el: '#waline',
+            path: window.location.pathname,
+            serverURL: 'https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app',
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

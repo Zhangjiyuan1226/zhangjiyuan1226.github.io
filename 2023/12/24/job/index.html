@@ -1,0 +1,838 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="失败的秋招实录主要用于记录本人失败的秋招 互联网公司 微信支付（二面挂简单lc位操作没写出来！寄！）一面讨论了很多system design与raft的corner case结果直接被爆杀，还好面试官觉得我debug习惯很好给我过了一面 &gt; &lt;  百度（莫名其妙终面挂！寄！）一面实现的读写锁还是蛮有意思的，百度面试官很关注raft的优化方法并向我安利了braft。百度的优点是面试流程快">
+<meta property="og:type" content="article">
+<meta property="og:title" content="job">
+<meta property="og:url" content="http://example.com/2023/12/24/job/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="失败的秋招实录主要用于记录本人失败的秋招 互联网公司 微信支付（二面挂简单lc位操作没写出来！寄！）一面讨论了很多system design与raft的corner case结果直接被爆杀，还好面试官觉得我debug习惯很好给我过了一面 &gt; &lt;  百度（莫名其妙终面挂！寄！）一面实现的读写锁还是蛮有意思的，百度面试官很关注raft的优化方法并向我安利了braft。百度的优点是面试流程快">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-24T15:55:40.000Z">
+<meta property="article:modified_time" content="2024-10-27T13:10:08.218Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="秋招">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>job - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"JVRHRgZvLvYzeUvgsPXkiSBi-MdYXbMMI","app_key":"eIfDDpCEwOjlXZsTnPUW3j5E","server_url":null,"path":"window.location.pathname","ignore_local":false,"enable":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="job"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-24 23:55" pubdate>
+          December 24, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">job</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="失败的秋招实录"><a href="#失败的秋招实录" class="headerlink" title="失败的秋招实录"></a>失败的秋招实录</h2><p>主要用于记录本人失败的秋招</p>
+<h3 id="互联网公司"><a href="#互联网公司" class="headerlink" title="互联网公司"></a>互联网公司</h3><ul>
+<li><p>微信支付（二面挂简单lc位操作没写出来！寄！）一面讨论了很多system design与raft的corner case结果直接被爆杀，还好面试官觉得我debug习惯很好给我过了一面 &gt; &lt;</p>
+</li>
+<li><p>百度（莫名其妙终面挂！寄！）一面实现的读写锁还是蛮有意思的，百度面试官很关注raft的优化方法并向我安利了braft。百度的优点是面试流程快，三面一共只用了四天，但池子大hc还不确定</p>
+</li>
+<li><p>快手（社科搜推架构 大sp）秋招为数不多关注数据库优化器的面试官，有意思的问题包括分布式join，基于index的ce，如何计算查询语句cost</p>
+</li>
+<li><p>字节（财务中台，二面寄！）二面是秋招唯一一场被问了纯八股的面试 （明明一面面试官说他们懒得考察这种八股 &gt; &lt;）中断的必要条件只知道关中断还有中断优先级；输入url到浏览器，只能回答个大概；字节确实很做题厂，两场面试都是十五分钟两道题，不过都是比较常见的mid或hard</p>
+</li>
+<li><p>美团（基础平台 搜推架构 大白菜）秋招面试体验最佳，算法题全是常见mid，不问八股只讨论项目，最重要的是一周多就能走完三面+hr面流程！</p>
+</li>
+<li><p>作业帮（不知道是sp还是白菜，也没关注是什么部门）一面体验极佳，聊了很多LSM-Tree优化方面的trade off，比如怎么更新vvalue? bitcask论文和leveldb设计上的区别</p>
+</li>
+<li><p>蔚来（sp？，同样没关注部门）周末上午一面下午二面，但offer拖到快十二月才给。全程八股+简单算法，面试官只会java，我是一点java不会hh</p>
+</li>
+<li><p>云和恩墨（薪资真的蛮高，似乎是基于gaussdb的产品）面试官是师姐，直接拷打…算了一个小时时间复杂度和空间复杂度，然后聊了一些优化器cbo的问题（innodb tidb的采样；cost model如何计算开销）</p>
+</li>
+<li><p>中小厂的面试，主要就是围绕项目和简单的cpp八股，没遇到过有意思的问题也没有推荐的中小公司。至于为什么没有阿里系的分享，因为我嫌阿里拆分后投递太麻烦就直接没投  &gt; &lt;</p>
+<p>本人的互联网秋招极其失败，前期盲目自信 中期沉默不语 后期疯狂后悔。可惜的是wxg的两场面试表现都太差了，感觉面试官还是很想让我过的 &gt; &lt;</p>
+<p>互联网公司面试重点还是项目和算法。算法只要能秒杀hot100和这些题的魔改版本基本就够了，项目一定要熟悉再熟悉，以最简单的mapreduce为例 要清楚mapreduce能做什么；要清楚824实现的版本存在什么问题，如何优化改进；工业mapreduce和玩具的区别（怎么实现shuffle？）</p>
+</li>
+</ul>
+<h3 id="国企公司"><a href="#国企公司" class="headerlink" title="国企公司"></a>国企公司</h3><p>主要记录一些有趣的面试形式和公司</p>
+<ul>
+<li><p>联通某子公司（算上总裁聊天，一共面了五六次吧，各种人才计划。不过最后薪资总包40+，用白菜的base开出接近互联网sp的总包，实在不喜欢他们的薪资构成）四面时要求做个简单的ppt，没有限制内容。我根据张焕晨老师之前的演讲做了一个关于cloud-native的pre，假模假样的聊了一下snowflake架构，最后讨论了一些cloud-native的瓶颈与优化思路</p>
+</li>
+<li><p>交行金融储备 ：三面是个评估工作坊，给个五六十页的案例，根据案例中的身份完成一个商业报告，报告要介绍案例中的公司现状、困境和解决方案（限时一个小时左右，汇报时间严格卡在8分钟）很新奇的面试体验，囫囵吞枣的看了一下案例，除了必要的报告内容我还挑了个能和数字化转型相关的内容说了几句，最后又把重点强调金融科技复合型人才的重要性（doge）</p>
+</li>
+<li><p>农行软开：半结构化面试，面试官随机提问。先在a4纸上写个算法和sql，然后举着纸给面试官讲。我在面试时被cue了很多次，问我其他面试者的回答内容是否正确（真的是一身冷汗，如果没听其他人回答只能靠谈话技巧重新套一下问题了…）面试官问了不少数据库运维和测试的问题，还有怎么应对CPU打满的情况，分布式数据库的长事务，数据库宕机或者磁盘写不进去都有可能是什么问题</p>
+</li>
+<li><p>国寿：一面后要求先实习再答辩，再终面。实习过程主要做了一下规则引擎的选型，主要针对urule和drools。试着用async-prof火焰图分析一下两个java框架（时间紧测试思路还是有很多问题）国企的产品选型思路确实和互联网不太一样，其对于国产化或者信创产品的偏好dddd，选型产品时可以打电话咨询（白嫖）</p>
+</li>
+<li><p>其余国企都是大差不差的半结构化或者无领导讨论，没什么特别的</p>
+</li>
+</ul>
+<p>大国企的面试官一般都是架构师或者高级工程师之类的，他们比较关注简历中项目或者实习里有实际应用的部分。以我为例，我会在面试前大概关注一下公司用的数据库产品，然后在面试时引导面试官往数据库产品上聊，最后无非就是tidb gaussdb和tdsql三款国产数据库了，做点准备能聊一下架构和落地使用就基本没问题了</p>
+<p>秋招到后期我才逐渐感受到管培岗位的优势（算一下职业生涯总薪资的期望，再平衡一下工作强度），一开始希望在国企也能保持一点技术能力以应对市场变化，这导致求职意向主要是开发类。然而国企软开既是成本部门，又是偏向内包的存在，技术人员在国企的地位并不高。除此之外，普遍降薪的大趋势下国企的稳定性显得没什么意思（听说中行和邮储软开都降薪了，大厂一年薪资真够银行两三年的薪资），对比之下与其在国企熬工龄真不如去大厂搞业务（钱）或追求技术hh</p>
+<h3 id="RocksDB-LSM-Tree"><a href="#RocksDB-LSM-Tree" class="headerlink" title="RocksDB&#x2F;LSM-Tree"></a>RocksDB&#x2F;LSM-Tree</h3><ol>
+<li>说一下 Wisckey 中 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=GC&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">GC</a> 的方法，存在哪些问题</li>
+<li>RocksDB 有哪些组件</li>
+<li>如果要向 RocksDB 中写一亿条数据，怎么优化才能做到更快的写入？对于<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%8D%95%E6%9C%BA%E5%8D%95%E7%BA%BF%E7%A8%8B&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">单机单线程</a>、单机多线程、分布式场景下的写入又该怎么优化？如何对这一亿条数据做排序？</li>
+<li>说一下 RocksDB 中的 [block cache](<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=block">https://www.zhihu.com/search?q=block</a> cache&amp;search_source&#x3D;Entity&amp;hybrid_search_source&#x3D;Entity&amp;hybrid_search_extra&#x3D;{“sourceType”%3A”article”%2C”sourceId”%3A”659168257”}) 的大小，说一下 block 大小，为什么是这个大小？block 和 block cache 的大小会怎么影响 RocksDB 的读写性能？</li>
+<li>RocksDB 有哪些优化写的手段？</li>
+<li>为啥现在SSD的随机读写和顺序读写性能差别不怎么样了，还要用你这个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=lsm-tree&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">lsm-tree</a>？</li>
+<li>rocksdb 和 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=leveldb&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">leveldb</a> 有什么区别？</li>
+<li>说一下compaction吧，比如有哪些类型等等的？</li>
+<li>知道 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=OceanBase&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">OceanBase</a> 里怎么实现 LSM-Tree的吗？</li>
+</ol>
+<h3 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h3><ol>
+<li>说说多态？</li>
+<li>怎么在编译期实现判断类里是否有某个成员？</li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=stl&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">stl</a>相关，map插入十个数字，<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E7%BA%A2%E9%BB%91%E6%A0%91&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">红黑树</a>上数据怎么排布的？vector 怎么扩容的？stl里的map和<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=unordered_map&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">unordered_map</a>的区别？他们插入的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">时间复杂度</a>？</li>
+<li>C++编译流程？<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">静态链接</a>和动态链接什么区别？什么时候用动态链接，什么时候用静态链接？</li>
+<li>如何设计一个内存分配器，对于小的空间应该怎么去进行压缩回收？你知道<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=mutex&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">mutex</a>是怎么实现的吗？你知道编译的时候O1、O2、O3是干啥的吗？</li>
+</ol>
+<h3 id="场景设计题"><a href="#场景设计题" class="headerlink" title="场景设计题"></a>场景设计题</h3><ol>
+<li>假如有个程序中的某一部分占据了非常大的IO，应该怎么办？</li>
+<li>现在的场景是应用有好几个线程，过程中有大量IO，有多块磁盘，希望尽可能把磁盘用满，你应该设计怎样的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">线程模型</a>来做这件事情。</li>
+<li>让你设计一个面向对象存储的rocksdb系统应该怎么做？尽可能的降本增效</li>
+<li>假如说我现在有一个时序的场景，我需要大范围删除某个数据，应该怎么做？还是针对 RocksDB 的</li>
+<li>因为我们的业务其实也有用rocksdb，但是我们更多的可能是用rocksdb作为一个append only log，这种应该怎么做？</li>
+<li>怎样实现一个持久型<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=B+%E6%A0%91&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">B+树</a>？假如你要保证这个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">存储引擎</a>的故障恢复，只用[undo log](<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=undo">https://www.zhihu.com/search?q=undo</a> log&amp;search_source&#x3D;Entity&amp;hybrid_search_source&#x3D;Entity&amp;hybrid_search_extra&#x3D;{“sourceType”%3A”article”%2C”sourceId”%3A”659168257”})能做吗？</li>
+<li>你怎么设计一个支持高并发更新删除写入的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%86%85%E5%AD%98%E6%90%9C%E7%B4%A2%E6%A0%91&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">内存搜索树</a>的结构？</li>
+<li>你实现过支持高并发的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%93%88%E5%B8%8C%E6%A1%B6&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">哈希桶</a>吗？</li>
+</ol>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><ol>
+<li>Linux 下怎么执行一个可执行文件的？</li>
+<li>系统调用过程？</li>
+<li>用户态到<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%86%85%E6%A0%B8%E6%80%81&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">内核态</a>怎么转换的？</li>
+<li>说一下<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">虚拟内存</a>是干啥的？虚拟内存怎么转换的？假如我现在的这个地址没有在内存里会怎么样？</li>
+<li>文件系统怎么查找一个文件？</li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=shell&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">shell</a> 怎么执行某一条命令的？</li>
+<li>说一下中断的流程？</li>
+<li>进程、线程、<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%8D%8F%E7%A8%8B&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">协程</a>？</li>
+<li>fork 怎么实现的？</li>
+<li>yield 和 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=sleep&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">sleep</a> 的区别？</li>
+</ol>
+<h3 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h3><ol>
+<li>为什么 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=DRAM&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">DRAM</a> 的读比写快？</li>
+<li>知道读内存，正常指令执行的时间吗？</li>
+<li>说说 CPU 里面的相关和冲突？有什么解决冲突的办法？</li>
+<li>知道CPU cache吗？一般cache有几级？具体都是什么cache？为什么要设计成这样的cache，多几级不行吗？CPU怎么保持cache一致性的？知道哪些内存模型？知道简单的原子指令怎么实现吗？</li>
+<li>说一下你对<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E6%80%BB%E7%BA%BF&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">总线</a>的认识？</li>
+</ol>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a><strong>数据库</strong></h3><ol>
+<li>说一下 [B+ 树](<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=B+">https://www.zhihu.com/search?q=B%2B</a> 树&amp;search_source&#x3D;Entity&amp;hybrid_search_source&#x3D;Entity&amp;hybrid_search_extra&#x3D;{“sourceType”%3A”article”%2C”sourceId”%3A”659168257”})的特点。</li>
+</ol>
+<h3 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h3><ol>
+<li>说一下 Raft 中的 PreVote 优化是干啥的</li>
+<li>你这里的 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=multi-raft&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">multi-raft</a> 中每个节点数据怎么分配的？</li>
+<li>说说 raft 领导人选举的流程？</li>
+<li>假设三个节点，一个 leader 两个 follower，leader 被网络分区了，会发生什么？</li>
+<li>假设三个节点，一个 leader 两个 follower，其中一个 follower 和 leader 之间网络分区了，但是两个 follower 之间正常连接，会发生什么？</li>
+</ol>
+<h3 id="调试相关"><a href="#调试相关" class="headerlink" title="调试相关"></a>调试相关</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=gdb&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">gdb</a> 用过吗？程序 crash 掉如何排查？<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E6%95%B0%E6%8D%AE%E6%96%AD%E7%82%B9&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">数据断点</a>用过吗？如何排查不能稳定复现的 bug ？</li>
+<li>你都是怎么调试的？比如segment fault怎么调试？怎么打印堆栈？gdb怎么就能做到让某个程序说停就停说走就走呢？你怎么去实现gdb里面的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=backtrace&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">backtrace</a>？</li>
+<li>最难忘的调试经历？假如是有个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%A4%9A%E7%BA%BF%E7%A8%8B&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">多线程</a>的程序，怎么调试？</li>
+<li>对于一个O3优化，gdb调试的时候找不到<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E7%AC%A6%E5%8F%B7%E8%A1%A8&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">符号表</a>应该怎么做？</li>
+</ol>
+<h3 id="计网"><a href="#计网" class="headerlink" title="计网"></a>计网</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=socket&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">socket</a> 怎么分配的？</li>
+<li>TCP 和 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=UDP&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">UDP</a> 区别？一次发多少数据？TCP <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">拥塞控制</a>？TCP 粘包？</li>
+</ol>
+<h3 id="算法题"><a href="#算法题" class="headerlink" title="算法题"></a>算法题</h3><ol>
+<li>内存文件系统</li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E6%B3%A2%E6%B5%AA%E6%8E%92%E5%BA%8F&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">波浪排序</a></li>
+<li>近似有序数组的查找</li>
+<li>带<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=ttl&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">ttl</a>的cache</li>
+<li>二叉树的路经总和</li>
+<li>有序链表转二叉平衡搜索树</li>
+<li>二叉树非递归<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22article%22,%22sourceId%22:%22659168257%22%7D">后序遍历</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A7%8B%E6%8B%9B/" class="print-no-link">#秋招</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>job</div>
+      <div>http://example.com/2023/12/24/job/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 24, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/05/2024/" title="2024">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2024</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/11/Alpha/" title="Alpha">
+                        <span class="hidden-mobile">Alpha</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      <script src="//cdn.jsdelivr.net/npm/@waline/client"></script>
+
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"placeholder":null,"avatar":"retro","avatarCDN":"https://seccdn.libravatar.org/avatar/","avatarForce":false,"highlight":true},
+          {
+            el: '#waline',
+            path: window.location.pathname,
+            serverURL: 'https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app',
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

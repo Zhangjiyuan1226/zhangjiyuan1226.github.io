@@ -1,0 +1,1002 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="存储引擎Hash Table应用场景：  internal-meta data core data storage redis temporary data structures Table indexs  Design decisions  Data Organization Concurrency  hash function 开放地址  cuckoo hashing  robin hood">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CMU-15445">
+<meta property="og:url" content="http://example.com/2023/04/04/15445/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="存储引擎Hash Table应用场景：  internal-meta data core data storage redis temporary data structures Table indexs  Design decisions  Data Organization Concurrency  hash function 开放地址  cuckoo hashing  robin hood">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230318204918510.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230327182110475.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230327182221374.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230327183352927.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230327183529986.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230327183738335.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230327183801276.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230326103631213.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230326104455875.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230326105513361.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230326110539085.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230326112616444.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230326112856686.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230326113606448.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230403211905717.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230403212310101.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230403213848544.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230403214939513.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230403222103713.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230403222349585.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230403225052564.png">
+<meta property="og:image" content="http://example.com/2023/04/04/15445/image-20230615205243038.png">
+<meta property="article:published_time" content="2023-04-03T16:49:36.000Z">
+<meta property="article:modified_time" content="2024-10-27T13:10:08.050Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Database">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/04/15445/image-20230318204918510.png">
+  
+  
+  
+  <title>CMU-15445 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"JVRHRgZvLvYzeUvgsPXkiSBi-MdYXbMMI","app_key":"eIfDDpCEwOjlXZsTnPUW3j5E","server_url":null,"path":"window.location.pathname","ignore_local":false,"enable":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CMU-15445"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-04-04 00:49" pubdate>
+          April 4, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          6.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          53 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CMU-15445</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h1><h1 id="Hash-Table"><a href="#Hash-Table" class="headerlink" title="Hash Table"></a>Hash Table</h1><p>应用场景：</p>
+<ul>
+<li>internal-meta data</li>
+<li>core data storage redis</li>
+<li>temporary data structures</li>
+<li>Table indexs</li>
+</ul>
+<p>Design decisions</p>
+<ul>
+<li>Data Organization</li>
+<li>Concurrency</li>
+</ul>
+<h2 id="hash-function"><a href="#hash-function" class="headerlink" title="hash function"></a>hash function</h2><ul>
+<li><p>开放地址</p>
+</li>
+<li><p>cuckoo hashing</p>
+</li>
+<li><p>robin hood  hasing</p>
+</li>
+<li><p>chained hasing 拉链</p>
+</li>
+</ul>
+<img src="/2023/04/04/15445/image-20230318204918510.png" srcset="/img/loading.gif" lazyload alt="image-20230318204918510.png" style="zoom:35%;">
+
+<h1 id="B-树索引并发"><a href="#B-树索引并发" class="headerlink" title="B+树索引并发"></a>B+树索引并发</h1><p>本章重点介绍Latch而不是Lock</p>
+<h3 id="Latch的实现方法"><a href="#Latch的实现方法" class="headerlink" title="Latch的实现方法"></a>Latch的实现方法</h3><ul>
+<li>Blocking OS Mutex<br>翻译成中文就是，“阻塞式的操作系统互斥锁”，它比较容易使用，因为这是操作系统原生支持的，但不能应对大规模并发竞争的场面，比如说C++的<code>std::mutex</code>就属于这种锁，具体的实现原理和xv6的<code>sleeplock</code>差不多：用最基本的自旋锁保护一个条件变量，获取该锁时检查这个条件变量，如果满足条件则修改条件变量从而获得该互斥锁，否则进入睡眠状态，直到该互斥锁被释放时条件变量被修改回来，释放互斥锁的线程唤醒已经睡眠的线程（详情参考xv6源码）</li>
+</ul>
+<p>互斥锁和自旋锁相比，争用锁的时候，得不到锁的线程不会一直自旋，浪费CPU资源，而是会进入睡眠，但是相应的睡眠与后续的唤醒操作由于会修改线程的状态，因此也有一定的开销</p>
+<ul>
+<li>Test-and-Set Spin Latch<br>这个简单来说，就是自旋锁，好处是可以通过一个指令就能获取&#x2F;释放锁，实现简单，但也不能应对大规模的并发竞争，而且对缓存和操作系统不友好;  实现方式和xv6的<code>spinlock</code>差不多</li>
+<li>Reader-Writer Latches<br>其实就是前面一开始提到的读写锁，读写锁底层是基于自旋锁来实现的，并且设有等待队列，为了避免想要获取写锁的线程等待太久（即避免starvation），会限制在同一时刻能够获取写锁的线程的数量：自从有线程开始排队等待获取写锁之后，后面想要获取读锁的线程都要开始等待，直到想获取写锁的线程成功获取写锁并完成相关操作，释放写锁为止。</li>
+</ul>
+<h1 id="排序和聚集"><a href="#排序和聚集" class="headerlink" title="排序和聚集"></a>排序和聚集</h1><ol>
+<li>排序方法：外部归并排序</li>
+<li>聚集：外部哈希聚集（也可以用排序）</li>
+</ol>
+<h2 id="TopK-Sort"><a href="#TopK-Sort" class="headerlink" title="TopK Sort"></a>TopK Sort</h2><p>查询数据表中最大的k个值时，我们通过维持一个大小为k的小根堆？</p>
+<img src="/2023/04/04/15445/image-20230327182110475.png" srcset="/img/loading.gif" lazyload alt="image-20230327182110475" style="zoom:50%;">
+
+<h2 id="External-Merge-Sort"><a href="#External-Merge-Sort" class="headerlink" title="External Merge Sort"></a>External Merge Sort</h2><p>时间复杂度：logN</p>
+<p>外部排序的流程：</p>
+<ol>
+<li>先将数据表切分为N个page，并将每一个page内部排好顺序</li>
+<li>在缓冲区开辟至少三个page的空间（两个加载未排序的page，一个用来存储中间结果，中间结果写满后落盘）</li>
+<li>重复第二步</li>
+</ol>
+<img src="/2023/04/04/15445/image-20230327182221374.png" srcset="/img/loading.gif" lazyload alt="image-20230327182221374" style="zoom:50%;">
+
+<h2 id="聚集"><a href="#聚集" class="headerlink" title="聚集"></a>聚集</h2><ul>
+<li>排序聚集（order by）</li>
+<li>哈希聚集（不需要对数据进行排序时， GROUPE BY， distinct）</li>
+</ul>
+<h3 id="外部哈希聚集"><a href="#外部哈希聚集" class="headerlink" title="外部哈希聚集"></a>外部哈希聚集</h3><p>当数据过大无法一次加载进内存时，我们通常采用外部哈希的方法对数据进行聚集。</p>
+<img src="/2023/04/04/15445/image-20230327183352927.png" srcset="/img/loading.gif" lazyload alt="image-20230327183352927" style="zoom:50%;">
+
+<img src="/2023/04/04/15445/image-20230327183529986.png" srcset="/img/loading.gif" lazyload alt="image-20230327183529986" style="zoom:40%;">
+
+<img src="/2023/04/04/15445/image-20230327183738335.png" srcset="/img/loading.gif" lazyload alt="image-20230327183738335" style="zoom:55%;">
+
+<img src="/2023/04/04/15445/image-20230327183801276.png" srcset="/img/loading.gif" lazyload alt="image-20230327183801276" style="zoom:40%;">
+
+<h3 id="连表操作"><a href="#连表操作" class="headerlink" title="连表操作"></a>连表操作</h3><img src="/2023/04/04/15445/image-20230326103631213.png" srcset="/img/loading.gif" lazyload alt="image-20230326103631213" style="zoom:50%;">
+
+<p>我个人以为的执行流程：</p>
+<ol>
+<li>两数据表做笛卡尔积，生成中间表</li>
+<li>执行on，删除不符合条件的结果</li>
+<li>添加外部行，left join或者right join</li>
+<li>执行where进行进行筛选</li>
+<li>select出相应的结果</li>
+</ol>
+<ul>
+<li><p>join的方法：hash join、radix join</p>
+</li>
+<li><p>hash join</p>
+<ul>
+<li>不分区的hash，首先对小表遍历，并对每一个key进行hash计算，将结果存入hash表中。随后在对大表进行遍历，对每一个值进行计算并和hash表中的结果进行匹配</li>
+<li>分区hash 先将大表拆分成多个小表，每个表进行hash计算，将结果写入一个hash的bucket中，写入时要加锁。最后用大表中并行计算其中元素的hash，去bucket中匹配</li>
+</ul>
+</li>
+</ul>
+<h3 id="连表操作-1"><a href="#连表操作-1" class="headerlink" title="连表操作"></a>连表操作</h3><h4 id="1-stupid"><a href="#1-stupid" class="headerlink" title="1. stupid"></a>1. stupid</h4><img src="/2023/04/04/15445/image-20230326104455875.png" srcset="/img/loading.gif" lazyload alt="image-20230326104455875" style="zoom:50%;">
+
+<p>缓存有可能失效，不断的替换缓存</p>
+<h5 id="优化策略："><a href="#优化策略：" class="headerlink" title="优化策略："></a>优化策略：</h5><ol>
+<li>固定驱动表，不断io inner table</li>
+</ol>
+<p>留一个page做output，一个给inner table，B-2给outer table</p>
+<p>尽量缓存外表，内表什么情况都要面临缓存重刷的问题</p>
+<img src="/2023/04/04/15445/image-20230326105513361.png" srcset="/img/loading.gif" lazyload alt="image-20230326105513361" style="zoom:50%;">
+
+<ol start="2">
+<li>内表设置索引</li>
+</ol>
+<h4 id="2-merge-join"><a href="#2-merge-join" class="headerlink" title="2. merge join"></a>2. merge join</h4><p>什么时候最差？比较的都一样，都为100，可能回退</p>
+<p>最好是两表已经排好序</p>
+<p><img src="/2023/04/04/15445/image-20230326110539085.png" srcset="/img/loading.gif" lazyload alt="image-20230326110539085"></p>
+<h4 id="3-hash-join"><a href="#3-hash-join" class="headerlink" title="3. hash join"></a>3. hash join</h4><ul>
+<li><p>build hash table</p>
+</li>
+<li><p>probe</p>
+</li>
+</ul>
+<p><strong>布隆过滤器</strong></p>
+<p>grace hash join</p>
+<img src="/2023/04/04/15445/image-20230326112616444.png" srcset="/img/loading.gif" lazyload alt="image-20230326112616444" style="zoom:45%;">
+
+<p><strong>大表怎么做join？</strong></p>
+<p>对数据进行分区；对全局的hash table做分区；</p>
+<img src="/2023/04/04/15445/image-20230326112856686.png" srcset="/img/loading.gif" lazyload alt="image-20230326112856686" style="zoom:40%;">
+
+
+
+
+
+<img src="/2023/04/04/15445/image-20230326113606448.png" srcset="/img/loading.gif" lazyload alt="image-20230326113606448" style="zoom:50%;">
+
+
+
+<p>并发算子的实现有两大思路：第一个思路是多个线程去操纵集中的全部数据（比如说多个线程同时读一个表），第二个思路是把集中的数据切开，把每部分分给相应的线程，使得线程可以在本地处理</p>
+<blockquote>
+<p>Main-Memory Hash Joins on Multi-Core CPUs&#x2F; Tuning to the Underlying Hardware 论文解读<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/616540684">https://zhuanlan.zhihu.com/p/616540684</a></p>
+</blockquote>
+<h1 id="并发控制理论"><a href="#并发控制理论" class="headerlink" title="并发控制理论"></a>并发控制理论</h1><ul>
+<li>motivation</li>
+</ul>
+<p>how to avoid race condition? ( change the same record in a table at the same time ) <strong>lost update</strong></p>
+<p>what is the correct database state? <strong>concurrency control and recovery</strong></p>
+<ul>
+<li>transcation</li>
+</ul>
+<p>is the exection of a swquence of one or more operations on adatabse to perform some higher-level function</p>
+<p>basic unit of data base</p>
+<h3 id="数据库中存在的四种问题"><a href="#数据库中存在的四种问题" class="headerlink" title="数据库中存在的四种问题"></a>数据库中存在的四种问题</h3><ol>
+<li><p>脏读：读到了其他事务未commit的数据	（写后读）</p>
+</li>
+<li><p>不可重复读：同一个事务中，两次读出的数据不一致	（读后写）</p>
+</li>
+<li><p>幻读：同一个事务中，第二次读出的数据量和第一次的不一致	（读后写）</p>
+</li>
+<li><p>更新丢失：insert or update lost</p>
+</li>
+</ol>
+<h3 id="数据的四种隔离状态"><a href="#数据的四种隔离状态" class="headerlink" title="数据的四种隔离状态"></a>数据的四种隔离状态</h3><ol>
+<li>Read Uncommitted:	</li>
+<li>Read Commited:</li>
+<li>Read Repeatale:</li>
+<li>Serialize :</li>
+</ol>
+<h3 id="锁的种类"><a href="#锁的种类" class="headerlink" title="锁的种类"></a>锁的种类</h3><p>本章节着重讨论lock</p>
+<img src="/2023/04/04/15445/image-20230403211905717.png" srcset="/img/loading.gif" lazyload alt="image-20230403211905717" style="zoom:50%;">
+
+
+
+
+
+<h2 id="2Phase-Locking"><a href="#2Phase-Locking" class="headerlink" title="2Phase Locking"></a>2Phase Locking</h2><p>Two-phase locking (2PL) is a concurrency control protocol that determines whether a txn can access an object in the database at runtime.</p>
+<p> The protocol does not need to know all the queries that a txn will execute ahead of time.</p>
+<ul>
+<li>二阶段锁：数据库的事务分为两个阶段，第一个阶段是growing获取锁的阶段，只有当获取到本次事务所需要的全部锁资源时才会结束该阶段。第二个阶段是shrinking阶段，即释放锁资源的阶段，这个阶段只允许释放锁资源</li>
+</ul>
+<ol>
+<li>普通的2PL会在对修改数据时加X锁并在事务结束时释放；在读取数据时加S锁，并在读取结束后释放</li>
+<li>stronger strict 2PL会在事务结束时释放所有锁资源</li>
+</ol>
+<h3 id="2PL"><a href="#2PL" class="headerlink" title="2PL"></a>2PL</h3><p>2PL on its own is sufficient to guarantee conflict serializability because it generates schedules whose precedence graph is acyclic. </p>
+<p>2PL本身就足以保证冲突的可序列化，因为它产生的时间表的优先级图是无环的。</p>
+<img src="/2023/04/04/15445/image-20230403212310101.png" srcset="/img/loading.gif" lazyload alt="image-20230403212310101" style="zoom:50%;">
+
+<h4 id="Dirty-read"><a href="#Dirty-read" class="headerlink" title="Dirty read"></a>Dirty read</h4><p>But it is subject to cascading aborts.</p>
+<p>然而二阶段锁受限于集联回滚（dirty read）</p>
+<img src="/2023/04/04/15445/image-20230403213848544.png" srcset="/img/loading.gif" lazyload alt="image-20230403213848544" style="zoom:50%;">
+
+<p>脏读的问题本质上因为T2这个事务在T1事务没有提交前就获得了读写权限，进而在未提交的临时版本上做了操作。</p>
+<p>Solution 采取strong strict 2PL</p>
+<p>严格二阶段锁协议的特点是事务所修改的数据在事务结束之前，其他事务都不能读写，这个协议的好处就是不会产生级联回滚。而且事务可能对数据进行了很多次更新，但在严格二阶段锁协议下，需要回滚时，直接回滚到事务开始时即可，不用管它进行过多少次更新，因为这个事务在进行数据更新时，绝对不会有其他的事务也在更新共享的数据</p>
+<h4 id="Deadlock"><a href="#Deadlock" class="headerlink" title="Deadlock"></a>Deadlock</h4><p>下图为导致死锁发生的情况，T1和T2互相占用相互需要的资源且不会释放</p>
+<img src="/2023/04/04/15445/image-20230403214939513.png" srcset="/img/loading.gif" lazyload alt="image-20230403214939513" style="zoom:50%;">
+
+<p>本质：相互等待</p>
+<p>Solution</p>
+<ol>
+<li>死锁检测：</li>
+</ol>
+<p>DMBS去维护一个锁等待图，只要确保图中不出现环，则安全（周期性检查，有环就想办法解开）</p>
+<p>选择一个victim事务，让其回滚（选择影响小的事务回滚）</p>
+<ol start="2">
+<li>死锁避免：</li>
+</ol>
+<p>给予事务优先级，高优先级的事务拥有锁资源时低优先级的锁无法获取该锁，只能等待</p>
+<p>优先级可能导致饥饿现象</p>
+<h2 id="Hierarchical-Locking"><a href="#Hierarchical-Locking" class="headerlink" title="Hierarchical Locking"></a>Hierarchical Locking</h2><h2 id="TimeStamp-Ordering"><a href="#TimeStamp-Ordering" class="headerlink" title="TimeStamp Ordering"></a>TimeStamp Ordering</h2><p>时间戳顺序并发控制</p>
+<p>锁是一种悲观的并发控制手段，对数据加锁总是建立在未来有可能对数据进行操作的基础上，这会带来系统效率的下降。因此我们希望能利用一些乐观锁的方式来提高系统的性能。</p>
+<p>如果事务Ti的时间戳在Tj之前，那么DBMS要保证这两个事务都被提交之后的效果相当于Ti先执行，Ti执行完了之后Tj再执行</p>
+<h3 id="Basic-Timestamp-Ordering"><a href="#Basic-Timestamp-Ordering" class="headerlink" title="Basic Timestamp Ordering"></a>Basic Timestamp Ordering</h3><p>每一行数据都要有两个时间戳，一个是read timestamp另一个是read timestamp</p>
+<p>check timestamp for every op： if txn tries to access an obj written a higher timestamp, it aborts and restarts</p>
+<p><strong>本质上就是不能对还未到达的数据进行修改，即不能对未来的数据做操作</strong></p>
+<p>如果发现当前事务的时间戳比要读的对象的写时间戳（上次修改它的事务的时间戳）早，这就属于“操作来自未来的数据”了，无法满足“执行调度的结果等效于先到达的事务完整地在后到达的事务之前发生”，那么当前的Ti事务就不能再操作这个共享的对象，于是abort，之后系统给这个abort的事务一个新的时间戳，事务重启。</p>
+<p>否则就是合法的，当前事务可以读共享的对象，读完了之后更新这个对象的读时间戳（如果这个对象的读时间戳比当前事务的时间戳早，那就把读时间戳修改成当前事务的时间戳），然后把对象从数据库拷贝一份到事务本地（因为对象可能会在接下来被其他事务修改）</p>
+<img src="/2023/04/04/15445/image-20230403222103713.png" srcset="/img/loading.gif" lazyload alt="image-20230403222103713" style="zoom:50%;">
+
+<p>如何优化以上这种情况呢？W(A)操作只需要写入本地事务即可，随后R(A)操作也只需要读本地的事务，且执行结果和串形结果一致</p>
+<h4 id="Tomas-rule"><a href="#Tomas-rule" class="headerlink" title="Tomas rule"></a>Tomas rule</h4><p>当前事务写一个对象时，如果当前事务的时间戳早于对象的读时间戳，表示未来存在一个读取该对象的事务，因此我们必须要abort当前事务。如果当前事务的时间戳早于对象的写时间戳，代表未来还会有一个事务来改变这个对象，因此我们可以正常执行无需abort</p>
+<img src="/2023/04/04/15445/image-20230403222349585.png" srcset="/img/loading.gif" lazyload alt="image-20230403222349585" style="zoom:50%;">
+
+<p><u>基础的T&#x2F;O协议还有一些性能问题，事务在读任何数据的时候都要往本地拷贝一份，这会带来不小的开销（比如说全表扫描的时候就要把整个表复制一份）；</u></p>
+<p><u>以及还有长事务容易饥饿的问题</u></p>
+<h3 id="Optimistic-Concurrency-Control"><a href="#Optimistic-Concurrency-Control" class="headerlink" title="Optimistic Concurrency Control"></a>Optimistic Concurrency Control</h3><h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>以上三种方式都难以解决幻读的问题，因此幻读是指第二次读出第一次未读出的数据。是insert并发的问题。而且以上三种并发控制都是对已有数据进行限制，所以很难解决幻读的问题。（MVCC也不能解决幻读）</p>
+<h2 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h2><p>Muti Version Concurrency Control</p>
+<p>2PL或者TO等并发控制协议都存在一些问题，即无法对历史的数据进行操作。MVCC则是通过某些设计留下过去的数据版本，根据事务的序号决定读取的版本。并且2PL仍然存在读写冲突，MVCC能够允许数据事务同时对对象进行读写操作。</p>
+<h4 id="Undo-log"><a href="#Undo-log" class="headerlink" title="Undo log"></a>Undo log</h4><p>MVCC 的目的就是多版本并发控制，在数据库中的实现，就是为了解决<code>读写冲突</code>，它的实现原理主要是依赖记录中的 <strong><code>3个隐式字段</code><strong>，</strong><code>undo日志</code></strong> ，**<code> Read View</code>** 来实现的。所以我们先来看看这个三个 point 的概念</p>
+<ul>
+<li>DB_TRX_ID<br>6 byte，最近修改(修改&#x2F;插入)事务 ID：记录创建这条记录&#x2F;最后一次修改该记录的事务 ID</li>
+<li>DB_ROLL_PTR<br>7 byte，回滚指针，指向这条记录的上一个版本（存储于 rollback segment 里）</li>
+<li>DB_ROW_ID<br>6 byte，隐含的自增 ID（隐藏主键），如果数据表没有主键，InnoDB 会自动以DB_ROW_ID产生一个聚簇索引</li>
+</ul>
+<p>undo log 主要分为两种：</p>
+<ul>
+<li>insert undo log<br>代表事务在 insert 新记录时产生的 undo log, 只在事务回滚时需要，并且在事务提交后可以被立即丢弃</li>
+<li>update undo log<br>事务在进行 update 或 delete 时产生的 undo log ; 不仅在事务回滚时需要，在快照读时也需要；所以不能随便删除，只有在快速读或事务回滚不涉及该日志时，对应的日志才会被 purge 线程统一清除</li>
+</ul>
+<h4 id="Read-View"><a href="#Read-View" class="headerlink" title="Read View"></a>Read View</h4><p>利用readview做可见性判断</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">readview</span>&#123;</span><br>  <span class="hljs-type">int</span> 	row_trx_id;<br>  <span class="hljs-type">int</span>* 	trx_ids;<br>  <span class="hljs-type">int</span> 	min_trx_id;<br>  <span class="hljs-type">int</span> 	max_trx_id;<br>&#125;readview;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>Row_trx_id : 上一次对对象操作的id</li>
+<li>trx_ids : readview创建时活动的事务id集合</li>
+<li>min&#x2F;max：ids中最小或者最大的事务id</li>
+</ul>
+<p><em><strong>RC隔离条件下，要求在每次select时对事务创建一个readview；RR条件下，每次事务begin时创建一个readview</strong></em></p>
+<h4 id="可见性算法"><a href="#可见性算法" class="headerlink" title="可见性算法"></a>可见性算法</h4><p>Read View遵循一个可见性算法，主要是将要被修改的数据的最新记录中的 DB_TRX_ID（即当前事务 ID ）取出来，与系统当前其他活跃事务的 ID 去对比（由 Read View 维护），如果 DB_TRX_ID 跟 Read View 的属性做了某些比较，不符合可见性，那就通过 DB_ROLL_PTR 回滚指针去取出 Undo Log 中的 DB_TRX_ID 再比较，即遍历链表的 DB_TRX_ID（从链首到链尾，即从最近的一次修改查起），直到找到满足特定条件的 DB_TRX_ID , 那么这个 DB_TRX_ID 所在的旧记录就是当前事务能看见的最新老版</p>
+<ol>
+<li>首先比较 DB_TRX_ID &lt; up_limit_id , 如果小于，则当前事务能看到 DB_TRX_ID 所在的记录，如果大于等于进入下一个判断</li>
+<li>接下来判断 DB_TRX_ID &gt;&#x3D; low_limit_id , 如果大于等于则代表 DB_TRX_ID 所在的记录在 Read View 生成后才出现的，那对当前事务肯定不可见，如果小于则进入下一个判断</li>
+<li>判断 DB_TRX_ID 是否在活跃事务之中，trx_list.contains (DB_TRX_ID)，如果在，则代表我 Read View 生成时刻，你这个事务还在活跃，还没有 Commit，你修改的数据，我当前事务也是看不见的；如果不在，则说明，你这个事务在 Read View 生成之前就已经 Commit 了，你修改的结果，我当前事务是能看见的</li>
+</ol>
+<img src="/2023/04/04/15445/image-20230403225052564.png" srcset="/img/loading.gif" lazyload alt="image-20230403225052564" style="zoom:50%;">
+
+<blockquote>
+<p>【MySQL笔记】正确的理解MySQL的MVCC及实现原理<a target="_blank" rel="noopener" href="https://blog.csdn.net/SnailMann/article/details/94724197">https://blog.csdn.net/SnailMann/article/details/94724197</a></p>
+</blockquote>
+<h1 id="Buffer-Pool-Manager"><a href="#Buffer-Pool-Manager" class="headerlink" title="Buffer Pool Manager"></a>Buffer Pool Manager</h1><h1 id="Lock-Manager"><a href="#Lock-Manager" class="headerlink" title="Lock Manager"></a>Lock Manager</h1><h2 id="Task-1"><a href="#Task-1" class="headerlink" title="Task 1"></a>Task 1</h2><ul>
+<li>使用二阶段锁机制，实现<strong>READ_UNCOMMITED, READ_COMMITTED, and REPEATABLE_READ</strong>三个事务隔离级别，确保LM能够正确的grant lock or release lock</li>
+</ul>
+<ol>
+<li><p>事务开始时进入growing，当事务要访问数据时，首先向LM申请对应数据的锁</p>
+<p>LM中的操作：</p>
+<ol>
+<li>会检查该数据是否有被锁住，若没有被锁住，则直接grant lock；若锁住，则判断申请锁与当前锁是否兼容，不兼容 throw exception</li>
+<li>若是同一个等级的锁，则无需操作；若是可以升级的锁，则升级后重新加入等待队列</li>
+</ol>
+</li>
+</ol>
+<p><img src="/2023/04/04/15445/image-20230615205243038.png" srcset="/img/loading.gif" lazyload alt="image-20230615205243038"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Database/" class="print-no-link">#Database</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CMU-15445</div>
+      <div>http://example.com/2023/04/04/15445/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 4, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/07/TVM/" title="TVM">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TVM</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/14/TCP-IP/" title="TCP/IP">
+                        <span class="hidden-mobile">TCP/IP</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      <script src="//cdn.jsdelivr.net/npm/@waline/client"></script>
+
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"placeholder":null,"avatar":"retro","avatarCDN":"https://seccdn.libravatar.org/avatar/","avatarForce":false,"highlight":true},
+          {
+            el: '#waline',
+            path: window.location.pathname,
+            serverURL: 'https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app',
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

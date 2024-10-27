@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="15445B+树 B+树和B树的区别   B树的节点(根节点&#x2F;父节点&#x2F;中间节点&#x2F;叶子节点)中没有重复元素，B+树有。 B树的中间节点会存储数据指针信息，而B+树只有叶子节点才存储。 B+树的每个叶子节点有一个指针指向下一个节点，把所有的叶子节点串在了一起。   B+树的插入？   找到合适的LeafPage，插入 如何找到合适的leafPage：在internal p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="八股文">
+<meta property="og:url" content="http://example.com/2023/06/15/%E5%85%AB%E8%82%A1%E6%96%87/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="15445B+树 B+树和B树的区别   B树的节点(根节点&#x2F;父节点&#x2F;中间节点&#x2F;叶子节点)中没有重复元素，B+树有。 B树的中间节点会存储数据指针信息，而B+树只有叶子节点才存储。 B+树的每个叶子节点有一个指针指向下一个节点，把所有的叶子节点串在了一起。   B+树的插入？   找到合适的LeafPage，插入 如何找到合适的leafPage：在internal p">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-06-14T17:14:18.000Z">
+<meta property="article:modified_time" content="2024-10-27T13:10:08.226Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="八股文">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>八股文 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"JVRHRgZvLvYzeUvgsPXkiSBi-MdYXbMMI","app_key":"eIfDDpCEwOjlXZsTnPUW3j5E","server_url":null,"path":"window.location.pathname","ignore_local":false,"enable":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="八股文"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-15 01:14" pubdate>
+          June 15, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">八股文</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="15445"><a href="#15445" class="headerlink" title="15445"></a>15445</h1><h2 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h2><ul>
+<li>B+树和B树的区别</li>
+</ul>
+<ol>
+<li>B树的节点(根节点&#x2F;父节点&#x2F;中间节点&#x2F;叶子节点)中没有重复元素，B+树有。</li>
+<li>B树的中间节点会存储数据指针信息，而B+树只有叶子节点才存储。</li>
+<li>B+树的每个叶子节点有一个指针指向下一个节点，把所有的叶子节点串在了一起。</li>
+</ol>
+<ul>
+<li>B+树的插入？</li>
+</ul>
+<ol>
+<li><p>找到合适的LeafPage，插入</p>
+<p>如何找到合适的leafPage：在internal page中找到第一个大于key的index所对应的value，并进入其所在的page，如此循环直到leaf</p>
+</li>
+<li><p>LeafPage插入后如果size &lt; maxSize，则结束进程</p>
+</li>
+<li><p>插入后若size &#x3D;&#x3D; maxSize，则分裂，将中间值插入父节点，插入前若internal size &#x3D;&#x3D; maxSize，怎继续分裂并把中间值向上插入（有可能分裂到根，插入有可能引发树高+1）</p>
+<p>怎样分裂：先开辟一片可以存放leaf maxSize + 1个kv的内存空间，并将要插入的kv对以及leaf中所有kv对插入进这片空间，随后将前minSize个转移到原有leaf中，将后面maxSize - minSize个转移到一个新创建的page中，并选新创建的page中的第一个key向父节点插入，以此循环，有可能插入到根</p>
+</li>
+</ol>
+<ul>
+<li>B+树的删除？</li>
+</ul>
+<ol>
+<li><p>找到合适的LeafPage，删除</p>
+<p>如何找到合适的leafPage：在internal page中找到第一个大于key的index所对应的value，并进入其所在的page，如此循环直到leaf</p>
+</li>
+<li><p>LeafPage中包含对应key的value，且删除后size &gt; minSize ，则结束</p>
+</li>
+<li><p>删除后若size &lt; minSize，首先看左右两个兄弟节点是否有富裕的kv（富裕代表size &gt; minSize ），则借一个kv即可</p>
+</li>
+<li><p>若左右兄弟不富裕，那么要进行合并操作，两节点合并后，删除父节点对应的指针，若父节点也不富裕了，则向上合并直到跟节点</p>
+</li>
+</ol>
+<ul>
+<li>B+树索引如何实现并发？</li>
+</ul>
+<p>悲观：</p>
+<ul>
+<li><p>B+树处理并发的思路，如何优化？</p>
+</li>
+<li><p>为什么MySQL使用B+树而不是用B树？</p>
+</li>
+<li><p>B树的应用场景</p>
+</li>
+<li><p>B+树和LSM的应用场景？LSM存在哪些问题，若何解决？</p>
+</li>
+</ul>
+<h2 id="查询执行"><a href="#查询执行" class="headerlink" title="查询执行"></a>查询执行</h2><ul>
+<li>什么是火山模型</li>
+</ul>
+<p>流式迭代模型</p>
+<p>所有的代数运算符(operator)都被看成是一个迭代器，它们都提供一组简单的接口：open()—next()—close()，查询计划树由一个个这样的关系运算符组成，每一次的next()调用，运算符就返回一行(Row)，每一个运算符的next()都有自己的流控逻辑，数据通过运算符自上而下的next()嵌套调用而被动的进行拉取。</p>
+<ul>
+<li>为什么要用火山模型？有什么优点？有什么缺点？缺点怎么改进？</li>
+</ul>
+<p>火山模型中每一个运算符都将下层的输入看成是一张表，next()接口的一次调用就获取表中的一行数据，这样设计的优点是：</p>
+<ol>
+<li><strong>每个运算符之间的代数计算是相互独立的</strong>，并且运算符可以伴随查询关系的变化出现在查询计划树的任意位置，这使得运算符的算法实现变得简单并且富有拓展性。<strong>（抽象程度高，实现简单）</strong></li>
+<li>数据以row的形式在运算符之间流动，只要没有sort之类破坏流水性的运算出现，每个运算符仅需要很少的buffer资源就可以很好的运行起来，非常的节省内存资源。</li>
+</ol>
+<p>但是这种运算符的嵌套模型也有它的缺点：</p>
+<ol>
+<li>火山模型的流控是一种被动拉取数据的过程，每行数据流向每一个运算符都需要额外的流控操作，所以数据在操作符之间的流动带来了很多冗余的流控指令。</li>
+<li>运算符之间的next()调用带来了<strong>很深的虚函数嵌套</strong>，编译器无法对虚函数进行inline优化，每一次<strong>虚函数的调用都需要查找虚函数表</strong>，同时也带来了更多的分支指令，<strong>复杂的虚函数嵌套对CPU的分支预测非常不友好</strong>，很容易因为预测失败而导致CPU流水线变得混乱。这些因素都会导致CPU执行效率低下。</li>
+</ol>
+<ul>
+<li><p>解释一下左连接和内连接</p>
+</li>
+<li><p>怎么理解数据库回表</p>
+</li>
+</ul>
+<p>早物化，无需回表；晚物化，最后返回结果时还需要回表</p>
+<ul>
+<li>两个大表怎么进行join？大表指的是内存装不下的表</li>
+</ul>
+<p>连表时，有个原则，要尽量把小表（所占页数较少的表）放在左侧（此时这个小表也叫驱动表），后面会讲到，这会减少硬盘IO次数</p>
+<ol>
+<li>hash join：（join时那个表放进内存，那个表在disk？）</li>
+</ol>
+<ul>
+<li>还有什么查询优化的方式？（逻辑优化）</li>
+</ul>
+<p>谓词划分、谓词下推、嵌套子循环转换为join、解耦子查询和父查询（难以重写为join的情况下）、join order顺序调整、</p>
+<h2 id="事务管理"><a href="#事务管理" class="headerlink" title="事务管理"></a>事务管理</h2><ul>
+<li><p>MVCC有什么作用？怎么实现的？</p>
+</li>
+<li><p>2PL和MVVC的效率对比？</p>
+</li>
+</ul>
+<p>二阶段锁会在事务对对象更新的时候加锁，其余事务无法对对象进行读取，直到事务提交；</p>
+<p>MVCC没有利用锁机制实现版本并发控制，而是通过版本号将不同版本的数据分割开，只读事务可以在无锁的情况下读取需要的一致性快照，以解决读写冲突；</p>
+<p>在效率上相对2PL会更高一点，因为没有锁申请和锁释放，包括也没有锁等待或者死锁的情况出现。</p>
+<ul>
+<li>2PL的原理，它存在什么问题？如何解决这些问题？</li>
+<li>如何基于2PL实现事务的隔离级别？</li>
+<li>什么是严格两阶段锁？strict-2PL</li>
+<li>什么是强两阶段锁？strong-2PL</li>
+<li>隔离级别是什么？</li>
+<li>什么情况下会存在幻读？</li>
+<li>快照隔离存在什么问题？什么是写偏序？</li>
+<li>项目中所设计的几种锁介绍一下？怎么理解隔离级别和锁的关系？</li>
+<li>怎么解决死锁？</li>
+<li>MySQL怎么保证原子性？</li>
+<li>MySQL默认的隔离级别是什么？可重复读会有什么问题？既然可重复读有幻读的问题那MySQL满足了隔离性吗？如果满足了幻读问题如何解决？如果没满足如何保证的数据一致性？</li>
+<li>为什么要设计成非聚簇索引形式？</li>
+<li>非聚簇索引和聚簇索引在效率上区别？</li>
+</ul>
+<h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><h2 id="缓冲池"><a href="#缓冲池" class="headerlink" title="缓冲池"></a>缓冲池</h2><ul>
+<li>可扩展哈希如何扩容？如何缩容？</li>
+<li>LRU-K算法的应用场景</li>
+<li>LRU-K对比LRU的优势在哪里？</li>
+<li>缓冲池的执行流程？</li>
+<li>Page cache的执行流程</li>
+<li>什么情况下可以用O_Direct？</li>
+<li>如果页的大小为16kb，而磁盘只保证4kb的读写是原子的，刷脏页的时候只刷了部分页进程就崩溃了，怎么处理？</li>
+</ul>
+<h2 id="总体"><a href="#总体" class="headerlink" title="总体"></a>总体</h2><ul>
+<li>sql语句的执行流程？</li>
+<li>最左匹配原则？为什么？</li>
+<li>什么情况下使用索引速度反而慢？</li>
+<li>回表是什么？怎么避免？</li>
+<li>慢查询怎么排查？如何优化？</li>
+<li>如何提高插入大量数据的速度？</li>
+<li>为什么要做分库分表？</li>
+</ul>
+<h1 id="6-824"><a href="#6-824" class="headerlink" title="6.824"></a>6.824</h1><ol>
+<li>Raft是什么？为什么不写Paxos？</li>
+<li>Raft选举讲一下</li>
+<li>Raft逻辑时钟会不会倒退</li>
+<li>Raft日志同步</li>
+<li>Raft脑裂</li>
+</ol>
+<p>445一般问一问隔离级别，b+树锁</p>
+<p>824问cap和脑裂</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" class="print-no-link">#八股文</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>八股文</div>
+      <div>http://example.com/2023/06/15/八股文/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/26/Detecting-bugs-of-join/" title="Detecting bugs of join">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Detecting bugs of join</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/13/6-13/" title="6.13">
+                        <span class="hidden-mobile">6.13</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      <script src="//cdn.jsdelivr.net/npm/@waline/client"></script>
+
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"placeholder":null,"avatar":"retro","avatarCDN":"https://seccdn.libravatar.org/avatar/","avatarForce":false,"highlight":true},
+          {
+            el: '#waline',
+            path: window.location.pathname,
+            serverURL: 'https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app',
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

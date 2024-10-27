@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="util in xv61.用户态调用 在用户空间，所有system call的函数声明写在user.h中，调用后会进入usys.S执行汇编指令：将对应的系统调用号（system call number）置于寄存器a7中，并执行ecall指令进行系统调用，其中函数参数存在a0~a5这6个寄存器中。ecall指令将触发软中断，cpu会暂停对用户程序的执行，转而执行内核的中断处理逻辑，陷入（trap）内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lab1-util">
+<meta property="og:url" content="http://example.com/2022/02/20/Lab1-util/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="util in xv61.用户态调用 在用户空间，所有system call的函数声明写在user.h中，调用后会进入usys.S执行汇编指令：将对应的系统调用号（system call number）置于寄存器a7中，并执行ecall指令进行系统调用，其中函数参数存在a0~a5这6个寄存器中。ecall指令将触发软中断，cpu会暂停对用户程序的执行，转而执行内核的中断处理逻辑，陷入（trap）内">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-20T15:05:18.000Z">
+<meta property="article:modified_time" content="2024-10-27T13:10:08.170Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="xv6_riscv Lab">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Lab1-util - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"JVRHRgZvLvYzeUvgsPXkiSBi-MdYXbMMI","app_key":"eIfDDpCEwOjlXZsTnPUW3j5E","server_url":null,"path":"window.location.pathname","ignore_local":false,"enable":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Lab1-util"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-20 23:05" pubdate>
+          February 20, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Lab1-util</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="util-in-xv6"><a href="#util-in-xv6" class="headerlink" title="util in xv6"></a>util in xv6</h2><p><strong>1.用户态调用</strong></p>
+<p>在用户空间，所有system call的函数声明写在<code>user.h</code>中，调用后会进入<code>usys.S</code>执行汇编指令：将对应的系统调用号（system call number）置于寄存器a7中，并执行ecall指令进行系统调用，其中函数参数存在a0~a5这6个寄存器中。ecall指令将触发软中断，cpu会暂停对用户程序的执行，转而执行内核的中断处理逻辑，陷入（trap）内核态。</p>
+<p><strong>2.上下文切换</strong></p>
+<p>中断处理在<code>kernel/trampoline.S</code>中，首先进行上下文的切换，将user进程在寄存器中的数据save到内存中（保护现场），并restore（恢复）kernel的寄存器数据。内核中会维护一个进程数组（最多容纳64个进程），存储每个进程的状态信息，proc结构体定义在proc.h，这也是xv6对PCB（Process Control Block）的实现。用户程序的寄存器数据将被暂时保存到<code>proc-&gt;trapframe</code>结构中。</p>
+<p><strong>3.内核态执行</strong></p>
+<p>完成进程切换后，调用<code>trap.c/usertrap()</code>，接着进入<code>syscall.c/syscall()</code>，在该方法中根据system call number拿到数组中的函数指针，执行系统调用函数。函数参数从用户进程的<code>trapframe</code>结构中获取(a0~a5)，函数执行的结果则存储于trapframe的a0字段中。完成调用后同样需要进程切换，先save内核寄存器到<code>trapframe-&gt;kernel_*</code>，再将trapframe中暂存的user进程数据restore到寄存器，重新回到用户空间，cpu从中断处继续执行，从寄存器a0中拿到函数返回值。</p>
+<table>
+<thead>
+<tr>
+<th>Sys_call</th>
+<th align="center">Funtion</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fork()</td>
+<td align="center">复制进程的全部状态，包reg以及执行状态,并继续执行；返回子进程pid，子进程返回0；</td>
+</tr>
+<tr>
+<td>wait((int)* status)</td>
+<td align="center">暂停当前进程，直到有信号或子进程结束；若子进程在调用前已经结束，则直接用status返回状态</td>
+</tr>
+<tr>
+<td>write(fd , buf , MSGSIZE)</td>
+<td align="center">从buf中取出MSGSIZE个子节的数据写入fd所指向的文件</td>
+</tr>
+<tr>
+<td>read(fd , buf , MSGSIZE)</td>
+<td align="center">从fd中取出MSGSIZE个子节的数据写入buf</td>
+</tr>
+<tr>
+<td>pipe()</td>
+<td align="center">生成一个管道p[0]用来read,p[1]用来write</td>
+</tr>
+<tr>
+<td>exit()</td>
+<td align="center">退出当前进程执行</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Sleep"><a href="#Sleep" class="headerlink" title="Sleep"></a>Sleep</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/types.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;user.h&quot;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc,<span class="hljs-type">char</span>* argv[])</span>&#123;<br>    <span class="hljs-keyword">if</span>(argc != <span class="hljs-number">2</span>)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Sleep needs one argument!\n&quot;</span>); <span class="hljs-comment">//检查参数数量是否正确</span><br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>    &#125;<br>    <span class="hljs-type">int</span> seconds = atoi(argv[<span class="hljs-number">1</span>]); <span class="hljs-comment">//将字符串参数转为整数</span><br>    sleep(seconds);              <span class="hljs-comment">//使用系统调用sleep</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;(nothing happens for a little while)\n&quot;</span>);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">//确保进程退出</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Ping-Pong"><a href="#Ping-Pong" class="headerlink" title="Ping-Pong"></a>Ping-Pong</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/types.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/stat.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;user/user.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MSGSIZE 5</span><br><span class="hljs-type">char</span>* msg1 = <span class="hljs-string">&quot;ping&quot;</span>;<br><span class="hljs-type">char</span>* msg2 = <span class="hljs-string">&quot;pong&quot;</span>;<br><br><span class="hljs-type">int</span><br><span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-type">char</span> buf[MSGSIZE];<br>    <span class="hljs-type">int</span> fds[<span class="hljs-number">2</span>];<br>    pipe(fds);<br><br>    <span class="hljs-type">int</span> pid = fork();<br><br>    <span class="hljs-comment">// parents process</span><br>    <span class="hljs-keyword">if</span>(pid &gt; <span class="hljs-number">0</span>)&#123;<br>        write(fds[<span class="hljs-number">1</span>], msg1, MSGSIZE);		<span class="hljs-comment">// 向fd[1]中写入	</span><br>        wait(<span class="hljs-number">0</span>);							<span class="hljs-comment">// 最好加上wait</span><br>        read(fds[<span class="hljs-number">0</span>], buf, MSGSIZE);			<span class="hljs-comment">// 从fd[0]中读出	</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>,getpid());<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;: received &quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>,buf);<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        read(fds[<span class="hljs-number">0</span>], buf, MSGSIZE);<br>        write(fds[<span class="hljs-number">1</span>], msg2, MSGSIZE);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>,getpid());<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;: received &quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>,buf);<br>    &#125;<br><br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Primes"><a href="#Primes" class="headerlink" title="Primes"></a>Primes</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/types.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/stat.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;user/user.h&quot;</span></span><br><br><span class="hljs-type">void</span><br><span class="hljs-title function_">prime</span><span class="hljs-params">(<span class="hljs-type">int</span> input_fd)</span><br>&#123;<br>    <span class="hljs-type">int</span> base;<br>    <span class="hljs-comment">/* Exit if last child */</span><br>    <span class="hljs-keyword">if</span> (read(input_fd, &amp;base, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>)) == <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>    &#125;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;prime %d\n&quot;</span>, base);<br><br>    <span class="hljs-comment">/* Create new child if not last */</span><br>    <span class="hljs-type">int</span> p[<span class="hljs-number">2</span>];<br>    pipe(p);<br>    <span class="hljs-keyword">if</span> (fork() == <span class="hljs-number">0</span>)<br>    &#123;<br>        close(p[<span class="hljs-number">1</span>]);<br>        prime(p[<span class="hljs-number">0</span>]);<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        close(p[<span class="hljs-number">0</span>]);<br>        <span class="hljs-type">int</span> n;<br>        <span class="hljs-type">int</span> eof;<br>        <span class="hljs-keyword">do</span><br>        &#123;<br>            eof = read(input_fd, &amp;n, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>            <span class="hljs-keyword">if</span> (n % base != <span class="hljs-number">0</span>)<br>            &#123;<br>                write(p[<span class="hljs-number">1</span>], &amp;n, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>            &#125;<br>        &#125; <span class="hljs-keyword">while</span> (eof);<br><br>        close(p[<span class="hljs-number">1</span>]);<br>    &#125;<br>    wait(<span class="hljs-number">0</span>);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br><br><span class="hljs-type">int</span> <br><span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> <span class="hljs-type">const</span> *argv[])</span><br>&#123;<br>    <span class="hljs-type">int</span> parent_fd[<span class="hljs-number">2</span>];<br>    pipe(parent_fd);<br>    <span class="hljs-keyword">if</span> (fork())<br>    &#123;<br>        close(parent_fd[<span class="hljs-number">0</span>]);    <span class="hljs-comment">// 关闭没用的文件</span><br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">2</span>; i &lt; <span class="hljs-number">36</span>; i++)<br>        &#123;<br>            write(parent_fd[<span class="hljs-number">1</span>], &amp;i, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>        &#125;<br>        close(parent_fd[<span class="hljs-number">1</span>]);<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        close(parent_fd[<span class="hljs-number">1</span>]);<br>        prime(parent_fd[<span class="hljs-number">0</span>]);<br>    &#125;<br>    wait(<span class="hljs-number">0</span>);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>实验中提醒我们要参考ls.c来实现find，第一步我们要明确find中各个函数的功能都是什么</p>
+<p>其中fmtname是负责将文件名标准化，它会保留文件名第一个’&#x2F;‘之前的字符并返回</p>
+<p>find函数负责查询和逻辑上的处理，从path开始查找是否存在和target相同的文件或目录</p>
+<hr>
+<p>ls会首先打开当前目录，并依次读取目录中的文件；那么find只需打开当前目录，按顺序检测其中文件和目录，若为文件则检测文件名是否一致，若为目录，则判断此目录是否可以继续递归查询</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/types.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/stat.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;user/user.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/fs.h&quot;</span></span><br><br><br><span class="hljs-comment">/* </span><br><span class="hljs-comment">  第一个参数：./README ./cat 类似的参数</span><br><span class="hljs-comment">  返回结果： README cat</span><br><span class="hljs-comment">*/</span> <br><span class="hljs-type">char</span>*<br><span class="hljs-title function_">fmtname</span><span class="hljs-params">(<span class="hljs-type">char</span> *path)</span><br>&#123;<br>  <span class="hljs-type">static</span> <span class="hljs-type">char</span> buf[DIRSIZ+<span class="hljs-number">1</span>];<br>  <span class="hljs-type">char</span> *p;<br><br>  <span class="hljs-comment">// Find first character after last slash.</span><br>  <span class="hljs-keyword">for</span>(p=path+<span class="hljs-built_in">strlen</span>(path); p &gt;= path &amp;&amp; *p != <span class="hljs-string">&#x27;/&#x27;</span>; p--)<br>    ;<br>  p++;<br><br>  <span class="hljs-comment">// Return blank-padded name.</span><br>  <span class="hljs-keyword">if</span>(<span class="hljs-built_in">strlen</span>(p) &gt;= DIRSIZ)<br>    <span class="hljs-keyword">return</span> p;<br>  memmove(buf, p, <span class="hljs-built_in">strlen</span>(p));<br>  <span class="hljs-built_in">memset</span>(buf+<span class="hljs-built_in">strlen</span>(p), <span class="hljs-number">0</span>, DIRSIZ-<span class="hljs-built_in">strlen</span>(p));<br>  <span class="hljs-keyword">return</span> buf;<br>&#125;<br><br><span class="hljs-type">int</span><br><span class="hljs-title function_">isrecursive</span><span class="hljs-params">(<span class="hljs-type">char</span> *target)</span>&#123;<br>  <span class="hljs-type">char</span>* buf = fmtname(target);<br>  <span class="hljs-keyword">if</span>(buf[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;.&#x27;</span> &amp;&amp; buf[<span class="hljs-number">1</span>] == <span class="hljs-number">0</span>)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  <span class="hljs-keyword">if</span>(buf[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;.&#x27;</span> &amp;&amp; buf[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;.&#x27;</span> &amp;&amp; buf[<span class="hljs-number">2</span>] == <span class="hljs-number">0</span>)<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-type">void</span><br><span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">char</span> *path, <span class="hljs-type">char</span> *target)</span><br>&#123;<br>  <span class="hljs-type">char</span> buf[<span class="hljs-number">512</span>], *p;<br>  <span class="hljs-type">int</span> fd;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">dirent</span> <span class="hljs-title">de</span>;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">stat</span> <span class="hljs-title">st</span>;</span><br><br>  <span class="hljs-keyword">if</span>((fd = open(path, <span class="hljs-number">0</span>)) &lt; <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-built_in">fprintf</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;find: cannot open %s\n&quot;</span>, path);<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">if</span>(fstat(fd, &amp;st) &lt; <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-built_in">fprintf</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;find: cannot stat %s\n&quot;</span>, path);<br>    close(fd);<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">if</span>(<span class="hljs-built_in">strcmp</span>(fmtname(path), target) == <span class="hljs-number">0</span>)&#123;  <span class="hljs-comment">// 递归进入文件后，比较文件名与目标名称是否一致</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s  %d\n&quot;</span>, path, st.type);<br>  &#125;<br><br>  <span class="hljs-keyword">switch</span>(st.type)&#123;<br>  <span class="hljs-keyword">case</span> T_DIR:<br>    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">strlen</span>(path) + <span class="hljs-number">1</span> + DIRSIZ + <span class="hljs-number">1</span> &gt; <span class="hljs-keyword">sizeof</span> buf)&#123;<br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;find: path too long\n&quot;</span>);<br>      <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-built_in">strcpy</span>(buf, path);<br>    p = buf+<span class="hljs-built_in">strlen</span>(buf);<br>    *p++ = <span class="hljs-string">&#x27;/&#x27;</span>;<br>    <span class="hljs-keyword">while</span>(read(fd, &amp;de, <span class="hljs-keyword">sizeof</span>(de)) == <span class="hljs-keyword">sizeof</span>(de))&#123;       <span class="hljs-comment">// 按次序读出目录中所有文件</span><br>      <span class="hljs-keyword">if</span>(de.inum == <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">continue</span>;<br>      memmove(p, de.name, DIRSIZ);<br>      p[DIRSIZ] = <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">if</span>(stat(buf, &amp;st) &lt; <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;find: cannot stat %s\n&quot;</span>, buf);<br>        <span class="hljs-keyword">continue</span>;<br>      &#125;<br>      <span class="hljs-keyword">if</span>(isrecursive(buf))&#123;<br>        find(buf, target);<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">break</span>;<br>  &#125;<br>  close(fd);<br>&#125;<br><br><span class="hljs-comment">/* </span><br><span class="hljs-comment">  第一个参数：find命令</span><br><span class="hljs-comment">  第二个参数：从什么位置开始查找</span><br><span class="hljs-comment">  第三个参数：查找文件或目录的名称</span><br><span class="hljs-comment">*/</span> <br><br><span class="hljs-type">int</span><br><span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span>  <br>&#123;<br>  <span class="hljs-keyword">if</span>(argc == <span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;usage : find [path] [target]\n&quot;</span>);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>  &#125;<br>  <span class="hljs-keyword">if</span>(argc == <span class="hljs-number">2</span>)&#123;<br>    find(<span class="hljs-string">&quot;.&quot;</span>,argv[<span class="hljs-number">1</span>]); <br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>  &#125;<br>  <span class="hljs-keyword">if</span>(argc == <span class="hljs-number">3</span>)&#123;<br>    find(argv[<span class="hljs-number">1</span>],argv[<span class="hljs-number">2</span>]); <br>  &#125;<br>  <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h2><ul>
+<li><p>echo “1\n2” | xargs -n 1 line</p>
+</li>
+<li><p>xargs 是给后面指令传递参数的过滤器，负责按行从前一个指令的标准输出中读取作为后一个指令的扩展参数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/types.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/param.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/stat.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;user/user.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;kernel/fs.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MSGSIZE 16</span><br><span class="hljs-type">int</span><br><span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span>	<span class="hljs-comment">// 这个arg参数存在一些问题，去掉const可以编译</span><br>&#123;<br>    sleep(<span class="hljs-number">10</span>);<br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    管道会将前面指令的标准输出重定向到标准输入，</span><br><span class="hljs-comment">    所以只需从fd = 0的标准输入中读出指令即可</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-type">char</span> buf[MSGSIZE]; <br>    read(<span class="hljs-number">0</span>, buf, MSGSIZE);<br><br>    <span class="hljs-comment">// exec 命令和附加参数</span><br>    <span class="hljs-type">char</span> *xargv[MAXARG];       <span class="hljs-comment">// 指令的参数</span><br>    <span class="hljs-type">int</span> xargc = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; argc; i++)&#123;<br>        xargv[xargc++] = argv[i];<br>    &#125;<br><br>    <span class="hljs-type">char</span> *p = buf;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MSGSIZE; i++)&#123;<br>        <span class="hljs-keyword">if</span>(buf[i] == <span class="hljs-string">&#x27;\n&#x27;</span>)&#123;<br>            <span class="hljs-type">int</span> pid = fork();<br>            <span class="hljs-keyword">if</span>(pid &gt; <span class="hljs-number">0</span>)&#123;<br>                p = &amp;buf[i + <span class="hljs-number">1</span>];<br>                wait(<span class="hljs-number">0</span>);<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                buf[i] = <span class="hljs-number">0</span>;<br>                xargv[xargc] = p;<br>                xargc++;<br>                xargv[xargc] = <span class="hljs-number">0</span>;<br>                xargc++;<br>                exec(xargv[<span class="hljs-number">0</span>], xargv);<br>                <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/xv6-riscv-Lab/" class="print-no-link">#xv6_riscv Lab</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Lab1-util</div>
+      <div>http://example.com/2022/02/20/Lab1-util/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 20, 2022</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/26/Lab2-syscall/" title="Lab2-syscall">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab2-syscall</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/19/Interrupt/" title="Interrupt">
+                        <span class="hidden-mobile">Interrupt</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      <script src="//cdn.jsdelivr.net/npm/@waline/client"></script>
+
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"placeholder":null,"avatar":"retro","avatarCDN":"https://seccdn.libravatar.org/avatar/","avatarForce":false,"highlight":true},
+          {
+            el: '#waline',
+            path: window.location.pathname,
+            serverURL: 'https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app',
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

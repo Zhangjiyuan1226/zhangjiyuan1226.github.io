@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="MapReduce什么是MapReduce?MapReduce是一种用来处理大规模数据的分布式计算框架。编程者只负责编写Map函数和Reduce函数，框架会将大型的数据处理任务切分成多个小型task，并将task分布式的处理。整个计算过程分为Map Phase和Reduce Phase，在Map阶段会将原始文件转化为intermediate kv pair，Reduce阶段则会将有关联的中间键合并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MapReduce">
+<meta property="og:url" content="http://example.com/2022/10/15/MapReduce/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MapReduce什么是MapReduce?MapReduce是一种用来处理大规模数据的分布式计算框架。编程者只负责编写Map函数和Reduce函数，框架会将大型的数据处理任务切分成多个小型task，并将task分布式的处理。整个计算过程分为Map Phase和Reduce Phase，在Map阶段会将原始文件转化为intermediate kv pair，Reduce阶段则会将有关联的中间键合并">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/10/15/MapReduce/image-20221015140345802.png">
+<meta property="article:published_time" content="2022-10-15T04:21:49.000Z">
+<meta property="article:modified_time" content="2024-10-27T13:10:08.186Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Distributed System">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/10/15/MapReduce/image-20221015140345802.png">
+  
+  
+  
+  <title>MapReduce - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"JVRHRgZvLvYzeUvgsPXkiSBi-MdYXbMMI","app_key":"eIfDDpCEwOjlXZsTnPUW3j5E","server_url":null,"path":"window.location.pathname","ignore_local":false,"enable":true},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MapReduce"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-15 12:21" pubdate>
+          October 15, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          45 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MapReduce</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><h3 id="什么是MapReduce"><a href="#什么是MapReduce" class="headerlink" title="什么是MapReduce?"></a>什么是MapReduce?</h3><p>MapReduce是一种用来处理大规模数据的分布式计算框架。编程者只负责编写Map函数和Reduce函数，框架会将大型的数据处理任务切分成多个小型task，并将task分布式的处理。整个计算过程分为Map Phase和Reduce Phase，在Map阶段会将原始文件转化为intermediate kv pair，Reduce阶段则会将有关联的中间键合并。</p>
+<p>在6.824的lab中，我们实现的MapReduce框架允许我们以加载.so文件的方式，实现相应的功能。例如wordcount、indexer、jobcount等工作。</p>
+<ul>
+<li>个人理解的MapReduce：一个divide and conquer 的大型计算模型</li>
+</ul>
+<p>（因为被Robert邮件提醒过，所以下面的代码均不是最后的正确结果，只是一个实例  :  ）</p>
+<h3 id="MapReduce-的工作流程"><a href="#MapReduce-的工作流程" class="headerlink" title="MapReduce 的工作流程"></a>MapReduce 的工作流程</h3><p><img src="/2022/10/15/MapReduce/image-20221015140345802.png" srcset="/img/loading.gif" lazyload alt="image-20221015140345802"></p>
+<ol>
+<li>MapReduce lib会将input file切片分成16MB或者64MB大小子文件split X，随后启动一系列进程。</li>
+<li>从启动的这些进程选择一个作为mater，其余作为worker【master负责整个计算过程的调度与任务的分配，worker负责具体任务的执行】<ul>
+<li>master会为worker创建一系列map_task和reduce_task（reduce task数量是用户指定的 n_Reduce）</li>
+<li>一系列worker启动并向master发送rpc请求，表明worker节点当前的状态</li>
+<li>master通过task_rpc返回给worker对应的task</li>
+</ul>
+</li>
+<li>首先worker对master分配的task执行map func，将intermediate result写入<strong>本地</strong>，并通过rpc返回写入的位置</li>
+<li>master在所有map task完成时进入Reduce阶段，分配reduce task</li>
+<li>根据之前返回的地址读取中间文件，并执行reduce func，将结果存入GFS并等待下一次运算</li>
+</ol>
+<h4 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h4><ul>
+<li>word count：Map函数会对将文件中的单词都转换为&lt;word, 1&gt;的形式，根据hash(word)的结果将单词分布到不同的中间文件中，随后通过Reduce函数对单词词频进行统计（相同的单词会因为同样的hash value存储在相同的中间文件）</li>
+<li>indexer：Map函数将文件中的单词转换为&lt;word, filename&gt;的形式，Reduce函数对结果进行整理可以获取单词在那个文件中出现</li>
+</ul>
+<h4 id="一些数据结构和函数"><a href="#一些数据结构和函数" class="headerlink" title="一些数据结构和函数"></a>一些数据结构和函数</h4><p>以下定义的数据结构是master与worker在rpc通信过程中需要用到的数据结构，其中包含了task的定义等元数据</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Add your RPC definitions here.</span><br><span class="hljs-keyword">type</span> TaskReply <span class="hljs-keyword">struct</span> &#123; <span class="hljs-comment">// Coordinator返回给worker的信息</span><br>	Task             *Task<br>	NReduce          <span class="hljs-type">int</span><br>	Coordinatorstate Coordinatorstate<br>&#125;<br><br><span class="hljs-keyword">type</span> Task <span class="hljs-keyword">struct</span> &#123;<br>	Id        <span class="hljs-type">int</span>       <span class="hljs-comment">// 表示map任务号或者reduce任务号</span><br>	TaskType  TaskType  <span class="hljs-comment">// 任务的类型</span><br>	TaskState TaskState <span class="hljs-comment">// Task的执行状态</span><br>	Filename  <span class="hljs-type">string</span>    <span class="hljs-comment">// map task需要读取的文件名称 reduce task需要的intermidiate files</span><br>	StartTime time.Time <span class="hljs-comment">// task的起始时间</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Coordinatorstate <span class="hljs-type">int</span><br><span class="hljs-keyword">type</span> TaskType <span class="hljs-type">int</span><br><span class="hljs-keyword">type</span> TaskState <span class="hljs-type">int</span><br><br><span class="hljs-keyword">const</span> (<br>	MapPhase Coordinatorstate = <span class="hljs-literal">iota</span><br>	ReducePhase<br>	AllDone<br>)<br><span class="hljs-keyword">const</span> (<br>	Map TaskType = <span class="hljs-literal">iota</span><br>	Reduce<br>	Waiting			<span class="hljs-comment">// task已经分配完毕，等待当前阶段task完成</span><br>	Done<br>)<br><br><span class="hljs-keyword">const</span> (<br>	Idle TaskState = <span class="hljs-literal">iota</span>	<span class="hljs-comment">// 暂未执行</span><br>	InProgress				<span class="hljs-comment">//</span><br>	Completed				<span class="hljs-comment">//</span><br>)<br><br><span class="hljs-comment">// files 表示所有文件名称</span><br><span class="hljs-comment">// nReduce 表示要执行多少次reduce</span><br><span class="hljs-comment">// MapReduce框架会为所有Map函数输出的每一个key，调用一次Reduce函数</span><br><span class="hljs-comment">//</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeCoordinator</span><span class="hljs-params">(files []<span class="hljs-type">string</span>, nReduce <span class="hljs-type">int</span>)</span></span> *Coordinator &#123;<br><br>	c := Coordinator&#123;<br>		filenames:     files,<br>		nReduce:       nReduce,<br>		taskId:        <span class="hljs-number">0</span>,<br>		Phase:         MapPhase,<br>		MapTasks:      <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> *Task, <span class="hljs-built_in">len</span>(files)),<br>		ReduceTasks:   <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> *Task, nReduce),<br>		ExcecuteState: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]*TaskMeta, <span class="hljs-built_in">len</span>(files)+nReduce),<br>	&#125;<br>	c.MakeMapTask(c.filenames, c.MapTasks)<br>	c.MakeReduceTask(c.ReduceTasks)<br>	<span class="hljs-comment">// go c.CrashTest()</span><br>	<span class="hljs-comment">// test</span><br>	c.server()<br>	<span class="hljs-keyword">return</span> &amp;c<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Coordinator中处理worker申请任务的函数</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 在这里为worker分配相应map task 返回对应文件名称，并且等待worker在规定时间完成</span><br><span class="hljs-comment">// worker完成后将结果返回至Coordinator，Coordinator整合结果后再分配Reduce task</span><br><span class="hljs-comment">// coordinator wait for ten seconds; after that the coordinator should assume the worker has died</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Coordinator)</span></span> RequestTask(args *TaskArgs, reply *TaskReply) <span class="hljs-type">error</span> &#123;<br>	mutex.Lock()<br>	<span class="hljs-keyword">defer</span> mutex.Unlock()<br><br>	<span class="hljs-keyword">switch</span> c.Phase &#123;<br>	<span class="hljs-keyword">case</span> MapPhase:<br>		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(c.MapTasks) &gt; <span class="hljs-number">0</span> &#123;<br>			reply.Task = &lt;-c.MapTasks<br>			reply.Task.TaskState = InProgress<br>			reply.Task.StartTime = time.Now()<br>			reply.NReduce = c.nReduce<br>			reply.Coordinatorstate = MapPhase<br><br>			<span class="hljs-comment">// c.ExcecuteState[reply.Task.Id].Task.TaskState = InProgress</span><br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			<span class="hljs-keyword">if</span> c.IsAllDone() &#123;<br>				fmt.Println(<span class="hljs-string">&quot;To the next Phase Reduce&quot;</span>)<br>				c.NextPhase()<br>			&#125;<br>			reply.Task = &amp;Task&#123;&#125;<br>			reply.Task.TaskType = Waiting<br>		&#125;<br>	<span class="hljs-keyword">case</span> ReducePhase:<br>		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(c.ReduceTasks) &gt; <span class="hljs-number">0</span> &#123;<br>			reply.Task = &lt;-c.ReduceTasks<br>			reply.Task.TaskState = InProgress<br>			reply.Task.StartTime = time.Now()<br>			reply.NReduce = c.nReduce<br>			reply.Coordinatorstate = ReducePhase<br><br>			<span class="hljs-comment">// c.ExcecuteState[reply.Task.Id].Task.TaskState = InProgress</span><br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			<span class="hljs-keyword">if</span> c.IsAllDone() &#123;<br>				fmt.Println(<span class="hljs-string">&quot;To the next Phase AllDone&quot;</span>)<br>				c.NextPhase()<br>			&#125;<br>			reply.Task = &amp;Task&#123;&#125;<br>			reply.Task.TaskType = Waiting<br>		&#125;<br>	<span class="hljs-keyword">case</span> AllDone:<br>		<span class="hljs-keyword">if</span> c.IsAllDone() &#123;<br>			reply.Coordinatorstate = AllDone<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="容错机制"><a href="#容错机制" class="headerlink" title="容错机制"></a>容错机制</h3><p>容错机制是分布式计算中一个很重要的功能，受限于各种因素，MapReduce中worker很有可能出现执行错误的问题，我们需要确保master能够一直与worker保持网络通信，worker返回给master的结果是正确的，并且在worker与master失联后能够将任务分配给其他的worker重新执行。因为master一般为单个机器，出现错误的可能性较小，暂不讨论。</p>
+<h4 id="Worker-Failure"><a href="#Worker-Failure" class="headerlink" title="Worker Failure"></a>Worker Failure</h4><p>Master节点周期性的向worker节点发送Ping信号，若Worker节点长时间未恢复则默认节点不可用，将这个节点正在处理的任务标记为idle，并将这个task重新加入到等待队列中。下面是不同阶段出现worker failure的处理办法</p>
+<ul>
+<li>Map Task：无论Map task任务是否完成，Master都需要将重新分配给其他worker。并且worker失效意味着存储在本地的中间结果也是不可用的。若此时已经进入到Reduce阶段，那么Master还需要通知所有Reducer无法从过去的Mapper上读取中间结果，要从新的Mapper上获取数据。</li>
+</ul>
+<p>若一个map task 先被 Worker A执行，随后又被worker B执行，那么其他的reduce会被提示到此map task已被重新执行，读取中间结果将从B的地址读取。</p>
+<ul>
+<li>Reduce Task：已经完成的Reduce无需过多处理，因为Reduce的结果存储在GFS上；</li>
+</ul>
+<h4 id="hints"><a href="#hints" class="headerlink" title="hints"></a>hints</h4><p>map和reduce阶段必须是有严格的先后顺序的，可以使用<code>sync.Cond</code>解决，就是worker去要任务的时候，如果没有空闲的并且还有正在running的，就陷入沉睡，之后被<code>broadcast</code>唤醒然后返回。但这样做在no crash 下是可行的，如果有crash，就会发生这样的情况：几个worker在沉睡，正在运行的那个worker崩了，但没有worker能够调度去解决。 因此作如下改进：每次发现有worker failure，就随机唤醒单个worker，被唤醒的worker重新检查一下是否有任务；在所有任务完成时，将沉睡的worker全唤醒。</p>
+<h4 id="Backup"><a href="#Backup" class="headerlink" title="Backup"></a>Backup</h4><h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><h4 id="面试问题"><a href="#面试问题" class="headerlink" title="面试问题"></a>面试问题</h4><p>阿里CTO线面试：你做的MapReduce应用在实际生产中会存在什么问题？怎么解决这些问题？</p>
+<ul>
+<li>有可能存在一个worker节点，不停的向Master申请任务，并返回错误的执行结果</li>
+</ul>
+<p>解决方法：对worker节点做一些标记，一旦返回了错误的结果，悲观的认为这个节点以后也无法正确的执行，Master不再优先给这个节点分配任务</p>
+<ul>
+<li>落伍者(Stragglers)，有一个节点执行任务速度较慢，导致Master无法进入下一个阶段，所有节点阻塞等待</li>
+</ul>
+<p>解决方法：通过备用任务来处理执行较慢的任务，或者调用被sync.Cond睡眠的任务来代替</p>
+<ul>
+<li>重复执行？（节点失联后重新和master取得联系，之前的执行结果怎么办）</li>
+</ul>
+<p>解决办法：</p>
+<ul>
+<li>热点问题shuffle（例如map阶段将很多相同的单词都放入同一个中间结果，导致针对某一个reduce节点的执行速度过慢）</li>
+</ul>
+<p>解决办法：计算word的哈希值时加salt，让pair尽量分散到不同的hash bucket中，防止聚集现象</p>
+<h4 id="实际情况"><a href="#实际情况" class="headerlink" title="实际情况"></a>实际情况</h4><ul>
+<li>如何对数据进行分片？</li>
+</ul>
+<p>最好将Task读取的文件大小设定为128MB，接近HDFS中块的大小</p>
+<ul>
+<li>map阶段会存在缓冲区，不会让数据直接写入本地（防止频繁的IO）</li>
+</ul>
+<p>第一步对输入的数据进行切片，每个切片分配一个map()任务，map()对其中的数据进行计算，对每个数据用键值对的形式记录，然后输出到环形缓冲区map（）中输出的数据在环形缓冲区内进行快排，每个环形缓冲区默认大小100M，当数据达到80M时（默认），锁定这80M的数据并对其排序，分别按照partition和key排序（同一partition内key有序）</p>
+<ul>
+<li><p>如何做到负载均衡？</p>
+</li>
+<li><p>如何保证执行结果的正确性？</p>
+</li>
+<li><p>扩展性？</p>
+</li>
+</ul>
+<h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><blockquote>
+<p>MapReduce Paper <a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf">https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf</a></p>
+<p>知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/55884610">https://zhuanlan.zhihu.com/p/55884610</a></p>
+<p>shuffle 过程 知乎  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350428188">https://zhuanlan.zhihu.com/p/350428188</a></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Distributed-System/" class="print-no-link">#Distributed System</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MapReduce</div>
+      <div>http://example.com/2022/10/15/MapReduce/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 15, 2022</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/01/Lab5-Lazy-Allocation/" title="Lab5-Lazy Allocation">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lab5-Lazy Allocation</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/29/GFS/" title="GFS">
+                        <span class="hidden-mobile">GFS</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      <script src="//cdn.jsdelivr.net/npm/@waline/client"></script>
+
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@1/dist/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"placeholder":null,"avatar":"retro","avatarCDN":"https://seccdn.libravatar.org/avatar/","avatarForce":false,"highlight":true},
+          {
+            el: '#waline',
+            path: window.location.pathname,
+            serverURL: 'https://blog-9orkpun6i-zhangjiyuan1226s-projects.vercel.app',
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
